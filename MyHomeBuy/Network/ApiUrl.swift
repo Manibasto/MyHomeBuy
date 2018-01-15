@@ -39,6 +39,13 @@ class ApiUrl {
     static let METHOD_ADD_TASK = "add_user_tasks"
     static let METHOD_RESET = "reset"
     static let METHOD_DETAILS = "user_status_count"
+    static let METHOD_GET_DOCUMENT = "get_user_document"
+    static let METHOD_ADD_DOCUMENT = "add_user_Document"
+
+
+    
+
+    
 
 
  

@@ -39,12 +39,15 @@ class ResourcesViewController: UIViewController {
         let data3 = ["image" : "calendar_res" ,  "text" : "Calender"] as [String : Any]
         let data4 = ["image" : "gallery_res"  , "text" : "Gallery"] as [String : Any]
         let data5 = ["image" : "notes_res" , "text" : "Notes"] as [String : Any]
+        let data6 = ["image" : "main_documents_icon" , "text" : "Documents"] as [String : Any]
+
         
         //dataArray.append(data1)
         dataArray.append(data2)
         dataArray.append(data3)
         dataArray.append(data4)
         dataArray.append(data5)
+        dataArray.append(data6)
        
         
     }
@@ -118,6 +121,10 @@ extension ResourcesViewController : UITableViewDelegate{
             switchToNotes()
 
             break
+        case 4:
+            switchToDocument()
+            
+            break
         default:
             break
         }
@@ -140,6 +147,11 @@ extension ResourcesViewController : UITableViewDelegate{
     }
     func switchToNotes(){
         let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "NotesViewController") as! NotesViewController
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    func switchToDocument()
+    {
+        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DocumentsViewController") as! DocumentsViewController
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }

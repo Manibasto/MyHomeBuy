@@ -26,12 +26,11 @@ class SideMenuViewController: UIViewController {
         dataArray.removeAll()
 
         let data1 = ["bg" : "bg_home" , "image" : "home_bg" , "text" : ""]
-        let data2 = ["bg" : "bg_profile" , "image" : "settings_white" , "text" : "Settings"]
-        let data3 = ["bg" : "bg_property" , "image" : "terms" , "text" : "Terms of Use"]
-        let data4 = ["bg" : "bg_pin" , "image" : "pin" , "text" : "Privacy Policy"]
-        let data5 = ["bg" : "bg_terms" , "image" : "terms" , "text" : "Contact Us"]
-        let data6 = ["bg" : "bg_exit" , "image" : "leave" , "text" : "Rate this App"]
-        
+        let data2 = ["bg" : "bg_profile" , "image" : "settings_SideMenu" , "text" : "Settings"]
+        let data3 = ["bg" : "bg_terms" , "image" : "terms" , "text" : "Terms of Use"]
+        let data4 = ["bg" : "bg_pin" , "image" : "policy" , "text" : "Privacy Policy"]
+        let data5 = ["bg" : "bg_property" , "image" : "contact_SideMenu" , "text" : "Contact Us"]
+        let data6 = ["bg" : "bg_exit" , "image" : "rate" , "text" : "Rate this App"]
         dataArray.append(data1)
         dataArray.append(data2)
         dataArray.append(data3)

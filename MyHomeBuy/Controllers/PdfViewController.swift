@@ -12,6 +12,8 @@ class PdfViewController: UIViewController {
     @IBOutlet weak var pdfTableView: UITableView!
     @IBOutlet weak var addPdfBtn: UIButton!
     @IBOutlet var footerView: UIView!
+    var currentTaskID = "0"
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,12 +30,18 @@ class PdfViewController: UIViewController {
         addFooterView()
     }
     func addFooterView(){
-        footerView.frame(forAlignmentRect: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 80))
+        footerView.frame(forAlignmentRect: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 111))
         pdfTableView.tableFooterView = footerView
         let titleColor = addPdfBtn.titleColor(for: .normal)
         addPdfBtn.setRadius(10, titleColor!, 2)
-        
-        
+      // addPdfBtn.addTarget(self, action: #selector(addANewImageBtnTapped(_:)), for: .touchUpInside)
+       addPdfBtn.addTarget(self, action: #selector(addPdfBtnTapped(_:)), for: .touchUpInside)
+    }
+    func addPdfBtnTapped(_ button : UIButton)
+    {
+        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "UploadDocumentVC") as! UploadDocumentVC
+        vc.currentDocumentType = .Pdf
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }
 extension PdfViewController : UITableViewDataSource{

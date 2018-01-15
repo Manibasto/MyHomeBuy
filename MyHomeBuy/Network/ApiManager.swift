@@ -159,6 +159,90 @@ class ApiManager
         })
     }
     
+    
+    
+    func requestDocumentImageApiServer(_ parmDict: Dictionary<String, Any>, _ imageArray :  [UIImage] , _ onSuccess: @escaping (Any)-> (), _ onFailure: @escaping (Error)-> () , _ onProgress: @escaping (Double)-> ()){
+        let headers = getHeader()
+        let url = ApiUrl.BASE_URL
+        print("requestWithUrl  \(url) and requestWithData : \(parmDict)")
+        Alamofire.upload(multipartFormData: { multipartFormData in
+            var count = 1
+            print("No of images to upload ==  \(imageArray.count)")
+            for image in imageArray{
+                
+                if let imageData = UIImageJPEGRepresentation(image, 0.5) {
+                    print("***** compressed Size \(imageData.description) **** ")
+                    
+                    let fileName = "image_no_\(count).png"
+                    multipartFormData.append(imageData, withName: "file_name[]", fileName: fileName, mimeType: "image/jpeg")
+                    count += 1
+                }
+                
+                
+            }
+            
+            for (key, value) in parmDict {
+                multipartFormData.append(((value as Any) as AnyObject).data(using: String.Encoding.utf8.rawValue)!, withName: key)
+                
+            }
+            
+        }
+            , usingThreshold: UInt64.init(), to: url, method: .post, headers: headers, encodingCompletion: { encodingResult in
+                switch encodingResult {
+                case .success(let upload, _, _):
+                    upload.uploadProgress(closure: { (Progress) in
+                        
+                        onProgress(Progress.fractionCompleted)
+                    })
+                    upload.responseJSON {
+                        response in
+                        if let value = response.result.value {
+                            print("json  \(JSON(value))")
+                            onSuccess(value)
+                            
+                        }
+                        
+                    }
+                case .failure(let encodingError):
+                    onFailure(encodingError)
+                    
+                    print(encodingError)
+                }
+                
+        })
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     func apiCall( _ parmDict: Dictionary<String, Any>, _ imageArray :  [UIImage] , _ onSuccess: @escaping (Any)-> (), _ onFailure: @escaping (Error)-> () , _ onProgress: @escaping (Double)-> ()){
         let url = URL(string:ApiUrl.BASE_URL)
         let username = Credential.USER_NAME

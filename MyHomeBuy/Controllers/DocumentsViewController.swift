@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import MBProgressHUD
+import SwiftyJSON
 
 class DocumentsViewController: UIViewController {
     
@@ -23,13 +25,36 @@ class DocumentsViewController: UIViewController {
     
     @IBOutlet weak var pdfBtn: UIButton!
     @IBOutlet weak var containerView: UIView!
+    var currentTaskID = "0"
+    var dataDict = NSDictionary()
+    var fromTask = false
+
     override func viewDidLoad() {
         super.viewDidLoad()
         pdfLineLabel.isHidden=true
         imageLineLabel.isHidden=false;
-
+        SharedAppDelegate.currentTaskID = currentTaskID
         // Do any additional setup after loading the view.
+        if(fromTask){
+            setupHeaderData()
+            taskDocumentLbl.isHidden = false
+
+        }else{
+            headingHeightConstraint.constant = 0
+            taskDocumentLbl.isHidden = true
+        }
     updateView(index: 0)
+        requestGetDocumentAPI()
+    }
+    func setupHeaderData(){
+        let image = UIImage.init(named: (dataDict.object(forKey: "image_white") as! String?)!)
+        taskDocumentImageView.image = image
+        let title = dataDict.object(forKey: "headerText") as! String?
+        taskDocumentLbl.text = title
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
     }
     override func viewWillLayoutSubviews()
     {
@@ -99,10 +124,6 @@ class DocumentsViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
-
-    
-    
-    
     
     private lazy var pdfViewController: PdfViewController = {
         // Load Storyboard
@@ -134,9 +155,12 @@ class DocumentsViewController: UIViewController {
         if index == 1 {
             remove(asChildViewController: imageViewController)
             add(asChildViewController: pdfViewController)
+            //pdfViewController.currentTaskID = currentTaskID;
         } else {
             remove(asChildViewController: pdfViewController)
             add(asChildViewController: imageViewController)
+           // imageViewController.currentTaskID = currentTaskID;
+
         }
     }
 
@@ -153,6 +177,7 @@ class DocumentsViewController: UIViewController {
         
         // Notify Child View Controller
         viewController.didMove(toParentViewController: self)
+       
     }
     
     private func remove(asChildViewController viewController: UIViewController) {
@@ -168,4 +193,30 @@ class DocumentsViewController: UIViewController {
 
 
 
+}
+extension DocumentsViewController
+{
+    func requestGetDocumentAPI(){
+   // {"user_id":"5","method_name":"get_user_document","task_id":"1"}
+        let userId = UserDefaults.standard.object(forKey: USER_ID) as! String
+
+        let parmDict = ["user_id" : userId,"task_id" : currentTaskID,"method_name" : ApiUrl.METHOD_GET_DOCUMENT] as [String : Any]
+        
+        MBProgressHUD.showAdded(to: self.view, animated: true)
+        ApiManager.sharedInstance.requestApiServer(parmDict, [UIImage](), {(data) ->() in
+            
+            
+            MBProgressHUD.hide(for: self.view, animated: true)
+        }, {(error)-> () in
+            print("failure \(error)")
+            MBProgressHUD.hide(for: self.view, animated: true)
+            self.view.makeToast(NETWORK_ERROR)
+            
+            
+        },{(progress)-> () in
+            print("progress \(progress)")
+            
+        })
+        
+    }
 }

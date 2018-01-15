@@ -448,9 +448,11 @@ extension TaskViewController : UITableViewDataSource{
     func switchToDocuments(_ indexPath : IndexPath){
         let model = dataModel?.data?[indexPath.row]
         let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DocumentsViewController") as! DocumentsViewController
-        //vc.currentCategoryId = (model?.milestone_cat_id)!
-//        vc.dataDict = dataDict
-//        vc.currentTaskID = (model?.id)!
+    //vc.currentCategoryId = (model?.milestone_cat_id)!
+        vc.dataDict = dataDict
+        vc.currentTaskID = (model?.id)!
+        vc.fromTask = true
+
         self.navigationController?.pushViewController(vc, animated: true)
         
     }
