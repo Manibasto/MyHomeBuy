@@ -1015,7 +1015,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "92659e16-a22f-4fb2-bda4-4f52851a6d51";
 				PROVISIONING_PROFILE_SPECIFIER = Testing;
-				SWIFT_OBJC_BRIDGING_HEADER = "/Users/wazid/Desktop/Vikas Workspace/MyHomeBuy/MyHomeBuy/MyHomeBuy-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "MyHomeBuy/MyHomeBuy-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -1034,7 +1034,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "92659e16-a22f-4fb2-bda4-4f52851a6d51";
 				PROVISIONING_PROFILE_SPECIFIER = Testing;
-				SWIFT_OBJC_BRIDGING_HEADER = "/Users/wazid/Desktop/Vikas Workspace/MyHomeBuy/MyHomeBuy/MyHomeBuy-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "MyHomeBuy/MyHomeBuy-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
