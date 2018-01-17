@@ -212,7 +212,52 @@ class ApiManager
         })
     }
     
-    
+ //For Pdf Upload API Server
+    func requestDocumentPdfApiServer(_ parmDict: Dictionary<String, Any>, _ pdfData :  Data , _ onSuccess: @escaping (Any)-> (), _ onFailure: @escaping (Error)-> () , _ onProgress: @escaping (Double)-> ()){
+        let headers = getHeader()
+        let url = ApiUrl.BASE_URL
+        print("requestWithUrl  \(url) and requestWithData : \(parmDict)")
+        Alamofire.upload(multipartFormData: { multipartFormData in
+            var count = 1
+            //print("No of images to upload ==  \(imageArray.count)")
+                // dataimg =  [[NSData alloc] initWithContentsOfURL:[arrImage objectAtIndex:index]];
+                
+                    let fileName = "files_%@.pdf"
+                    multipartFormData.append(pdfData, withName: "file_name[]", fileName: fileName, mimeType: "application/pdf")
+                    count += 1
+                
+                
+            
+            for (key, value) in parmDict {
+                multipartFormData.append(((value as Any) as AnyObject).data(using: String.Encoding.utf8.rawValue)!, withName: key)
+                
+            }
+            
+        }
+            , usingThreshold: UInt64.init(), to: url, method: .post, headers: headers, encodingCompletion: { encodingResult in
+                switch encodingResult {
+                case .success(let upload, _, _):
+                    upload.uploadProgress(closure: { (Progress) in
+                        
+                        onProgress(Progress.fractionCompleted)
+                    })
+                    upload.responseJSON {
+                        response in
+                        if let value = response.result.value {
+                            print("json  \(JSON(value))")
+                            onSuccess(value)
+                            
+                        }
+                        
+                    }
+                case .failure(let encodingError):
+                    onFailure(encodingError)
+                    
+                    print(encodingError)
+                }
+                
+        })
+    }
     
     
     

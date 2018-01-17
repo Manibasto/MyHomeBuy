@@ -10,6 +10,9 @@ import UIKit
 
 class pdfTableCell: UITableViewCell {
 
+    @IBOutlet weak var pdfSizeLbl: UILabel!
+    @IBOutlet weak var pdfDeleteBtn: UIButton!
+     @IBOutlet weak var pdfNameLbl: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

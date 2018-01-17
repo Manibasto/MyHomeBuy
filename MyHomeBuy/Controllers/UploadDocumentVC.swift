@@ -10,18 +10,23 @@ import UIKit
 import MobileCoreServices
 import MBProgressHUD
 import SwiftyJSON
-var imageArray = [UIImage]()
 
 
 
-enum DocumentType {
+enum DocumentType
+{
     case Image
     case Pdf
-
 }
 class UploadDocumentVC: UIViewController {
     let  imagePicker =  UIImagePickerController()
     var currentDocumentType : DocumentType = .Image
+    var currentTaskID = "0"
+    var pdfData = Data()
+    var imageArray = [UIImage]()
+
+
+
     @IBOutlet weak var userImageView: UIImageView!
     override func viewDidLoad()
     {
@@ -72,12 +77,13 @@ class UploadDocumentVC: UIViewController {
     }
     @IBAction func uploadBtnAction(_ sender: Any)
     {
+        
         if(currentDocumentType == .Image)
         {
             requestAddImageAPI()
         }else{
            // mySpecialFunction()
-            
+            requestAddPdfAPI()
             
         }
     }
@@ -161,10 +167,14 @@ extension UploadDocumentVC : UIDocumentPickerDelegate{
     @available(iOS 8.0, *)
     public func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL)
     {
+        userImageView.image = UIImage(named: "pdf_file")
+
         let cico = url as URL
-        print("The Url is : /(cico)")
+        print("The Url is : \(cico)")
         //optional, case PDF -> render
         //displayPDFweb.loadRequest(NSURLRequest(url: cico) as URLRequest)
+         pdfData = try! Data.init(contentsOf: cico)
+
  }
     
 }
@@ -176,7 +186,7 @@ extension UploadDocumentVC
         
         let userId = UserDefaults.standard.object(forKey: USER_ID) as! String
         
-        let parmDict = ["user_id" : userId,"task_id" : SharedAppDelegate.currentTaskID,"file_type" : "image","method_name" : ApiUrl.METHOD_ADD_DOCUMENT] as [String : Any]
+        let parmDict = ["user_id" : userId,"task_id" : currentTaskID,"file_type" : "image","method_name" : ApiUrl.METHOD_ADD_DOCUMENT] as [String : Any]
         
         MBProgressHUD.showAdded(to: self.view, animated: true)
         ApiManager.sharedInstance.requestDocumentImageApiServer(parmDict,imageArray, {(data) ->() in
@@ -197,6 +207,32 @@ extension UploadDocumentVC
     }
 }
 
-
+extension UploadDocumentVC
+{
+    func requestAddPdfAPI(){
+        //{"method_name":"add_user_Document","description","user_id":"5","task_id":"1","file_type:"image","file_name":"" }
+        
+        let userId = UserDefaults.standard.object(forKey: USER_ID) as! String
+        
+        let parmDict = ["user_id" : userId,"task_id" : currentTaskID,"file_type" : "pdf","method_name" : ApiUrl.METHOD_ADD_DOCUMENT] as [String : Any]
+        
+        MBProgressHUD.showAdded(to: self.view, animated: true)
+        ApiManager.sharedInstance.requestDocumentPdfApiServer(parmDict,pdfData, {(data) ->() in
+            
+            
+            MBProgressHUD.hide(for: self.view, animated: true)
+        }, {(error)-> () in
+            print("failure \(error)")
+            MBProgressHUD.hide(for: self.view, animated: true)
+            self.view.makeToast(NETWORK_ERROR)
+            
+            
+        },{(progress)-> () in
+            print("progress \(progress)")
+            
+        })
+        
+    }
+}
 
 

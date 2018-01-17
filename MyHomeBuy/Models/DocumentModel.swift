@@ -12,7 +12,7 @@ import Foundation
  
 /* For support, please feel free to contact me at https://www.linkedin.com/in/syedabsar */
 
-public class ImageModel {
+public class DocumentModel {
 	public var created_date : String?
 	public var id : String?
 	public var file_type : String?
@@ -31,12 +31,12 @@ public class ImageModel {
 
     - returns: Array of Data Instances.
 */
-    public class func modelsFromDictionaryArray(array:NSArray) -> [ImageModel]
+    public class func modelsFromDictionaryArray(array:NSArray) -> [DocumentModel]
     {
-        var models:[ImageModel] = []
+        var models:[DocumentModel] = []
         for item in array
         {
-            models.append(ImageModel(dictionary: item as! NSDictionary)!)
+            models.append(DocumentModel(dictionary: item as! NSDictionary)!)
         }
         return models
     }

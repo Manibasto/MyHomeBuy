@@ -12,9 +12,9 @@ import Foundation
  
 /* For support, please feel free to contact me at https://www.linkedin.com/in/syedabsar */
 
-public class ImageBase {
+public class DocumentBase {
 	public var status : Int?
-	public var data : Array<ImageModel>?
+	public var data : Array<DocumentModel>?
 	public var msg : String?
 
 /**
@@ -27,12 +27,12 @@ public class ImageBase {
 
     - returns: Array of Json4Swift_Base Instances.
 */
-    public class func modelsFromDictionaryArray(array:NSArray) -> [ImageBase]
+    public class func modelsFromDictionaryArray(array:NSArray) -> [DocumentBase]
     {
-        var models:[ImageBase] = []
+        var models:[DocumentBase] = []
         for item in array
         {
-            models.append(ImageBase(dictionary: item as! NSDictionary)!)
+            models.append(DocumentBase(dictionary: item as! NSDictionary)!)
         }
         return models
     }
@@ -50,7 +50,7 @@ public class ImageBase {
 	required public init?(dictionary: NSDictionary) {
 
 		status = dictionary["status"] as? Int
-        if (dictionary["data"] != nil) { data = ImageModel.modelsFromDictionaryArray(array: dictionary["data"] as! NSArray) }
+        if (dictionary["data"] != nil) { data = DocumentModel.modelsFromDictionaryArray(array: dictionary["data"] as! NSArray) }
 		msg = dictionary["msg"] as? String
 	}
 

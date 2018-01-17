@@ -41,6 +41,9 @@ class ApiUrl {
     static let METHOD_DETAILS = "user_status_count"
     static let METHOD_GET_DOCUMENT = "get_user_document"
     static let METHOD_ADD_DOCUMENT = "add_user_Document"
+    static let METHOD_DELETE_DOCUMENT = "delete_user_document"
+   // {"id":"3","method_name":"delete_user_document"}
+
 
 
     

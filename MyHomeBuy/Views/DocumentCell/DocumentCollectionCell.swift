@@ -10,4 +10,5 @@ import UIKit
 
 class DocumentCollectionCell: UICollectionViewCell {
     
+    @IBOutlet weak var userImageView: UIImageView!
 }
