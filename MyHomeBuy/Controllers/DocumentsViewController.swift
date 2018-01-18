@@ -10,10 +10,15 @@ import UIKit
 import MBProgressHUD
 import SwiftyJSON
 import SDWebImage
-
+enum ScreenType
+{
+    case ImageScreen
+    case PdfScreen
+}
 class DocumentsViewController: UIViewController {
     
    
+    @IBOutlet weak var waterMarkLabel: UILabel!
     @IBOutlet weak var imageCollectionView: UICollectionView!
     @IBOutlet weak var pdfTableView: UITableView!
 
@@ -23,27 +28,26 @@ class DocumentsViewController: UIViewController {
     @IBOutlet weak var navigationBarView: UIView!
     @IBOutlet weak var headingHeightConstraint: NSLayoutConstraint!
 
-    @IBOutlet weak var imageLineLabel: UILabel!
-    @IBOutlet weak var pdfLineLabel: UILabel!
+   
     @IBOutlet weak var imageBtn: UIButton!
     
     @IBOutlet weak var pdfBtn: UIButton!
     @IBOutlet weak var addPdfBtn: UIButton!
     @IBOutlet var footerView: UIView!
-
+    var currentScreenType : ScreenType = .ImageScreen
     var currentTaskID = "0"
     var dataDict = NSDictionary()
     var fromTask = false
     var imageArray = [DocumentModel]()
     var pdfArray = [DocumentModel]()
     var dataModel = DocumentBase(dictionary: ["" : ""] )
+    var currenttag = -1
 
-
+   
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        pdfLineLabel.isHidden=true
-        imageLineLabel.isHidden=false;
+       
         imageCollectionView.delegate=self
         imageCollectionView.dataSource=self
         pdfTableView.delegate=self
@@ -58,26 +62,54 @@ class DocumentsViewController: UIViewController {
             headingHeightConstraint.constant = 0
             taskDocumentLbl.isHidden = true
         }
-        updateView(show: 1)
-        
+        updateView(type: .ImageScreen)
         // Long Tap gesture
-      //  let lpgr = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
-        
+        addLongPressGesture()
+        waterMarkLabel.isHidden = true
       
     }
-//    func handleLongPress(gestureRecognizer : UILongPressGestureRecognizer){
-//
-//        if (gestureRecognizer.state != UIGestureRecognizerState.ended){
-//            return
-//        }
-//
-//        let p = gestureRecognizer.location(in: self.imageCollectionView)
-//
-//        if let indexPath : NSIndexPath = (self.imageCollectionView?.indexPathForItem(at: p))! as NSIndexPath{
-//            //do whatever you need to do
-//        }
-//
-//    }
+    func showWaterMark(_ type : ScreenType){
+        if(type == .ImageScreen){
+            if(imageArray.count == 0){
+                waterMarkLabel.text = "No images available"
+                waterMarkLabel.isHidden = false
+            }else{
+                waterMarkLabel.isHidden = true
+            }
+        }else{
+            if(pdfArray.count == 0){
+                waterMarkLabel.text = "No PDF available"
+                waterMarkLabel.isHidden = false
+            }else{
+                waterMarkLabel.isHidden = true
+                
+            }
+            
+        }
+       
+        
+    }
+    func addLongPressGesture() {
+        let lpgr = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
+         lpgr.delegate = self
+         lpgr.delaysTouchesBegan = true
+        imageCollectionView.addGestureRecognizer(lpgr)
+        
+    }
+    func handleLongPress(_ gestureRecognizer : UILongPressGestureRecognizer)
+    {
+        if(gestureRecognizer.state != .ended){
+            return
+        }
+        
+        let p  = gestureRecognizer.location(in: imageCollectionView)
+        if  let indexPath = imageCollectionView.indexPathForItem(at: p){
+            
+            currenttag = indexPath.row
+            showAlert("MyHomeBuy", "Do you really want to delete this image?", DocumentType.Image)
+        }
+        
+    }
 
     func setupHeaderData(){
         let image = UIImage.init(named: (dataDict.object(forKey: "image_white") as! String?)!)
@@ -125,23 +157,28 @@ class DocumentsViewController: UIViewController {
     }
     @IBAction func imageButtonAction(_ sender: Any)
     {
+        currentScreenType = .ImageScreen
            imageBtn.setTitleColor(UIColor.white, for: .normal)
            pdfBtn.setTitleColor(UIColor.lightWhite, for: .normal)
-           imageLineLabel.isHidden=false
-           pdfLineLabel.isHidden=true
-           updateView(show: 1)
+        
+           updateView(type: .ImageScreen)
+          showWaterMark(.ImageScreen)
+
    }
    
     @IBAction func pdfButtonAction(_ sender: Any)
     {
+        currentScreenType = .PdfScreen
+
         imageBtn.setTitleColor(UIColor.lightWhite, for: .normal)
         pdfBtn.setTitleColor(UIColor.white, for: .normal)
-        imageLineLabel.isHidden=true
-        pdfLineLabel.isHidden=false
-        updateView(show: 0)
+        
+        updateView(type: .PdfScreen)
+        showWaterMark(.PdfScreen)
+
     }
-    func updateView(show : Int){
-        if(show == 1){
+    func updateView(type : ScreenType){
+        if(type == .ImageScreen){
             pdfTableView.isHidden = true
             imageCollectionView.isHidden = false
 
@@ -151,6 +188,40 @@ class DocumentsViewController: UIViewController {
         }
         
     }
+    func showAlert(_ title : String , _ msg : String , _ type : DocumentType){
+        
+        let alertController = UIAlertController(title: title, message: msg, preferredStyle: UIAlertControllerStyle.alert)
+        
+        let DestructiveAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: "nil"), style: .default) {
+            (result : UIAlertAction) -> Void in
+            print("Destructive")
+        }
+        
+        
+        let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "nil"), style: UIAlertActionStyle.default) {
+            (result : UIAlertAction) -> Void in
+            if(type == .Image){
+                let model = self.imageArray[self.currenttag]
+               // self.deleteDocumentAPI(self.currenttag, model.id!)
+                self.deleteImageAPI(self.currenttag, model.id!)
+                
+            }else{
+                let model = self.pdfArray[self.currenttag]
+                self.deleteDocumentAPI(self.currenttag, model.id!)
+
+            }
+            
+            print("OK")
+            
+        }
+        
+        alertController.addAction(DestructiveAction)
+        alertController.addAction(okAction)
+        self.present(alertController, animated: true, completion: nil)
+        alertController.view.tintColor = UIColor.black
+        
+    }
+    
 }
  
 extension DocumentsViewController
@@ -162,7 +233,7 @@ extension DocumentsViewController
         let parmDict = ["user_id" : userId,"task_id" : currentTaskID,"method_name" : ApiUrl.METHOD_GET_DOCUMENT] as [String : Any]
         
         MBProgressHUD.showAdded(to: self.view, animated: true)
-        ApiManager.sharedInstance.requestApiServer(parmDict, [UIImage](), {(data) ->() in
+        ApiManager.sharedInstance.apiCall(parmDict, [UIImage](), {(data) ->() in
             self.responseWithSuccess(data)
             
             MBProgressHUD.hide(for: self.view, animated: true)
@@ -170,7 +241,7 @@ extension DocumentsViewController
             print("failure \(error)")
             MBProgressHUD.hide(for: self.view, animated: true)
             self.view.makeToast(NETWORK_ERROR)
-            
+            self.showWaterMark(self.currentScreenType)
             
         },{(progress)-> () in
             print("progress \(progress)")
@@ -196,6 +267,7 @@ extension DocumentsViewController
                 }
                 
             }
+            showWaterMark(currentScreenType)
             imageCollectionView.reloadData()
             pdfTableView.reloadData()
         }else
@@ -307,14 +379,17 @@ extension DocumentsViewController : UITableViewDataSource{
         }else{
             cell.backgroundColor = UIColor.white // set your default color
         }
-        
+        if let url = URL(string: model.file_name!){
+        let pathComponenet = url.pathComponents
+        let fileName = pathComponenet.last
+            cell.pdfNameLbl.text = fileName
+        }
         return cell
     }
     func pdfDeleteBtnTapped(_ button : UIButton)
     {
-        let model = pdfArray[button.tag]
-       // deleteDocumentAPI(model.id!)
-        deleteDocumentAPI(button.tag, model.id!)
+        currenttag = button.tag
+  showAlert("MyHomeBuy", "Do you really want to delete this PDF?", DocumentType.Pdf)       // deleteDocumentAPI(button.tag, model.id!)
     }
     
 }
@@ -329,21 +404,35 @@ extension DocumentsViewController : UITableViewDelegate{
 extension DocumentsViewController
 {
     func deleteDocumentAPI(_ tag : Int , _ id : String){
-        // {"user_id":"5","method_name":"get_user_document","task_id":"1"}
+  //  {"id":"3","method_name":"delete_user_document"}
         let userId = UserDefaults.standard.object(forKey: USER_ID) as! String
         
-        let parmDict = ["user_id" : userId,"id" : index,"method_name" : ApiUrl.METHOD_DELETE_DOCUMENT] as [String : Any]
+        let parmDict = ["user_id" : userId,"id" : id,"method_name" : ApiUrl.METHOD_DELETE_DOCUMENT] as [String : Any]
         
         MBProgressHUD.showAdded(to: self.view, animated: true)
-        ApiManager.sharedInstance.requestApiServer(parmDict, [UIImage](), {(data) ->() in
+        ApiManager.sharedInstance.apiCall(parmDict, [UIImage](), {(data) ->() in
             
+            let dictionary = data as! NSDictionary
+            
+            let status = dictionary["status"] as? Int
+            let msg = dictionary["msg"] as? String
+            if(status == 1){
+                self.pdfArray.remove(at: tag)
+                self.pdfTableView.reloadData()
+                self.showWaterMark(self.currentScreenType)
+
+                self.view.makeToast("PDF deleted succesfully")
+            }else{
+                self.view.makeToast(msg!)
+            }
+
+
             MBProgressHUD.hide(for: self.view, animated: true)
         }, {(error)-> () in
             print("failure \(error)")
             MBProgressHUD.hide(for: self.view, animated: true)
             self.view.makeToast(NETWORK_ERROR)
-            self.pdfArray.remove(at: tag)
-            self.pdfTableView.reloadData()
+            
             
         },{(progress)-> () in
             print("progress \(progress)")
@@ -351,4 +440,51 @@ extension DocumentsViewController
         })
         
 }
+    
+}
+extension DocumentsViewController
+{
+    func deleteImageAPI(_ tag : Int , _ id : String){
+        //  {"id":"3","method_name":"delete_user_document"}
+        let userId = UserDefaults.standard.object(forKey: USER_ID) as! String
+        
+        let parmDict = ["user_id" : userId,"id" : id,"method_name" : ApiUrl.METHOD_DELETE_DOCUMENT] as [String : Any]
+        
+        MBProgressHUD.showAdded(to: self.view, animated: true)
+        ApiManager.sharedInstance.apiCall(parmDict, [UIImage](), {(data) ->() in
+           
+            
+            let dictionary = data as! NSDictionary
+            
+            let status = dictionary["status"] as? Int
+            let msg = dictionary["msg"] as? String
+            if(status == 1){
+                self.imageArray.remove(at: tag)
+                self.imageCollectionView.reloadData()
+                self.view.makeToast("Image deleted succesfully")
+                self.showWaterMark(self.currentScreenType)
+
+            }else{
+                self.view.makeToast(msg!)
+            }
+
+            MBProgressHUD.hide(for: self.view, animated: true)
+            
+        }, {(error)-> () in
+            print("failure \(error)")
+            MBProgressHUD.hide(for: self.view, animated: true)
+            self.view.makeToast(NETWORK_ERROR)
+            
+            
+        },{(progress)-> () in
+            print("progress \(progress)")
+            
+        })
+        
+    }
+    
+}
+extension DocumentsViewController : UIGestureRecognizerDelegate
+{
+    
 }

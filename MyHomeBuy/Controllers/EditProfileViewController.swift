@@ -69,6 +69,7 @@ class EditProfileViewController: UIViewController {
         if let userAddress = UserDefaults.standard.object(forKey: USER_ADDRESS){
             addressTextField.text = userAddress as? String
         }
+        
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -137,7 +138,6 @@ class EditProfileViewController: UIViewController {
             navCon.popViewController(animated: true)
         }
     }
-    
     
     @IBAction func saveBtnPressed(_ sender: Any) {
         

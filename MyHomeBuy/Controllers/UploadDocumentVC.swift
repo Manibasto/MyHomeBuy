@@ -24,14 +24,15 @@ class UploadDocumentVC: UIViewController {
     var currentTaskID = "0"
     var pdfData = Data()
     var imageArray = [UIImage]()
-
+    var canUpload = false
 
 
     @IBOutlet weak var userImageView: UIImageView!
+    @IBOutlet weak var fileNameLabel: UILabel!
     override func viewDidLoad()
     {
         super.viewDidLoad()
-
+       fileNameLabel.text = ""
         // Do any additional setup after loading the view.
     }
 
@@ -77,15 +78,29 @@ class UploadDocumentVC: UIViewController {
     }
     @IBAction func uploadBtnAction(_ sender: Any)
     {
+       
         
         if(currentDocumentType == .Image)
         {
+            if(canUpload){
             requestAddImageAPI()
-        }else{
+            }else{
+                showAlert("MyHomeBuy", "Please select a file")
+
+            }
+        }else if (currentDocumentType == .Pdf){
            // mySpecialFunction()
+            if(canUpload){
+
             requestAddPdfAPI()
+
+            }else{
+                showAlert("MyHomeBuy", "Please select a file")
+
+            }
             
         }
+       
     }
      func cameraBtnPressed() {
         let actionSheetController = UIAlertController(title: NSLocalizedString("Capture Photo", comment: "nil"), message: "", preferredStyle: .actionSheet)
@@ -123,7 +138,30 @@ class UploadDocumentVC: UIViewController {
         imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
         present(imagePicker, animated: true, completion: nil)
     }
+    func showAlert(_ title : String , _ msg : String){
+        
+        let alertController = UIAlertController(title: title, message: msg, preferredStyle: UIAlertControllerStyle.alert)
+        
+        let DestructiveAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: "nil"), style: .default) {
+            (result : UIAlertAction) -> Void in
+            print("Destructive")
+        }
+        
+        
+        let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "nil"), style: UIAlertActionStyle.default) {
+            (result : UIAlertAction) -> Void in
+            print("OK")
+        }
+        
+        alertController.addAction(DestructiveAction)
+        alertController.addAction(okAction)
+        self.present(alertController, animated: true, completion: nil)
+        alertController.view.tintColor = UIColor.black
+        
+    }
 }
+
+
 extension UploadDocumentVC : UINavigationControllerDelegate
 {
     
@@ -133,6 +171,7 @@ extension UploadDocumentVC : UIImagePickerControllerDelegate
 {
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        canUpload  = true
        imageArray.removeAll()
         imagePicker.allowsEditing = true
         imagePicker.dismiss(animated: true, completion: nil)
@@ -167,13 +206,18 @@ extension UploadDocumentVC : UIDocumentPickerDelegate{
     @available(iOS 8.0, *)
     public func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL)
     {
-        userImageView.image = UIImage(named: "pdf_file")
+        //userImageView.image = UIImage(named: "pdf_file")
 
         let cico = url as URL
         print("The Url is : \(cico)")
+       let pathComponenet = url.pathComponents
+       let fileName = pathComponenet.last
+        fileNameLabel.text = fileName
+
         //optional, case PDF -> render
         //displayPDFweb.loadRequest(NSURLRequest(url: cico) as URLRequest)
          pdfData = try! Data.init(contentsOf: cico)
+         canUpload = true
 
  }
     
@@ -190,8 +234,17 @@ extension UploadDocumentVC
         
         MBProgressHUD.showAdded(to: self.view, animated: true)
         ApiManager.sharedInstance.requestDocumentImageApiServer(parmDict,imageArray, {(data) ->() in
-         
+            let dictionary = data as! NSDictionary
             
+            let status = dictionary["status"] as? Int
+            let msg = dictionary["msg"] as? String
+            if(status == 1){
+                self.view.makeToast("Add Image Successfully")
+                self.canUpload = false
+            }else{
+                self.view.makeToast(msg!)
+            }
+
             MBProgressHUD.hide(for: self.view, animated: true)
         }, {(error)-> () in
             print("failure \(error)")
@@ -219,7 +272,18 @@ extension UploadDocumentVC
         MBProgressHUD.showAdded(to: self.view, animated: true)
         ApiManager.sharedInstance.requestDocumentPdfApiServer(parmDict,pdfData, {(data) ->() in
             
-            
+            let dictionary = data as! NSDictionary
+            let status = dictionary["status"] as? Int
+            let msg = dictionary["msg"] as? String
+            if(status == 1){
+                self.fileNameLabel.text = ""
+                self.view.makeToast("Add Document Successfully")
+                self.canUpload = false
+            }else{
+                self.view.makeToast(msg!)
+            }
+
+
             MBProgressHUD.hide(for: self.view, animated: true)
         }, {(error)-> () in
             print("failure \(error)")

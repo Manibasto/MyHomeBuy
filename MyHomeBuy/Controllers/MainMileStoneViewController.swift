@@ -29,13 +29,17 @@ class MainMileStoneViewController: UIViewController {
         requestMileStoneAPI()
         //loadWithoutAPI()
     }
-    func loadWithoutAPI(){
+    
+    func loadWithoutAPI()
+    {
     initData()
     mileStoneTableView.delegate = self
     mileStoneTableView.dataSource = self
     mileStoneTableView.reloadData()
     }
-    func initData(){
+    
+    func initData()
+    {
         dataArray.removeAll()
         let data1 = ["image" : "main_budget_icon" , "colorCode" : UIColor.mileStoneColor1 , "text" : "BUDGET"] as [String : Any]
         let data2 = ["image" : "main_start_looking_icon" , "colorCode" : UIColor.mileStoneColor2 , "text" : "LET'S START LOOKING"] as [String : Any]
@@ -44,6 +48,7 @@ class MainMileStoneViewController: UIViewController {
          let data5 = ["image" : "main_contract_icon" , "colorCode" : UIColor.mileStoneColor5 , "text" : "CONTRACT"] as [String : Any]
          let data6 = ["image" : "main_property_settlement_icon" , "colorCode" : UIColor.mileStoneColor6 , "text" : "PROPERTY SETTELMENT"] as [String : Any]
          let data7 = ["image" : "main_moving_icon" , "colorCode" : UIColor.mileStoneColor7 , "text" : "MOVING IN"] as [String : Any]
+        
         dataArray.append(data1)
         dataArray.append(data2)
         dataArray.append(data3)
@@ -58,10 +63,9 @@ class MainMileStoneViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
-    @IBAction func menuBtnPressed(_ sender: Any) {
+    @IBAction func menuBtnPressed(_ sender: Any)
+    {
         frostedViewController.presentMenuViewController()
-
     }
     
     @IBAction func homeBtnPressed(_ sender: Any) {
@@ -75,16 +79,6 @@ class MainMileStoneViewController: UIViewController {
         frostedViewController.contentViewController = navController
     }
     
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
 
 extension MainMileStoneViewController : UITableViewDataSource{
@@ -116,11 +110,12 @@ extension MainMileStoneViewController : UITableViewDataSource{
     }
 }
 extension MainMileStoneViewController : UITableViewDelegate{
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-       
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
+    {
             let mileStoneVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MileStoneViewController") as! MileStoneViewController
             mileStoneVC.currentMileStoneNo = indexPath.row+1
-        if(indexPath.row == 1){
+        if(indexPath.row == 1)
+        {
         let model = dataModel?.data?[indexPath.row]
             let additionalInfoInt = model?.completed
             print("additionalInfoInt \(additionalInfoInt!)")
@@ -157,10 +152,8 @@ extension MainMileStoneViewController{
             print("progress \(progress)")
             
         })
-        
     }
     func responseWithSuccess(_ userData : Any){
-        
          dataModel = Home_Base(dictionary: userData as! NSDictionary)
         if(dataModel?.status == 1){
             currentMileStoneNo = 1
@@ -175,8 +168,8 @@ extension MainMileStoneViewController{
             mileStoneTableView.dataSource = self
             mileStoneTableView.reloadData()
             print("current mileStone  \(currentMileStoneNo)")
-        }else{
-            
+        }else
+        {
             self.view.makeToast("Unable to fetch data")
         }
     }

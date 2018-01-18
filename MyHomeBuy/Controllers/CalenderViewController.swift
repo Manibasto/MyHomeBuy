@@ -35,15 +35,22 @@ class CalenderViewController: UIViewController {
     @IBOutlet weak var descriptionTextView: UITextView!
     @IBOutlet weak var subjectTextField: UITextField!
     
+    @IBOutlet weak var timeTextField: UITextField!
     @IBOutlet weak var midPopup: UIView!
     
     @IBOutlet weak var dateLbl: UILabel!
+    //////////////
+    @IBOutlet var timePickerPopupView: UIView!
+    
+   
+  //  pickerDoneBtnAction
+    @IBOutlet weak var timePickerView: UIDatePicker!
     var calender = FSCalendar()
     var selectedDate = ""
     var selectedDateObject = Date()
     var dateArray = [Date]()
     // header outlets
-    
+    var strTime = ""
     @IBOutlet weak var nextEventView: UIView!
     @IBOutlet var headerView: UIView!
     @IBOutlet weak var nextEventLbl: UILabel!
@@ -120,7 +127,26 @@ class CalenderViewController: UIViewController {
         }
     }
     
-    
+    @IBAction func pickerCancelButtonAction(_ sender: Any)
+    {
+        timePickerPopupView.removeFromSuperview()
+
+    }
+    @IBAction func pickerDoneBtnAction(_ sender: Any)
+    {
+        let dateFormatter = DateFormatter()
+        
+        dateFormatter.dateStyle = DateFormatter.Style.short
+        dateFormatter.timeStyle = DateFormatter.Style.short
+ 
+
+        dateFormatter.dateFormat = "HH:mm"
+         strTime = dateFormatter.string(from: timePickerView.date)
+       // let timeArray =  strDate.components(separatedBy: ", ")
+        timeTextField.text = strTime
+        timePickerPopupView.removeFromSuperview()
+       // dateLabel.text = strDate
+    }
     @IBAction func homeBtnPressed(_ sender: Any) {
         let navController : UINavigationController  = storyboard?.instantiateViewController(withIdentifier: "SlidingNavigationController") as! UINavigationController
         var controller: UIViewController!
@@ -128,7 +154,6 @@ class CalenderViewController: UIViewController {
         controller = storyboard?.instantiateViewController(withIdentifier: "MyHomeViewController") as? MyHomeViewController
         
         navController.viewControllers = [controller]
-        
         frostedViewController.contentViewController = navController
         
     }
@@ -157,9 +182,13 @@ class CalenderViewController: UIViewController {
         midPopup.setRadius(5)
         descriptionTextView.delegate = self
         subjectTextField.applyPadding(padding: 5)
+        timeTextField.applyPadding(padding: 5)
         dateLbl.text = "Event Date - \(stringDate)"
         subjectTextField.text = ""
         descriptionTextView.text = ""
+        timeTextField.text = ""
+        timeTextField.delegate = self
+        
         
     }
     func saveBtnTapped(){
@@ -168,6 +197,10 @@ class CalenderViewController: UIViewController {
             view.makeToast("Please enter subject")
         }else if(descriptionTextView.text.isEmpty){
             view.makeToast("Please enter description")
+            
+        }
+        else if(timeTextField.text?.isEmpty)!{
+            view.makeToast("Please enter time")
             
         }else{
             requestAddEventAPI()
@@ -346,7 +379,7 @@ extension CalenderViewController{
         
         
         let userId = UserDefaults.standard.object(forKey: USER_ID) as! String
-        let parmDict = ["user_id" : userId ,"method_name" : ApiUrl.METHOD_ADD_EVENTS , "task_id" : currentTaskID , "subject" : subjectTextField.text! , "description" : descriptionTextView.text , "date" : selectedDate] as [String : Any]
+        let parmDict = ["user_id" : userId ,"time" : strTime ,"method_name" : ApiUrl.METHOD_ADD_EVENTS , "task_id" : currentTaskID , "subject" : subjectTextField.text! , "description" : descriptionTextView.text , "date" : selectedDate] as [String : Any]
         
         MBProgressHUD.showAdded(to: self.view, animated: true)
         ApiManager.sharedInstance.requestApiServer(parmDict, [UIImage](), {(data) ->() in
@@ -372,7 +405,6 @@ extension CalenderViewController{
             requestGetAllEventsAPI()
             saveEvent()
         }else{
-            
             self.view.makeToast("Unable to  save events")
         }
     }
@@ -393,15 +425,16 @@ extension CalenderViewController : UITableViewDataSource{
         cell.descLbl.text = model?.description
         
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        let dateStr = model?.date
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let dateStr = model?.created_date
         
         if let date = dateFormatter.date(from: dateStr!){
-            dateFormatter.dateFormat = "MMM dd, yyyy"
+            dateFormatter.dateFormat = "MMM dd, yyyy hh:mm a"
+            
             let stringDate =  dateFormatter.string(from: date)
             cell.dateLbl.text = stringDate
         }else{
-            cell.dateLbl.text = model?.date
+            cell.dateLbl.text = model?.created_date
             
         }
 //        if(indexPath.row % 2 != 0){
@@ -420,7 +453,6 @@ extension CalenderViewController : UITableViewDataSource{
         }
         return cell
     }
-    
     
 }
 extension CalenderViewController : UITableViewDelegate{
@@ -457,11 +489,21 @@ extension CalenderViewController : FSCalendarDataSource{
         return 0
     }
     
-    //    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {
-    //        appearance.titleWeekendColor = UIColor.black
-    //        //appearance.title
-    //    return UIColor.green
-    //    }
-    
+}
+
+extension CalenderViewController : UITextFieldDelegate
+{
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        if textField == timeTextField{
+            view.endEditing(true)
+            timePickerPopupView.frame = view.frame
+            view.addSubview(timePickerPopupView)
+        return false
+    }
+        return true
+    }
     
 }
+
+
+

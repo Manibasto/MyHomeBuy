@@ -153,6 +153,7 @@ extension ResourceContactViewController : UITableViewDataSource{
 
         cell.profileView.setRadius(cell.profileView.frame.size.width/2)
       
+        model?.name = model?.name?.trimmingCharacters(in: .whitespacesAndNewlines)
         cell.initialLbl.text = model?.name?.getInitials("").uppercased()
         cell.nameLbl.text = model?.name
         cell.phoneLbl.text = model?.phone_number
@@ -161,7 +162,6 @@ extension ResourceContactViewController : UITableViewDataSource{
         cell.contactAvailableImageView.isHidden = false
         }else{
             cell.contactAvailableImageView.isHidden = true
-
         }
         if(model?.image == ""){
             
@@ -171,7 +171,6 @@ extension ResourceContactViewController : UITableViewDataSource{
                 
             }
         }
-        
         
         return cell
     }

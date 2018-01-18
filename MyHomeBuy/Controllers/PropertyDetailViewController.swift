@@ -34,6 +34,7 @@ class PropertyDetailViewController: UIViewController {
     @IBOutlet weak var contactAgentView: UIView!
     @IBOutlet weak var navigationBarView: UIView!
     @IBOutlet weak var homeDetailView: UIView!
+   
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -168,9 +169,25 @@ class PropertyDetailViewController: UIViewController {
         frostedViewController.contentViewController = navController
     }
     
-    
-    
-    
+    @IBAction func agentNoButtonAction(_ sender: Any)
+    {
+        if let model = model,let contact = model.agent_contact {
+            
+            if let url = URL(string: "tel://\(contact)")  {
+                if UIApplication.shared.canOpenURL(url) {
+                    if #available(iOS 10, *) {
+                        UIApplication.shared.open(url)
+                    } else {
+                        UIApplication.shared.openURL(url)
+                    }
+                }
+                else {
+                    print("Your device doesn't support this feature.")
+                    self.view.makeToast("Your device doesn't support this feature.")
+                }
+            }
+        }
+    }
     
     /*
      // MARK: - Navigation
@@ -181,8 +198,6 @@ class PropertyDetailViewController: UIViewController {
      // Pass the selected object to the new view controller.
      }
      */
-    
-    
     
 }
 

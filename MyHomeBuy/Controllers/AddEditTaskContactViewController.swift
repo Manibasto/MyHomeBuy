@@ -46,6 +46,7 @@ class AddEditTaskContactViewController: UIViewController {
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var phoneTextField: UITextField!
     
+    @IBOutlet weak var phoneNoTextfield: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var addressTextView: UITextView!
     var dataDict = NSDictionary()

@@ -36,7 +36,7 @@ class ResourcesViewController: UIViewController {
     func initData(){
         //let data1 = ["image" : "calculator_res"  , "text" : "MORTAGAGE CALCULATOR"] as [String : Any]
         let data2 = ["image" : "contacts_res"  , "text" : "Contacts"] as [String : Any]
-        let data3 = ["image" : "calendar_res" ,  "text" : "Calender"] as [String : Any]
+        let data3 = ["image" : "calendar_res" ,  "text" : "Calendar"] as [String : Any]
         let data4 = ["image" : "gallery_res"  , "text" : "Gallery"] as [String : Any]
         let data5 = ["image" : "notes_res" , "text" : "Notes"] as [String : Any]
         let data6 = ["image" : "main_documents_icon" , "text" : "Documents"] as [String : Any]

@@ -129,8 +129,8 @@ extension TipsViewController : UITableViewDataSource{
             cell.contentView.backgroundColor = UIColor.lighterGray
             }else{
             cell.contentView.backgroundColor = UIColor.white
-
             }
+       
         return cell
         
         

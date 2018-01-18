@@ -20,7 +20,7 @@ class SettingViewController: UIViewController {
         super.viewDidLoad()
       
         
-        textString = ["","Reset Milestone","My Profile", "Generate Pin"
+        textString = ["","Reset Milestones","My Profile", "Generate Pin"
 ,"Sign out"]
         settingTableView.delegate = self;
         settingTableView.dataSource = self;

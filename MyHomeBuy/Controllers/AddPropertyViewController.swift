@@ -17,8 +17,8 @@ class AddPropertyViewController: UIViewController {
     var currentTextField : UITextField?
     @IBOutlet weak var propertyTableView: UITableView!
     @IBOutlet weak var navigationBarView: UIView!
-    let headingText = ["Price" , "Area/sqft" , "Bedrooms" , "Rest/Bathrooms", "Car parking in Garage" , "Address", "Description" , "Agent Name", "Agent Contact" ]
-    let placeHolderText = ["Enter Price" , "Enter Area/sqft" , "Bedrooms" , "Rest/Bathrooms", "Car parking in Garage" , "Enter Address", "Enter Description" , "Enter Agent Name", "Enter Agent Contact" ]
+    let headingText = ["Price" , "Area/size sqft" , "Bedrooms" , "Rest/Bathrooms", "Car parking in Garage" , "Address", "Description" , "Agent Name", "Agent Contact" ]
+    let placeHolderText = ["Enter Price" , "Enter Area" , "Bedrooms" , "Rest/Bathrooms", "Car parking in Garage" , "Enter Address", "Enter Description" , "Enter Agent Name", "Enter Agent Contact" ]
     let model = AddPropertyModel()
     
     // dropdownpopup

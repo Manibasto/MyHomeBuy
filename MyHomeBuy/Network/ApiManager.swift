@@ -178,7 +178,6 @@ class ApiManager
                     count += 1
                 }
                 
-                
             }
             
             for (key, value) in parmDict {

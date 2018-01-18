@@ -224,8 +224,6 @@ class LoginViewController: UIViewController {
         })
         
     }
-    
-    
 }
 extension LoginViewController : UIGestureRecognizerDelegate{
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {

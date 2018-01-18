@@ -27,10 +27,14 @@ class WalkThroughViewController: UIViewController {
         initData()
         introCollectionView.delegate  = self
         introCollectionView.dataSource = self
+        let dict = dataArray[0] as! NSDictionary
+        headerLbl.text = dict.object(forKey: "header") as! String?
+        footerLbl.text = dict.object(forKey: "footer") as! String?
+        
     }
     func initData(){
-        let data1 = ["header" : "Let's get you start using\nMyHomeBuy" , "footer" : "With tips and tasks to help you during your buying process" , "image" : "slider_1"]
-       let data2 = ["header" : "Keep on track of your buying process journey" , "footer" : "Start with Milestone 1 and follow the steps" , "image" : "slider_2"]
+        let data1 = ["header" : "Let's get you started using\nMyHomeBuy" , "footer" : "With tips and tasks to help you during your buying process" , "image" : "slider_1"]
+       let data2 = ["header" : "Keep on track of your buying process journey" , "footer" : "Start with Milestone 1 and follow the steps" , "image" : "graph_image"]
         let data3 = ["header" : "Personalise your buying process " , "footer" : "Add your own tasks and set reminders" , "image" : "slider_3"]
         let data4 = ["header" : "Store and keep track of your properties" , "footer" : "Setup property profiles, save details and add photos" , "image" : "slider_4"]
         dataArray.append(data1)
@@ -119,11 +123,6 @@ extension WalkThroughViewController : UICollectionViewDataSource{
         return cell
         
     }
-    
-   
-    
-   
-    
 }
 extension WalkThroughViewController : UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
