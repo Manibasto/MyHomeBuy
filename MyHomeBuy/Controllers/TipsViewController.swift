@@ -16,6 +16,7 @@ class TipsViewController: UIViewController {
     @IBOutlet weak var navigationBarView: UIView!
     @IBOutlet weak var tipsTableView: UITableView!
     var currentCategoryId = "-1"
+
     var dataDict = NSDictionary()
     var dataModel = TipsBase(dictionary: ["" : ""] )
     override func viewDidLoad() {

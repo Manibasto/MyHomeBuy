@@ -132,7 +132,16 @@ class DocumentsViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+    @IBAction func homeBtnPressed(_ sender: Any) {
+        let navController : UINavigationController  = storyboard?.instantiateViewController(withIdentifier: "SlidingNavigationController") as! UINavigationController
+        var controller: UIViewController!
+        
+        controller = storyboard?.instantiateViewController(withIdentifier: "MyHomeViewController") as? MyHomeViewController
+        
+        navController.viewControllers = [controller]
+        
+        frostedViewController.contentViewController = navController
+    }
     @IBAction func backBtnPressed(_ sender: Any)
     {
         if let navCon = navigationController

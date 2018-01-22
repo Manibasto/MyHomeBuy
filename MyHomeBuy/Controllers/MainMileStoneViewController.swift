@@ -122,8 +122,7 @@ extension MainMileStoneViewController : UITableViewDelegate{
             mileStoneVC.additionalInfo = "\(additionalInfoInt!)"
         }
             self.navigationController?.pushViewController(mileStoneVC, animated: true)
-      
-        print("selected")
+         print("selected")
     }
 //    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
 //        if(indexPath.row  < currentMileStoneNo ){

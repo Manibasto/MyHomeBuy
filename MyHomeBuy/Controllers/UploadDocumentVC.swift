@@ -49,6 +49,16 @@ class UploadDocumentVC: UIViewController {
         }
         
     }
+    @IBAction func homeBtnPressed(_ sender: Any) {
+        let navController : UINavigationController  = storyboard?.instantiateViewController(withIdentifier: "SlidingNavigationController") as! UINavigationController
+        var controller: UIViewController!
+        
+        controller = storyboard?.instantiateViewController(withIdentifier: "MyHomeViewController") as? MyHomeViewController
+        
+        navController.viewControllers = [controller]
+        
+        frostedViewController.contentViewController = navController
+    }
     func mySpecialFunction(){
         
         let importMenu = UIDocumentMenuViewController(documentTypes: [String(kUTTypePDF)], in: .import)
