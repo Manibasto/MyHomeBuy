@@ -32,14 +32,18 @@ class AddPropertyModel{
 
     }
     
-    func isValidForSubmission()->Bool{
+    func isValidForSubmission()->String{
         for (index , value) in dataArray .enumerated(){
             switch index {
             case 0:
                 price = dataArray[index]
+                if(value == ""){
+                    return "Please enter price"
+                }
                 break
             case 1:
                 area_sqft = dataArray[index]
+                
                 break
             case 2:
                 bedrooms = dataArray[index]
@@ -52,6 +56,9 @@ class AddPropertyModel{
                 break
             case 5:
                 address = dataArray[index]
+                if(value == ""){
+                    return "Please enter address"
+                }
                 break
             case 6:
                 description = dataArray[index]
@@ -65,11 +72,12 @@ class AddPropertyModel{
             default:
                 break
             }
-            if(value == ""){
-            return false
-            }
+            
+//            if(value == ""){
+//            return false
+//            }
         }
-    return true
+    return "OK"
         
     }
     

@@ -195,10 +195,11 @@ class CalenderViewController: UIViewController {
         view.endEditing(true)
         if(subjectTextField.text?.isEmpty)!{
             view.makeToast("Please enter subject")
-        }else if(descriptionTextView.text.isEmpty){
-            view.makeToast("Please enter description")
-            
         }
+//        else if(descriptionTextView.text.isEmpty){
+//            view.makeToast("Please enter description")
+//
+//        }
         else if(timeTextField.text?.isEmpty)!{
             view.makeToast("Please enter time")
             

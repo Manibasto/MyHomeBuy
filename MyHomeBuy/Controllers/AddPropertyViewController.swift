@@ -110,16 +110,16 @@ class AddPropertyViewController: UIViewController {
     
     @IBAction func addPropertyBtnPressed(_ sender: Any) {
         view.endEditing(true)
-        if(model.isValidForSubmission()){
-            if(imageArray.count <= 0){
-                view.makeToast("Please select atleast one image")
-                
-            }else{
+        if(model.isValidForSubmission() == "OK"){
+//            if(imageArray.count <= 0){
+//                view.makeToast("Please select atleast one image")
+//
+//            }else{
                 requestAddPropertyAPI()
                 
-            }
+           // }
         }else{
-            view.makeToast("Please fill all fields")
+            view.makeToast(model.isValidForSubmission())
         }
     }
     

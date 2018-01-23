@@ -357,7 +357,6 @@ extension DocumentsViewController : UICollectionViewDataSource{
     
 }
 
-
 extension DocumentsViewController : UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
@@ -366,6 +365,14 @@ extension DocumentsViewController : UICollectionViewDelegateFlowLayout {
         print("collectionviewheightAndWidth  \(collectionView.frame.size.width)   \(cellSize)")
         return CGSize(width : self.imageCollectionView.frame.size.width/3 , height : self.imageCollectionView.frame.size.width/3)
     }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DocumentViewerViewController") as! DocumentViewerViewController
+        let model = imageArray[indexPath.row]
+        
+        vc.model = model
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
 }
 extension DocumentsViewController : UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -408,6 +415,13 @@ extension DocumentsViewController : UITableViewDelegate{
         return 100
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DocumentViewerViewController") as! DocumentViewerViewController
+        let model = pdfArray[indexPath.row]
+
+        vc.model = model
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
     
 }
 extension DocumentsViewController

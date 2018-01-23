@@ -35,10 +35,8 @@
 		1D186AE41FB9D55D0001299F /* PropertyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D186AE31FB9D55D0001299F /* PropertyViewController.swift */; };
 		1D186AE61FB9D6560001299F /* GetPropertyTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D186AE51FB9D6560001299F /* GetPropertyTableCell.swift */; };
 		1D18FC1E200A1F84006D4254 /* pdfTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D18FC16200A1F80006D4254 /* pdfTableCell.swift */; };
-		1D18FC1F200A1F84006D4254 /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D18FC17200A1F80006D4254 /* ImageViewController.swift */; };
 		1D18FC20200A1F84006D4254 /* DocumentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D18FC18200A1F81006D4254 /* DocumentsViewController.swift */; };
 		1D18FC21200A1F84006D4254 /* ImageDocumentCollectionReusableFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D18FC19200A1F81006D4254 /* ImageDocumentCollectionReusableFooterView.swift */; };
-		1D18FC22200A1F84006D4254 /* PdfViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D18FC1A200A1F82006D4254 /* PdfViewController.swift */; };
 		1D18FC24200A1F84006D4254 /* UploadDocumentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D18FC1C200A1F83006D4254 /* UploadDocumentVC.swift */; };
 		1D18FC25200A1F84006D4254 /* DocumentCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D18FC1D200A1F84006D4254 /* DocumentCollectionCell.swift */; };
 		1D1958A4200736E300662DD5 /* RECommonFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D19589B200736E100662DD5 /* RECommonFunctions.m */; };
@@ -96,6 +94,7 @@
 		1D3F42021FA74A8C00B0F782 /* MileStoneModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D3F42011FA74A8C00B0F782 /* MileStoneModel.swift */; };
 		1D3F42051FA75B2900B0F782 /* TipsBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D3F42031FA75B2900B0F782 /* TipsBase.swift */; };
 		1D3F42061FA75B2900B0F782 /* TipsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D3F42041FA75B2900B0F782 /* TipsModel.swift */; };
+		1D5A40FE2015D855000EBE31 /* DocumentViewerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D5A40FD2015D855000EBE31 /* DocumentViewerViewController.swift */; };
 		1D6177B51FB6D85400C94ADF /* AddPropertyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D6177B41FB6D85400C94ADF /* AddPropertyModel.swift */; };
 		1D6177B71FB715E100C94ADF /* AddPropertyCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D6177B61FB715E100C94ADF /* AddPropertyCollectionCell.swift */; };
 		1DCD4C1B1F84C315003C7380 /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DCD4C191F84C315003C7380 /* ApiManager.swift */; };
@@ -180,10 +179,8 @@
 		1D186AE31FB9D55D0001299F /* PropertyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PropertyViewController.swift; sourceTree = "<group>"; };
 		1D186AE51FB9D6560001299F /* GetPropertyTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetPropertyTableCell.swift; sourceTree = "<group>"; };
 		1D18FC16200A1F80006D4254 /* pdfTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = pdfTableCell.swift; sourceTree = "<group>"; };
-		1D18FC17200A1F80006D4254 /* ImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
 		1D18FC18200A1F81006D4254 /* DocumentsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentsViewController.swift; sourceTree = "<group>"; };
 		1D18FC19200A1F81006D4254 /* ImageDocumentCollectionReusableFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageDocumentCollectionReusableFooterView.swift; sourceTree = "<group>"; };
-		1D18FC1A200A1F82006D4254 /* PdfViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PdfViewController.swift; sourceTree = "<group>"; };
 		1D18FC1C200A1F83006D4254 /* UploadDocumentVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadDocumentVC.swift; sourceTree = "<group>"; };
 		1D18FC1D200A1F84006D4254 /* DocumentCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentCollectionCell.swift; sourceTree = "<group>"; };
 		1D195898200736E000662DD5 /* RECommonFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RECommonFunctions.h; sourceTree = "<group>"; };
@@ -253,6 +250,7 @@
 		1D3F42011FA74A8C00B0F782 /* MileStoneModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MileStoneModel.swift; sourceTree = "<group>"; };
 		1D3F42031FA75B2900B0F782 /* TipsBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TipsBase.swift; sourceTree = "<group>"; };
 		1D3F42041FA75B2900B0F782 /* TipsModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TipsModel.swift; sourceTree = "<group>"; };
+		1D5A40FD2015D855000EBE31 /* DocumentViewerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentViewerViewController.swift; sourceTree = "<group>"; };
 		1D6177B41FB6D85400C94ADF /* AddPropertyModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddPropertyModel.swift; sourceTree = "<group>"; };
 		1D6177B61FB715E100C94ADF /* AddPropertyCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddPropertyCollectionCell.swift; sourceTree = "<group>"; };
 		1DCD4C191F84C315003C7380 /* ApiManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiManager.swift; sourceTree = "<group>"; };
@@ -405,8 +403,6 @@
 			isa = PBXGroup;
 			children = (
 				1D18FC18200A1F81006D4254 /* DocumentsViewController.swift */,
-				1D18FC17200A1F80006D4254 /* ImageViewController.swift */,
-				1D18FC1A200A1F82006D4254 /* PdfViewController.swift */,
 				1D18FC1C200A1F83006D4254 /* UploadDocumentVC.swift */,
 				1D07256D1F84B7A800710790 /* LoginViewController.swift */,
 				1DCD4C3C1F84E44B003C7380 /* SignupViewController.swift */,
@@ -441,6 +437,7 @@
 				1D186AE31FB9D55D0001299F /* PropertyViewController.swift */,
 				1D186AD91FB9A89A0001299F /* PropertyDetailViewController.swift */,
 				1D02DDA51FC54AD8005E2990 /* WebViewVC.swift */,
+				1D5A40FD2015D855000EBE31 /* DocumentViewerViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -806,7 +803,6 @@
 				1DE91E151F8659CD00E24F3A /* AddPropertyViewController.swift in Sources */,
 				1D1958E020073D6D00662DD5 /* UIView+Appended.swift in Sources */,
 				1DE91E031F86328200E24F3A /* SlidingRootViewController.swift in Sources */,
-				1D18FC1F200A1F84006D4254 /* ImageViewController.swift in Sources */,
 				1DDA19851F8755F00062A35A /* UserModel.swift in Sources */,
 				1D1B40641FA9B9A2004C4AFE /* TaskBase.swift in Sources */,
 				1DFB01F51FA1CF1400B51E23 /* MileStoneSelectionTableCell.swift in Sources */,
@@ -847,6 +843,7 @@
 				1D3AE8651FB1B9EC00281984 /* SearchViewController.swift in Sources */,
 				1D2213201FB075C100CA3B1B /* AddContactBase.swift in Sources */,
 				1D186ADA1FB9A89A0001299F /* PropertyDetailViewController.swift in Sources */,
+				1D5A40FE2015D855000EBE31 /* DocumentViewerViewController.swift in Sources */,
 				1D3F42061FA75B2900B0F782 /* TipsModel.swift in Sources */,
 				1DF70C1C1FB58EE000908285 /* NotesModel.swift in Sources */,
 				1DE91E0F1F864F4900E24F3A /* ChangePinViewController.swift in Sources */,
@@ -894,7 +891,6 @@
 				1D186AE21FB9CE680001299F /* GetPropertyDetailModel.swift in Sources */,
 				1DF3188B1FB47DE7007BD9FF /* EditNotesViewController.swift in Sources */,
 				1DE91E071F86342600E24F3A /* SideMenuViewController.swift in Sources */,
-				1D18FC22200A1F84006D4254 /* PdfViewController.swift in Sources */,
 				1D18FC20200A1F84006D4254 /* DocumentsViewController.swift in Sources */,
 				1D18FC21200A1F84006D4254 /* ImageDocumentCollectionReusableFooterView.swift in Sources */,
 				1DFB01F31FA1CEF100B51E23 /* MileStoneDropDownTableCell.swift in Sources */,

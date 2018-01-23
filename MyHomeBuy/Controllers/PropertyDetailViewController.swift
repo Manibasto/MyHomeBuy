@@ -124,6 +124,9 @@ class PropertyDetailViewController: UIViewController {
                     leftBtn.isHidden = true
                 }
             }
+        }else{
+            rightBtn.isHidden = true
+            leftBtn.isHidden = true
         }
         
         // let model = dataModel?.data?[0]
@@ -171,20 +174,25 @@ class PropertyDetailViewController: UIViewController {
     
     @IBAction func agentNoButtonAction(_ sender: Any)
     {
-        if let model = model,let contact = model.agent_contact {
+        if let contact = model?.agent_contact {
             
             if let url = URL(string: "tel://\(contact)")  {
-                if UIApplication.shared.canOpenURL(url) {
-                    if #available(iOS 10, *) {
-                        UIApplication.shared.open(url)
-                    } else {
-                        UIApplication.shared.openURL(url)
+                if(contact == ""){
+                    view.makeToast("No contact available")
+                }else{
+                    if UIApplication.shared.canOpenURL(url) {
+                        if #available(iOS 10, *) {
+                            UIApplication.shared.open(url)
+                        } else {
+                            UIApplication.shared.openURL(url)
+                        }
+                    }
+                    else {
+                        print("Your device doesn't support this feature.")
+                        self.view.makeToast("Your device doesn't support this feature.")
                     }
                 }
-                else {
-                    print("Your device doesn't support this feature.")
-                    self.view.makeToast("Your device doesn't support this feature.")
-                }
+             
             }
         }
     }
