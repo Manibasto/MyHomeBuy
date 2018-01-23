@@ -41,7 +41,8 @@ class CalenderViewController: UIViewController {
     @IBOutlet weak var dateLbl: UILabel!
     //////////////
     @IBOutlet var timePickerPopupView: UIView!
-    
+    var dateFormatter = DateFormatter()
+    var currentDateStr = ""
    
   //  pickerDoneBtnAction
     @IBOutlet weak var timePickerView: UIDatePicker!
@@ -70,7 +71,10 @@ class CalenderViewController: UIViewController {
             headingHeightConstraint.constant = 0
             
         }
-        
+        dateFormatter.locale = Locale.current
+        dateFormatter.timeZone = TimeZone.current
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        currentDateStr =  dateFormatter.string(from: Date())
         createCalenderView()
         requestGetAllEventsAPI()
     }
@@ -424,12 +428,11 @@ extension CalenderViewController : UITableViewDataSource{
         let model = dataModel?.data?[indexPath.row]
         cell.nameLbl.text = model?.subject
         cell.descLbl.text = model?.description
-        
+        let fullDateStr  = "\((model?.date)!) \((model?.time)!)"
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        let dateStr = model?.created_date
         
-        if let date = dateFormatter.date(from: dateStr!){
+        if let date = dateFormatter.date(from: fullDateStr){
             dateFormatter.dateFormat = "MMM dd, yyyy hh:mm a"
             
             let stringDate =  dateFormatter.string(from: date)
@@ -472,14 +475,76 @@ extension CalenderViewController : FSCalendarDelegate{
     }
     
     func calendar(_ calendar: FSCalendar, shouldSelect date: Date, at monthPosition: FSCalendarMonthPosition) -> Bool {
-        let currentDate = Date()
-        if(currentDate <= date){
+
+        
+        if (!isDateGreaterOrEquals(date)) {
+                    view.makeToast("Please create an event for upcoming or current date")
+                    return false
+        }else{
             return true
-            
         }
-        view.makeToast("Please create an event for upcoming or current date")
-        return false
+            //    NSLog(@"You have selected older date");
+            //    return NO;
+            //    }
+        
+//        let currentDate = Date()
+//        if(currentDate <= date){
+//            return true
+//
+//        }
+//        view.makeToast("Please create an event for upcoming or current date")
+//        return false
     }
+    
+//    func currentDate()->String{
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.locale = Locale.current
+//        dateFormatter.timeZone = TimeZone.current
+//        dateFormatter.dateFormat = "yyyy-MM-dd"
+//        return dateFormatter.string(from: Date())
+//
+//
+//    }
+    func isDateGreaterOrEquals(_ date : Date)->Bool{
+       let selectedDateStr = dateFormatter.string(from: date)
+        if(selectedDateStr.compare(currentDateStr) == .orderedAscending){
+            return false
+        }else{
+            return true
+        }
+    }
+//    - (BOOL)calendar:(FSCalendar )calendar shouldSelectDate:(NSDate )date atMonthPosition:(FSCalendarMonthPosition)monthPosition{
+//
+//    if (![self isDateGreaterOrEquals:date]) {
+//    NSLog(@"You have selected older date");
+//    return NO;
+//    }
+//
+//
+//    NSString *dateString = [dateFormatter stringFromDate:date];
+//
+//    // if date selected is in selectedArray from server
+//    if ([selectedDateOutfit containsObject:dateString]) {
+//    NSLog(@"Already selected date");
+//    [[TWMessageBarManager sharedInstance] showMessageWithTitle:kStringMessageBarInfoTitle description:@"Outfit already assigned on this date."
+//    type:TWMessageBarMessageTypeInfo
+//    duration:1.6f
+//    statusBarHidden:YES
+//    callback:nil];
+//    return NO;
+//    }
+//    return YES;
+//    }
+    
+    
+//    -(BOOL)isDateGreaterOrEquals: (NSDate*)date {
+//    NSString *dateString = [dateFormatter stringFromDate:date];
+//    if (([dateString compare:currentDate]) == NSOrderedAscending) {
+//    return NO;
+//    } else {
+//    return YES;
+//    }
+//    }
 }
 
 extension CalenderViewController : FSCalendarDataSource{

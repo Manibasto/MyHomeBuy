@@ -109,7 +109,7 @@ class TaskViewController: UIViewController {
             taskTableView.rowHeight = UITableViewAutomaticDimension
             taskTableView.reloadData()
             if(showTaskList){
-                self.addFooterView()
+                //self.addFooterView()
             }
           
         }else{
@@ -126,7 +126,12 @@ class TaskViewController: UIViewController {
        checkListBtn.setTitleColor(color, for: .normal)
     }
     
-    
+    func checkListButtonAction(_ button : UIButton){
+        
+        switchToTaskListVC(button)
+
+        
+    }
     @IBAction func checkListBtnPressed(_ sender: Any) {
       
         switchToTaskListVC(sender as! UIButton)
@@ -134,7 +139,7 @@ class TaskViewController: UIViewController {
     }
     
     func switchToTaskListVC(_ button : UIButton){
-        let model = dataModel?.data?[button.tag]
+        let model = dataModel?.data?[0]
         let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "TaskCheckListViewController") as! TaskCheckListViewController
         vc.currentCategoryId = (model?.milestone_cat_id)!
         vc.dataDict = dataDict
@@ -180,45 +185,50 @@ extension TaskViewController : UITableViewDataSource{
         
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let model = dataModel?.data?[indexPath.row]
-        let color = dataDict.object(forKey: "colorCode") as! UIColor?
-        if(model?.calculation == "1"){
-            
-            let cell = tableView.dequeueReusableCell(withIdentifier: "TaskCalculationTableCell", for: indexPath) as! TaskCalculationTableCell;
-            cell.taskLbl.text = model?.name
-            if(model?.status == "0"){
-                cell.mileStoneStatusBtn.setTitleColor(UIColor.black, for: .normal)
-             cell.mileStoneStatusBtn.setTitle("Milestone task is incomplete" , for: .normal)
-                cell.mileStoneStatusBtn.setImage(UIImage.init(named: ""), for: .normal)
-                cell.taskCompleteBtn.setTitle("Mark as Task Complete", for: .normal)
-                setupCellDataForUndone(indexPath, cell, model!)
+        if(currentCategoryId == "3" || currentCategoryId == "5"){
+            let model = dataModel?.data?[indexPath.row]
+            let color = dataDict.object(forKey: "colorCode") as! UIColor?
 
+            if(indexPath.row != (dataModel?.data?.count)!-1){
+                let cell = tableView.dequeueReusableCell(withIdentifier: "TaskTableCell", for: indexPath) as! TaskTableCell;
+                underlineText(of: cell, for: indexPath)
+                //cell.taskLbl.text = model?.name
+                if(model?.status == "0"){
+                    cell.mileStoneStatusBtn.setTitleColor(UIColor.black, for: .normal)
+                    cell.mileStoneStatusBtn.setTitle("Milestone task is incomplete" , for: .normal)
+                    cell.mileStoneStatusBtn.setImage(UIImage.init(named: ""), for: .normal)
+                    cell.taskCompleteBtn.setTitle("Mark as Task Complete", for: .normal)
+                    
+                }else{
+                    cell.mileStoneStatusBtn.setTitleColor(color
+                        , for: .normal)
+                    cell.mileStoneStatusBtn.setTitle("  Milestone Task Done" , for: .normal)
+                    let image = UIImage.init(named: (dataDict.object(forKey: "complete") as! String?)!)
+                    cell.mileStoneStatusBtn.setImage(image, for: .normal)
+                    cell.taskCompleteBtn.setTitle("Undo Task Complete", for: .normal)
+                }
+                cell.taskCompleteBtn.tag = indexPath.row
+                cell.taskCompleteBtn.addTarget(self, action: #selector(taskCompletedBtnPapped(_:)), for: .touchUpInside)
+                //             cell.taskCompleteBtn.backgroundColor = color
+                //             cell.taskCompleteBtn.setRadius(10)
+                cell.taskCompleteBtn.setRadius(10, color!, 2)
+                cell.taskCompleteBtn.setTitleColor(color, for: .normal)
+                for btn in cell.btnArray {
+                    btn.addTarget(self, action: #selector(btnTapped(_:)), for: .touchUpInside)
+                }
+                changeBackgoundColor(of: cell, with: indexPath)
+
+//                if(indexPath.row % 2 == 0){
+//                    cell.contentView.backgroundColor = UIColor.lighterGray
+//                }else{
+//                    cell.contentView.backgroundColor = UIColor.white
+//
+//                }
+                return cell
             }else{
-                cell.mileStoneStatusBtn.setTitleColor(color
-                    , for: .normal)
-             cell.mileStoneStatusBtn.setTitle("  Milestone Task Done" , for: .normal)
-                let image = UIImage.init(named: (dataDict.object(forKey: "complete") as! String?)!)
-                cell.mileStoneStatusBtn.setImage(image, for: .normal)
-                 cell.taskCompleteBtn.setTitle("Undo Task Complete", for: .normal)
-                setupCellDataForDone(indexPath, cell, model!)
-            }
-           
-            cell.taskCompleteBtn.tag = indexPath.row
-            cell.taskCompleteBtn.addTarget(self, action: #selector(taskCompletedBtnPapped(_:)), for: .touchUpInside)
-            //cell.taskCompleteBtn.backgroundColor = color
-            //cell.taskCompleteBtn.setRadius(10)
-            cell.taskCompleteBtn.setRadius(10, color!, 2)
-            cell.taskCompleteBtn.setTitleColor(color, for: .normal)
-            cell.resultView.setRadius(5)
-                        for btn in cell.btnArray {
-                btn.addTarget(self, action: #selector(btnTapped(_:)), for: .touchUpInside)
-            }
-                cell.contentView.backgroundColor = UIColor.lighterGray
-            
-            return cell
-        }else{
-        let cell = tableView.dequeueReusableCell(withIdentifier: "TaskTableCell", for: indexPath) as! TaskTableCell;
-        cell.taskLbl.text = model?.name
+            //let color = dataDict.object(forKey: "colorCode") as! UIColor?
+            let cell = tableView.dequeueReusableCell(withIdentifier: "TaskSuggestionListTableCell", for: indexPath) as! TaskSuggestionListTableCell;
+            cell.taskLbl.text = model?.name
             if(model?.status == "0"){
                 cell.mileStoneStatusBtn.setTitleColor(UIColor.black, for: .normal)
                 cell.mileStoneStatusBtn.setTitle("Milestone task is incomplete" , for: .normal)
@@ -235,22 +245,128 @@ extension TaskViewController : UITableViewDataSource{
             }
             cell.taskCompleteBtn.tag = indexPath.row
             cell.taskCompleteBtn.addTarget(self, action: #selector(taskCompletedBtnPapped(_:)), for: .touchUpInside)
-//             cell.taskCompleteBtn.backgroundColor = color
-//             cell.taskCompleteBtn.setRadius(10)
+            //             cell.taskCompleteBtn.backgroundColor = color
+            //             cell.taskCompleteBtn.setRadius(10)
             cell.taskCompleteBtn.setRadius(10, color!, 2)
             cell.taskCompleteBtn.setTitleColor(color, for: .normal)
             for btn in cell.btnArray {
                 btn.addTarget(self, action: #selector(btnTapped(_:)), for: .touchUpInside)
             }
-            if(indexPath.row % 2 == 0){
-                cell.contentView.backgroundColor = UIColor.lighterGray
-            }else{
-                cell.contentView.backgroundColor = UIColor.white
-                
+                changeBackgoundColor(of: cell, with: indexPath)
+
+//            if(indexPath.row % 2 == 0){
+//                cell.contentView.backgroundColor = UIColor.lighterGray
+//            }else{
+//                cell.contentView.backgroundColor = UIColor.white
+//
+//            }
+                cell.suggestionCheckListButton.setRadius(10, color!, 2)
+                cell.suggestionCheckListButton.setTitleColor(color, for: .normal)
+           cell.suggestionCheckListButton.addTarget(self, action: #selector(checkListButtonAction(_:)), for: .touchUpInside)
+                return cell
             }
-        return cell
+        }else{
+            
+            let model = dataModel?.data?[indexPath.row]
+            let color = dataDict.object(forKey: "colorCode") as! UIColor?
+            if(model?.calculation == "1"){
+                
+                let cell = tableView.dequeueReusableCell(withIdentifier: "TaskCalculationTableCell", for: indexPath) as! TaskCalculationTableCell;
+                cell.taskLbl.text = model?.name
+                if(model?.status == "0"){
+                    cell.mileStoneStatusBtn.setTitleColor(UIColor.black, for: .normal)
+                    cell.mileStoneStatusBtn.setTitle("Milestone task is incomplete" , for: .normal)
+                    cell.mileStoneStatusBtn.setImage(UIImage.init(named: ""), for: .normal)
+                    cell.taskCompleteBtn.setTitle("Mark as Task Complete", for: .normal)
+                    setupCellDataForUndone(indexPath, cell, model!)
+                    
+                }else{
+                    cell.mileStoneStatusBtn.setTitleColor(color
+                        , for: .normal)
+                    cell.mileStoneStatusBtn.setTitle("  Milestone Task Done" , for: .normal)
+                    let image = UIImage.init(named: (dataDict.object(forKey: "complete") as! String?)!)
+                    cell.mileStoneStatusBtn.setImage(image, for: .normal)
+                    cell.taskCompleteBtn.setTitle("Undo Task Complete", for: .normal)
+                    setupCellDataForDone(indexPath, cell, model!)
+                }
+                
+                cell.taskCompleteBtn.tag = indexPath.row
+                cell.taskCompleteBtn.addTarget(self, action: #selector(taskCompletedBtnPapped(_:)), for: .touchUpInside)
+                //cell.taskCompleteBtn.backgroundColor = color
+                //cell.taskCompleteBtn.setRadius(10)
+                cell.taskCompleteBtn.setRadius(10, color!, 2)
+                cell.taskCompleteBtn.setTitleColor(color, for: .normal)
+                cell.resultView.setRadius(5)
+                for btn in cell.btnArray {
+                    btn.addTarget(self, action: #selector(btnTapped(_:)), for: .touchUpInside)
+                }
+               // cell.contentView.backgroundColor = UIColor.lighterGray
+                changeBackgoundColor(of: cell, with: indexPath)
+
+                return cell
+            }else{
+                let cell = tableView.dequeueReusableCell(withIdentifier: "TaskTableCell", for: indexPath) as! TaskTableCell;
+                underlineText(of: cell, for: indexPath)
+                //cell.taskLbl.text = model?.name
+                if(model?.status == "0"){
+                    cell.mileStoneStatusBtn.setTitleColor(UIColor.black, for: .normal)
+                    cell.mileStoneStatusBtn.setTitle("Milestone task is incomplete" , for: .normal)
+                    cell.mileStoneStatusBtn.setImage(UIImage.init(named: ""), for: .normal)
+                    cell.taskCompleteBtn.setTitle("Mark as Task Complete", for: .normal)
+                    
+                }else{
+                    cell.mileStoneStatusBtn.setTitleColor(color
+                        , for: .normal)
+                    cell.mileStoneStatusBtn.setTitle("  Milestone Task Done" , for: .normal)
+                    let image = UIImage.init(named: (dataDict.object(forKey: "complete") as! String?)!)
+                    cell.mileStoneStatusBtn.setImage(image, for: .normal)
+                    cell.taskCompleteBtn.setTitle("Undo Task Complete", for: .normal)
+                }
+                cell.taskCompleteBtn.tag = indexPath.row
+                cell.taskCompleteBtn.addTarget(self, action: #selector(taskCompletedBtnPapped(_:)), for: .touchUpInside)
+                //             cell.taskCompleteBtn.backgroundColor = color
+                //             cell.taskCompleteBtn.setRadius(10)
+                cell.taskCompleteBtn.setRadius(10, color!, 2)
+                cell.taskCompleteBtn.setTitleColor(color, for: .normal)
+                for btn in cell.btnArray {
+                    btn.addTarget(self, action: #selector(btnTapped(_:)), for: .touchUpInside)
+                }
+                changeBackgoundColor(of: cell, with: indexPath)
+//                if(indexPath.row % 2 == 0){
+//                    cell.contentView.backgroundColor = UIColor.lighterGray
+//                }else{
+//                    cell.contentView.backgroundColor = UIColor.white
+//
+//                }
+                return cell
+            }
         }
         
+        
+    }
+    func underlineText(of cell : TaskTableCell , for indexPath : IndexPath){
+        let model = dataModel?.data?[indexPath.row]
+        if(model?.milestone_cat_id == "12" && indexPath.row == 1){
+            let attributedString = NSAttributedString(string: (model?.name)!)
+            let textRange = NSMakeRange(0, 6)
+            let underlinedMessage = NSMutableAttributedString(attributedString: attributedString)
+            underlinedMessage.addAttribute(NSUnderlineStyleAttributeName, value: NSUnderlineStyle.styleSingle.rawValue,
+                                           range: textRange)
+            cell.taskLbl.attributedText = underlinedMessage
+            //cell.taskLbl.attributedText = NSAttributedString.init(string: (model?.name)!)
+            
+        }else{
+            cell.taskLbl.attributedText = NSAttributedString.init(string: (model?.name)!)
+        }
+        
+    }
+    func changeBackgoundColor(of cell : UITableViewCell , with indexPath : IndexPath){
+        if(indexPath.row % 2 == 0){
+            cell.contentView.backgroundColor = UIColor.lighterGray
+        }else{
+            cell.contentView.backgroundColor = UIColor.white
+            
+        }
     }
     func setupCellDataForDone(_ indexPath : IndexPath , _ cell : TaskCalculationTableCell , _ model : TaskData){
         cell.resultLbl.text = "My maximum purchase price\nTotal\n$ 0.0"

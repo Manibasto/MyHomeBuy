@@ -70,14 +70,14 @@ class DocumentsViewController: UIViewController {
     }
     func showWaterMark(_ type : ScreenType){
         if(type == .ImageScreen){
-            if(imageArray.count == 0){
+            if(imageArray.isEmpty){
                 waterMarkLabel.text = "No images available"
                 waterMarkLabel.isHidden = false
             }else{
                 waterMarkLabel.isHidden = true
             }
         }else{
-            if(pdfArray.count == 0){
+            if(pdfArray.isEmpty){
                 waterMarkLabel.text = "No PDF available"
                 waterMarkLabel.isHidden = false
             }else{
@@ -276,6 +276,16 @@ extension DocumentsViewController
                 }
                 
             }
+//            if(currentScreenType == ScreenType.PdfScreen){
+//                if(pdfArray.isEmpty){
+//                showWaterMark(currentScreenType)
+//                }
+//
+//            }else{
+//                if(imageArray.isEmpty){
+//                showWaterMark(currentScreenType)
+//                }
+//            }
             showWaterMark(currentScreenType)
             imageCollectionView.reloadData()
             pdfTableView.reloadData()

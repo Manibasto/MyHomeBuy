@@ -57,9 +57,10 @@ class TaskCheckListViewController: UIViewController {
     }
     
     @IBAction func backBtnPressed(_ sender: Any) {
-        if let navCon = navigationController{
-            navCon.popViewController(animated: true)
-        }
+//        if let navCon = navigationController{
+//            navCon.popViewController(animated: true)
+//        }
+        requestSubmitCheckListAPI()
     }
 
     @IBAction func homeBtnPressed(_ sender: Any) {
@@ -78,10 +79,10 @@ class TaskCheckListViewController: UIViewController {
     }
 
     func requestSubmitCheckListAPI(){
-        if(!isEditable && !isReallyEditable){
-            view.makeToast("Can't Edit")
-            return
-        }
+//        if(!isEditable && !isReallyEditable){
+//            view.makeToast("Can't Edit")
+//            return
+//        }
         var dataAvailableForSubmit = false
         var userDataArray = Array<Dictionary<String,Any>>()
         for model in (dataModel?.data)! {
@@ -92,18 +93,22 @@ class TaskCheckListViewController: UIViewController {
             }
         }
         if(!dataAvailableForSubmit){
-        view.makeToast("No data to save")
-            return
+            
+            //view.makeToast("No data to save")
+//            if let navCon = navigationController{
+//                navCon.popViewController(animated: true)
+//            }
+//            return
         }
         let userId = UserDefaults.standard.object(forKey: USER_ID) as! String
         let parmDict = ["user_id" : userId ,"method_name" : ApiUrl.METHOD_SUBMIT_CHECK_LIST , "milestone_cat_id" : currentCategoryId , "userdata" : userDataArray] as [String : Any]
         
-        MBProgressHUD.showAdded(to: self.view, animated: true)
+        //MBProgressHUD.showAdded(to: self.view, animated: true)
         
         ApiManager.sharedInstance.connectToServer(parmDict, {(data) ->() in
           self.responseWithSubmitCheckListSuccess(data)
             
-            MBProgressHUD.hide(for: self.view, animated: true)
+           // MBProgressHUD.hide(for: self.view, animated: true)
             
             
         },
@@ -113,7 +118,8 @@ class TaskCheckListViewController: UIViewController {
                                                     print("failure \(error)")
                                                     self.view.makeToast(NETWORK_ERROR)
                                                     
-                                                    MBProgressHUD.hide(for: self.view, animated: true)
+                                                    //MBProgressHUD.hide(for: self.view, animated: true)
+                                                    self.switchViewController()
                                                     
         })
         
@@ -131,7 +137,7 @@ class TaskCheckListViewController: UIViewController {
             SharedAppDelegate.window?.makeToast("Submitted successfully")
 
         }else{
-            
+            switchViewController()
         }
         
     }
@@ -188,7 +194,7 @@ class TaskCheckListViewController: UIViewController {
                     break
                 }
             }
-            addFooterView()
+           // addFooterView()
         }else{
             
             view.makeToast("Unable to fetch data")

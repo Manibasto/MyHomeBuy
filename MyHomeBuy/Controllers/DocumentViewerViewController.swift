@@ -25,6 +25,7 @@ class DocumentViewerViewController: UIViewController {
             documentImageView.sd_setImage(with: URL(string:fileName!))
 
         }else{
+            
             documentImageView.isHidden = true
             documentWebView.delegate = self
             let fileName = model?.file_name
@@ -70,7 +71,9 @@ extension DocumentViewerViewController : UIWebViewDelegate{
     }
     func webViewDidFinishLoad(_ webView: UIWebView) {
         MBProgressHUD.hide(for: self.view, animated: true)
-        
+        webView.scrollView.minimumZoomScale = 1.0
+        webView.scrollView.maximumZoomScale = 5.0
+       // webView.stringByEvaluatingJavaScript(from: "document.querySelector('meta[name=viewport]').setAttribute('content', 'user-scalable = 1;', false); ")
         
     }
     func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {

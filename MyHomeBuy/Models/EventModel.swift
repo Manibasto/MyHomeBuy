@@ -19,6 +19,8 @@ public class EventModel {
 	public var subject : String?
 	public var user_id : String?
 	public var date : String?
+    public var time : String?
+
 	public var description : String?
 
 /**
@@ -60,6 +62,8 @@ public class EventModel {
 		user_id = dictionary["user_id"] as? String
 		date = dictionary["date"] as? String
 		description = dictionary["description"] as? String
+        time = dictionary["time"] as? String
+
 	}
 
 		
@@ -79,6 +83,8 @@ public class EventModel {
 		dictionary.setValue(self.user_id, forKey: "user_id")
 		dictionary.setValue(self.date, forKey: "date")
 		dictionary.setValue(self.description, forKey: "description")
+        dictionary.setValue(self.time, forKey: "time")
+
 
 		return dictionary
 	}

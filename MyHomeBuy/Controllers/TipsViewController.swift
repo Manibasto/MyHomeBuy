@@ -16,7 +16,7 @@ class TipsViewController: UIViewController {
     @IBOutlet weak var navigationBarView: UIView!
     @IBOutlet weak var tipsTableView: UITableView!
     var currentCategoryId = "-1"
-
+    //let categoryIds = [""]
     var dataDict = NSDictionary()
     var dataModel = TipsBase(dictionary: ["" : ""] )
     override func viewDidLoad() {
@@ -125,6 +125,17 @@ extension TipsViewController : UITableViewDataSource{
         let str = dataModel?.data?.name
         let strArray = str?.components(separatedBy: "\n")
         let cell = tableView.dequeueReusableCell(withIdentifier: "TipsTableCell", for: indexPath) as! TipsTableCell;
+        if(currentCategoryId == "3" || currentCategoryId == "4" || currentCategoryId == "6"){
+            if(indexPath.row == 0){
+           let customFont = UIFont.init(name: "AvenirNextLTPro-Bold", size: 17)
+            cell.detailLbl.font = customFont
+            }else{
+                let customFont = UIFont.init(name: "AvenirNextLTPro-Regular", size: 17)
+                cell.detailLbl.font = customFont
+            }
+            
+            
+        }
       cell.detailLbl.text = strArray?[indexPath.row]
         if(indexPath.row % 2 == 0){
             cell.contentView.backgroundColor = UIColor.lighterGray

@@ -95,6 +95,7 @@
 		1D3F42051FA75B2900B0F782 /* TipsBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D3F42031FA75B2900B0F782 /* TipsBase.swift */; };
 		1D3F42061FA75B2900B0F782 /* TipsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D3F42041FA75B2900B0F782 /* TipsModel.swift */; };
 		1D5A40FE2015D855000EBE31 /* DocumentViewerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D5A40FD2015D855000EBE31 /* DocumentViewerViewController.swift */; };
+		1D5DF3B42017236200441990 /* TaskSuggestionListTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D5DF3B32017236200441990 /* TaskSuggestionListTableCell.swift */; };
 		1D6177B51FB6D85400C94ADF /* AddPropertyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D6177B41FB6D85400C94ADF /* AddPropertyModel.swift */; };
 		1D6177B71FB715E100C94ADF /* AddPropertyCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D6177B61FB715E100C94ADF /* AddPropertyCollectionCell.swift */; };
 		1DCD4C1B1F84C315003C7380 /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DCD4C191F84C315003C7380 /* ApiManager.swift */; };
@@ -251,6 +252,7 @@
 		1D3F42031FA75B2900B0F782 /* TipsBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TipsBase.swift; sourceTree = "<group>"; };
 		1D3F42041FA75B2900B0F782 /* TipsModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TipsModel.swift; sourceTree = "<group>"; };
 		1D5A40FD2015D855000EBE31 /* DocumentViewerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentViewerViewController.swift; sourceTree = "<group>"; };
+		1D5DF3B32017236200441990 /* TaskSuggestionListTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskSuggestionListTableCell.swift; sourceTree = "<group>"; };
 		1D6177B41FB6D85400C94ADF /* AddPropertyModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddPropertyModel.swift; sourceTree = "<group>"; };
 		1D6177B61FB715E100C94ADF /* AddPropertyCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddPropertyCollectionCell.swift; sourceTree = "<group>"; };
 		1DCD4C191F84C315003C7380 /* ApiManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiManager.swift; sourceTree = "<group>"; };
@@ -370,6 +372,7 @@
 				1D1D0D201FA8B23E00DDA77E /* TaskTableCell.swift */,
 				1D1B40661FA9DED1004C4AFE /* TaskCalculationTableCell.swift */,
 				1D1D0D1E1FA879A700DDA77E /* GalleryCollectionCell.swift */,
+				1D5DF3B32017236200441990 /* TaskSuggestionListTableCell.swift */,
 			);
 			path = TaskCell;
 			sourceTree = "<group>";
@@ -792,6 +795,7 @@
 				1D6177B51FB6D85400C94ADF /* AddPropertyModel.swift in Sources */,
 				1D1958D820073D6D00662DD5 /* UILabel+Appended.swift in Sources */,
 				1D0418B11FA32EBF00A65C81 /* MileStoneData.swift in Sources */,
+				1D5DF3B42017236200441990 /* TaskSuggestionListTableCell.swift in Sources */,
 				1D1958CB20073D3400662DD5 /* String+Appended.swift in Sources */,
 				1DCD4C1B1F84C315003C7380 /* ApiManager.swift in Sources */,
 				1D0418B31FA371F600A65C81 /* ResourcesViewController.swift in Sources */,
