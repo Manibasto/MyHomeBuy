@@ -101,10 +101,13 @@ extension PropertyViewController : UITableViewDataSource{
         let imgArray = model?.image?.components(separatedBy: ",")
         if let count = imgArray?.count{
             if(count > 0){
-                cell.propertyImageView.sd_setImage(with: URL(string: (imgArray?[0])!)) { (image, error, cache, url) in
-                    
-                }
+                cell.propertyImageView.sd_setImage(with: URL(string: (imgArray?[0])!), placeholderImage: UIImage.init(named: "add_home_placeholder"))
+            }else{
+                cell.propertyImageView.image = UIImage.init(named: "add_home_placeholder")
             }
+        }else{
+            cell.propertyImageView.image = UIImage.init(named: "add_home_placeholder")
+
         }
         
         

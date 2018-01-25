@@ -76,6 +76,7 @@ class SideMenuViewController: UIViewController {
             switch indexPath.row {
             case 0:
                 controller = storyboard?.instantiateViewController(withIdentifier: "MyHomeViewController") as? MyHomeViewController
+               
                 break
             case 1:
                 controller = storyboard?.instantiateViewController(withIdentifier: "SettingViewController") as? SettingViewController

@@ -20,7 +20,6 @@ class TaskCalculationTableCell: UITableViewCell {
     
     @IBOutlet weak var resultLbl: UILabel!
     
-    @IBOutlet weak var resultButton: UIButton!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

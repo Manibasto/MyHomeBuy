@@ -134,7 +134,7 @@ class TaskCheckListViewController: UIViewController {
         //let msg = dictionary["msg"] as? String
         if(status == 1){
             switchViewController()
-            SharedAppDelegate.window?.makeToast("Submitted successfully")
+            //SharedAppDelegate.window?.makeToast("Submitted successfully")
 
         }else{
             switchViewController()

@@ -101,7 +101,7 @@ class MyHomeViewController: UIViewController {
     }
     func refreshHomeMenuUI(){
         let vc =  self.frostedViewController.menuViewController as! SideMenuViewController
-        vc.currentIndex = 0
+        vc.currentIndex = -1
         
     }
     @IBAction func resourceBtnPressed(_ sender: Any) {

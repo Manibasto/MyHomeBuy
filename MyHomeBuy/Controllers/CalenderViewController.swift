@@ -564,6 +564,7 @@ extension CalenderViewController : UITextFieldDelegate
             view.endEditing(true)
             timePickerPopupView.frame = view.frame
             view.addSubview(timePickerPopupView)
+            timePickerView.minimumDate = Date()
         return false
     }
         return true

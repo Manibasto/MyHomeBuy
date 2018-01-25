@@ -274,7 +274,6 @@ extension TaskViewController : UITableViewDataSource{
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: "TaskCalculationTableCell", for: indexPath) as! TaskCalculationTableCell;
                 cell.taskLbl.text = model?.name
-                cell.resultButton.setTitle("", for: .normal)
                 if(model?.status == "0"){
                     cell.mileStoneStatusBtn.setTitleColor(UIColor.black, for: .normal)
                     cell.mileStoneStatusBtn.setTitle("Milestone task is incomplete" , for: .normal)
@@ -302,9 +301,9 @@ extension TaskViewController : UITableViewDataSource{
                 for btn in cell.btnArray {
                     btn.addTarget(self, action: #selector(btnTapped(_:)), for: .touchUpInside)
                 }
-               // cell.contentView.backgroundColor = UIColor.lighterGray
+                // cell.contentView.backgroundColor = UIColor.lighterGray
                 changeBackgoundColor(of: cell, with: indexPath)
-
+                
                 return cell
             }else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "TaskTableCell", for: indexPath) as! TaskTableCell;
@@ -334,12 +333,12 @@ extension TaskViewController : UITableViewDataSource{
                     btn.addTarget(self, action: #selector(btnTapped(_:)), for: .touchUpInside)
                 }
                 changeBackgoundColor(of: cell, with: indexPath)
-//                if(indexPath.row % 2 == 0){
-//                    cell.contentView.backgroundColor = UIColor.lighterGray
-//                }else{
-//                    cell.contentView.backgroundColor = UIColor.white
-//
-//                }
+                //                if(indexPath.row % 2 == 0){
+                //                    cell.contentView.backgroundColor = UIColor.lighterGray
+                //                }else{
+                //                    cell.contentView.backgroundColor = UIColor.white
+                //
+                //                }
                 return cell
             }
         }
@@ -379,9 +378,13 @@ extension TaskViewController : UITableViewDataSource{
         if(valueList?.count == 4){
             hasValue = true
             let first = Float((valueList?[0])!)
+            valueFirst = first
             let second = Float((valueList?[1])!)
+            valueSecond = second
             let third = Float((valueList?[2])!)
+            valueThird = third
             let fourth = Float((valueList?[3])!)
+            valueFourth = fourth
             if let firstvalue = first , let secondvalue = second , let thirdValue = third , let fourthValue = fourth{
                 let result = firstvalue + secondvalue + thirdValue - fourthValue
       cell.resultLbl.text = "My maximum purchase price\nTotal\n$ \(result)"
@@ -398,9 +401,11 @@ extension TaskViewController : UITableViewDataSource{
             textField.backgroundColor = UIColor.white
             if(hasValue){
                 let currentField = UIView.getViewWithTag(cell.amountTextFieldArray, textField.tag) as! UITextField
-                //if(valueList?[index] != "0"){
+                if(Float((valueList?[index])!) != 0){
                     currentField.text = valueList?[index]
-                //}
+                }else{
+                  currentField.text = ""
+                }
             }
         }
         
@@ -419,48 +424,63 @@ extension TaskViewController : UITableViewDataSource{
             textField.setLeftLabel("$", .red)
             textField.backgroundColor = UIColor.white
                 let currentField = UIView.getViewWithTag(cell.amountTextFieldArray, textField.tag) as! UITextField
-//            switch index {
-//            case 0:
-//                currentField.text = valueFirst
-//                break
-//            case 1:
-//                currentField.text = valueSecond
-//
-//                break
-//            case 2:
-//                currentField.text = valueThird
-//
-//                break
-//            case 3:
-//                currentField.text = valueFourth
-//
-//                break
-//            default:
-//                break
-//            }
+            switch index {
+            case 0:
+                if let value = valueFirst{
+                    if(value == 0){
+                       currentField.text = ""
+                    }else{
+                        currentField.text = "\(value)"
+                    }
+                }else{
+                    currentField.text = ""
+                }
+              
+                break
+            case 1:
+                if let value = valueSecond{
+                    if(value == 0){
+                        currentField.text = ""
+                    }else{
+                        currentField.text = "\(value)"
+                    }
+                }else{
+                    currentField.text = ""
+                }
+
+                break
+            case 2:
+                if let value = valueThird{
+                    if(value == 0){
+                        currentField.text = ""
+                    }else{
+                        currentField.text = "\(value)"
+                    }
+                }else{
+                    currentField.text = ""
+                }
+
+                break
+            case 3:
+                if let value = valueFourth{
+                    if(value == 0){
+                        currentField.text = ""
+                    }else{
+                        currentField.text = "\(value)"
+                    }
+                }else{
+                    currentField.text = ""
+                }
+
+                break
+            default:
+                break
+            }
 
             }
 
-//        if(!valueFirst.isEmpty && !valueSecond.isEmpty && !valueThird.isEmpty && !valueFourth.isEmpty){
-//            let first = Float(valueFirst)
-//            let second = Float(valueSecond)
-//            let third = Float(valueThird)
-//            let fourth = Float(valueFourth)
-//            if let firstvalue = first , let secondvalue = second , let thirdValue = third , let fourthValue = fourth{
-//                let result = firstvalue + secondvalue + thirdValue - fourthValue
-//                if(result < 0){
-//                }else{
-//                    cell.resultLbl.text = "My maximum purchase price\nTotal\n$ \(result)"
-//
-//
-//                }
-//
-//            }else{
-//                //view.makeToast("Invalid value entered")
-//
-//            }
-//
-//        }
+        cell.resultLbl.text = "My maximum purchase price\nTotal\n$ \(getTotal())"
+
         }
         
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -583,6 +603,10 @@ extension TaskViewController : UITableViewDataSource{
             if(model?.status == "0"){
                 if(getTotal() < 0){
                     view.makeToast("Result cannot be negative")
+                }else{
+                    
+                    requestSetTaskStatusAPI(taskId!, status)
+
                 }
             }else{
                 requestSetTaskStatusAPI(taskId!, status)

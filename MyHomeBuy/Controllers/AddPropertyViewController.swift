@@ -89,6 +89,7 @@ class AddPropertyViewController: UIViewController {
     }
     
     @IBAction func menuBtnPressed(_ sender: Any) {
+        
         frostedViewController.presentMenuViewController()
         
     }

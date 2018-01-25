@@ -125,6 +125,10 @@ class PropertyDetailViewController: UIViewController {
                 }
             }
         }else{
+            model?.image = "qwerty"
+            propertyDetailImageCollectionView.dataSource = self
+            propertyDetailImageCollectionView.delegate = self
+            propertyDetailImageCollectionView.reloadData()
             rightBtn.isHidden = true
             leftBtn.isHidden = true
         }
@@ -235,10 +239,7 @@ extension PropertyDetailViewController : UICollectionViewDataSource{
         let imageArray =  model?.image?.components(separatedBy: ",")
         
         let string = imageArray?[indexPath.row]
-        cell.propertyImageView.sd_setImage(with: URL(string: string!)) { (image, error, cache, url) in
-            
-            
-        }
+        cell.propertyImageView.sd_setImage(with: URL(string: string!), placeholderImage: UIImage.init(named: "add_home_placeholder"))
         return cell
         
     }
