@@ -41,10 +41,11 @@ class TaskViewController: UIViewController {
     @IBOutlet weak var addTaskCancelBtn: UIButton!
     
     @IBOutlet weak var addTaskCreateBtn: UIButton!
-    var valueFirst = ""
-    var valueSecond = ""
-    var valueThird = ""
-    var valueFourth = ""
+    var valueFirst : Float?
+    var valueSecond : Float?
+    var valueThird : Float?
+    var valueFourth : Float?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -273,6 +274,7 @@ extension TaskViewController : UITableViewDataSource{
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: "TaskCalculationTableCell", for: indexPath) as! TaskCalculationTableCell;
                 cell.taskLbl.text = model?.name
+                cell.resultButton.setTitle("", for: .normal)
                 if(model?.status == "0"){
                     cell.mileStoneStatusBtn.setTitleColor(UIColor.black, for: .normal)
                     cell.mileStoneStatusBtn.setTitle("Milestone task is incomplete" , for: .normal)
@@ -417,76 +419,156 @@ extension TaskViewController : UITableViewDataSource{
             textField.setLeftLabel("$", .red)
             textField.backgroundColor = UIColor.white
                 let currentField = UIView.getViewWithTag(cell.amountTextFieldArray, textField.tag) as! UITextField
-            switch index {
-            case 0:
-                currentField.text = valueFirst
-                break
-            case 1:
-                currentField.text = valueSecond
+//            switch index {
+//            case 0:
+//                currentField.text = valueFirst
+//                break
+//            case 1:
+//                currentField.text = valueSecond
+//
+//                break
+//            case 2:
+//                currentField.text = valueThird
+//
+//                break
+//            case 3:
+//                currentField.text = valueFourth
+//
+//                break
+//            default:
+//                break
+//            }
 
-                break
-            case 2:
-                currentField.text = valueThird
+            }
 
-                break
-            case 3:
-                currentField.text = valueFourth
-
-                break
-            default:
-                break
-            }
-            
-            }
-        
-        if(!valueFirst.isEmpty && !valueSecond.isEmpty && !valueThird.isEmpty && !valueFourth.isEmpty){
-            let first = Float(valueFirst)
-            let second = Float(valueSecond)
-            let third = Float(valueThird)
-            let fourth = Float(valueFourth)
-            if let firstvalue = first , let secondvalue = second , let thirdValue = third , let fourthValue = fourth{
-                let result = firstvalue + secondvalue + thirdValue - fourthValue
-                if(result < 0){
-                }else{
-                    cell.resultLbl.text = "My maximum purchase price\nTotal\n$ \(result)"
-                 
-                    
-                }
-                
-            }else{
-                //view.makeToast("Invalid value entered")
-                
-            }
-            
+//        if(!valueFirst.isEmpty && !valueSecond.isEmpty && !valueThird.isEmpty && !valueFourth.isEmpty){
+//            let first = Float(valueFirst)
+//            let second = Float(valueSecond)
+//            let third = Float(valueThird)
+//            let fourth = Float(valueFourth)
+//            if let firstvalue = first , let secondvalue = second , let thirdValue = third , let fourthValue = fourth{
+//                let result = firstvalue + secondvalue + thirdValue - fourthValue
+//                if(result < 0){
+//                }else{
+//                    cell.resultLbl.text = "My maximum purchase price\nTotal\n$ \(result)"
+//
+//
+//                }
+//
+//            }else{
+//                //view.makeToast("Invalid value entered")
+//
+//            }
+//
+//        }
         }
+        
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let nsString = NSString(string: textField.text!)
+        let newText = nsString.replacingCharacters(in: range, with: string)
+        if(!newText.isEmpty){
+        let value = Float(newText)
+        guard let validValue = value else{return false}
+        print(validValue)
         }
-        
-        
+        return true
+    }
     func textFieldDidChange(_ textField: UITextField) {
-        print("textFieldDidChange  \(textField.text)")
+        print("textFieldDidChange  \(textField.text!)")
         switch textField.tag {
         case 0:
-            valueFirst = textField.text!
+            if let value = textField.text{
+                if(!value.isEmpty){
+                    let floatValue = Float(value)
+                    if let validFloatValue = floatValue{
+                        valueFirst = validFloatValue
+                    }
+                }else{
+                    valueFirst = nil
+                }
+            }
             break
         case 1:
-            valueSecond = textField.text!
-
+            if let value = textField.text{
+                if(!value.isEmpty){
+                    let floatValue = Float(value)
+                    if let validFloatValue = floatValue{
+                        valueSecond = validFloatValue
+                    }
+                }else{
+                    valueSecond = nil
+                }
+            }
             break
         case 2:
-            valueThird = textField.text!
-
+            if let value = textField.text{
+                if(!value.isEmpty){
+                    let floatValue = Float(value)
+                    if let validFloatValue = floatValue{
+                        valueThird = validFloatValue
+                    }
+                }else{
+                    valueThird = nil
+                }
+            }
             break
         case 3:
-            valueFourth = textField.text!
-
+            if let value = textField.text{
+                if(!value.isEmpty){
+                    let floatValue = Float(value)
+                    if let validFloatValue = floatValue{
+                        valueFourth = validFloatValue
+                    }
+                }else{
+                    valueFourth = nil
+                }
+            }
             break
         default:
             break
         }
-      
+        
+        let cell = getCellForView(view: textField) as? TaskCalculationTableCell
+        if let calculationCell = cell{
+            calculationCell.resultLbl.text = "My maximum purchase price\nTotal\n$ \(getTotal())"
+
+            
+        }
+    
+        
         
     }
-  
+    func getTotal()->Float{
+        let first = valueFirst ?? 0
+        let second = valueSecond ?? 0
+        let third = valueThird ?? 0
+        let fourth = valueFourth ?? 0
+        let total = first + second + third - fourth
+        print("total \(total)")
+        return total
+    }
+    func getStringValue()->String{
+        var firstString = "0"
+        var secondString = "0"
+        var thirdString = "0"
+        var fourthString = "0"
+        if let first = valueFirst{
+            firstString = "\(first)"
+        }
+        if let second = valueSecond{
+            secondString = "\(second)"
+        }
+        if let third = valueThird{
+            thirdString = "\(third)"
+        }
+        if let fourth = valueFourth{
+            fourthString = "\(fourth)"
+        }
+     
+        let fullValue = "\(firstString),\(secondString),\(thirdString),\(fourthString)"
+        print("fullValue \(fullValue)")
+        return fullValue
+    }
     func taskCompletedBtnPapped(_ btn : UIButton ){
         view.endEditing(true)
         currentIndex = btn.tag
@@ -494,43 +576,22 @@ extension TaskViewController : UITableViewDataSource{
         let taskId = model?.id
         var status = "0"
         if(model?.status == "0"){
-          status = "1"
+            status = "1"
         }
         
         if(model?.calculation == "1"){
             if(model?.status == "0"){
-            if(!valueFirst.isEmpty && !valueSecond.isEmpty && !valueThird.isEmpty && !valueFourth.isEmpty){
-                let first = Float(valueFirst)
-                let second = Float(valueSecond)
-                let third = Float(valueThird)
-                let fourth = Float(valueFourth)
-                if let firstvalue = first , let secondvalue = second , let thirdValue = third , let fourthValue = fourth{
-                    let result = firstvalue + secondvalue + thirdValue - fourthValue
-                    if(result < 0){
-                        view.makeToast("Result cannot be negative")
-                    }else{
-                        requestSetTaskStatusAPI(taskId!, status)
-
-                        
-                    }
-                    
-                }else{
-                    view.makeToast("Invalid value entered")
-                    
+                if(getTotal() < 0){
+                    view.makeToast("Result cannot be negative")
                 }
-                
-            }else{
-                view.makeToast("Please enter all fields")
-
-            }
             }else{
                 requestSetTaskStatusAPI(taskId!, status)
-
+                
             }
             
         }else{
             requestSetTaskStatusAPI(taskId!, status)
-
+            
         }
         
         
@@ -627,8 +688,6 @@ extension TaskViewController : UITableViewDataSource{
         addTaskCancelBtn.setRadius(10)
         remainingTextLbl.text = ""
         addTaskTextView.text = ""
-        //let kmTextView = addTaskTextView as? KMPlaceholderTextView
-       // addTaskTextView.placeholder = "Enter Task Description"
         
     }
     
@@ -673,56 +732,56 @@ extension TaskViewController : UITextFieldDelegate{
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         
-        print("textFieldDidEndEditing  \(textField.text)")
-        switch textField.tag {
-        case 0:
-            valueFirst = textField.text!
-            break
-        case 1:
-            valueSecond = textField.text!
-            
-            break
-        case 2:
-            valueThird = textField.text!
-            
-            break
-        case 3:
-            valueFourth = textField.text!
-            
-            
-            break
-        default:
-            break
-        }
-        if(!valueFirst.isEmpty && !valueSecond.isEmpty && !valueThird.isEmpty && !valueFourth.isEmpty){
-            let first = Float(valueFirst)
-            let second = Float(valueSecond)
-            let third = Float(valueThird)
-            let fourth = Float(valueFourth)
-            if let firstvalue = first , let secondvalue = second , let thirdValue = third , let fourthValue = fourth{
-                let result = firstvalue + secondvalue + thirdValue - fourthValue
-                let cell = getCellForView(view: textField) as! TaskCalculationTableCell
-                if(result < 0){
-                    view.makeToast("Result cannot be negative")
-                }else{
-                    cell.resultLbl.text = "My maximum purchase price\nTotal\n$ \(result)"
-                    if let indexPath = taskTableView.indexPath(for: cell){
-                        taskTableView.reloadRows(at: [indexPath], with: .automatic)
-                    }
-                    
-                }
-                
-            }else{
-                view.makeToast("Invalid value entered")
-                
-            }
-            
-        }else{
-            //         let cell = getCellForView(view: textField) as! TaskCalculationTableCell
-            //            if let indexPath = taskTableView.indexPath(for: cell){
-            //            taskTableView.reloadRows(at: [indexPath], with: .automatic)
-            //            }
-        }
+      //  print("textFieldDidEndEditing  \(textField.text)")
+//        switch textField.tag {
+//        case 0:
+//            valueFirst = textField.text!
+//            break
+//        case 1:
+//            valueSecond = textField.text!
+//
+//            break
+//        case 2:
+//            valueThird = textField.text!
+//
+//            break
+//        case 3:
+//            valueFourth = textField.text!
+//
+//
+//            break
+//        default:
+//            break
+//        }
+//        if(!valueFirst.isEmpty && !valueSecond.isEmpty && !valueThird.isEmpty && !valueFourth.isEmpty){
+//            let first = Float(valueFirst)
+//            let second = Float(valueSecond)
+//            let third = Float(valueThird)
+//            let fourth = Float(valueFourth)
+//            if let firstvalue = first , let secondvalue = second , let thirdValue = third , let fourthValue = fourth{
+//                let result = firstvalue + secondvalue + thirdValue - fourthValue
+//                let cell = getCellForView(view: textField) as! TaskCalculationTableCell
+//                if(result < 0){
+//                    view.makeToast("Result cannot be negative")
+//                }else{
+//                    cell.resultLbl.text = "My maximum purchase price\nTotal\n$ \(result)"
+//                    if let indexPath = taskTableView.indexPath(for: cell){
+//                        taskTableView.reloadRows(at: [indexPath], with: .automatic)
+//                    }
+//
+//                }
+//
+//            }else{
+//                view.makeToast("Invalid value entered")
+//
+//            }
+//
+//        }else{
+//            //         let cell = getCellForView(view: textField) as! TaskCalculationTableCell
+//            //            if let indexPath = taskTableView.indexPath(for: cell){
+//            //            taskTableView.reloadRows(at: [indexPath], with: .automatic)
+//            //            }
+//        }
     }
 
 }
@@ -738,9 +797,27 @@ extension TaskViewController{
 //    }
 
         
+        var firstString = "0"
+        var secondString = "0"
+        var thirdString = "0"
+        var fourthString = "0"
+        if let first = valueFirst{
+            firstString = "\(first)"
+        }
+        if let second = valueSecond{
+            secondString = "\(second)"
+        }
+        if let third = valueThird{
+            thirdString = "\(third)"
+        }
+        if let fourth = valueFourth{
+            fourthString = "\(fourth)"
+        }
+        
         
         let userId = UserDefaults.standard.object(forKey: USER_ID) as! String
-        let parmDict = ["user_id" : userId ,"method_name" : ApiUrl.METHOD_DONE_UNDONE_TASK , "milestone_cat_id" : currentCategoryId , "task_id" : taskID , "status": status , "milestone_id" : "\(currentMileStoneNo)" , "amount_1" : valueFirst , "amount_2" : valueSecond , "amount_3" : valueThird , "amount_4" : valueFourth] as [String : Any]
+        let parmDict = ["user_id" : userId ,"method_name" : ApiUrl.METHOD_DONE_UNDONE_TASK , "milestone_cat_id" : currentCategoryId , "task_id" : taskID , "status": status , "milestone_id" : "\(currentMileStoneNo)" , "amount_1" : firstString , "amount_2" : secondString , "amount_3" : thirdString , "amount_4" : fourthString] as [String : Any]
+        print("parmDict \(parmDict)")
         
         MBProgressHUD.showAdded(to: self.view, animated: true)
         ApiManager.sharedInstance.requestApiServer(parmDict, [UIImage](), {(data) ->() in
@@ -776,7 +853,7 @@ extension TaskViewController{
                 model?.status = "1"
                 if(model?.calculation == "1"){
                     
-                    model?.value = "\(valueFirst),\(valueSecond),\(valueThird),\(valueFourth)"
+                    model?.value = getStringValue()
                 }
                 self.view.makeToast("Task is marked as completed")
 
@@ -785,7 +862,8 @@ extension TaskViewController{
             taskTableView.reloadRows(at: [indexPath], with: .automatic)
             //checkForTaskCompletion()
         }else{
-            
+            self.view.makeToast(msg!)
+
         }
         
     }

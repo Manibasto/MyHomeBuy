@@ -12,7 +12,6 @@ import SDWebImage
 class TaskContactViewController: UIViewController {
     @IBOutlet weak var waterMarkLbl: UILabel!
     
-    @IBOutlet weak var addContactBtn: UIButton!
     @IBOutlet weak var taskContactCollectionView: UICollectionView!
     @IBOutlet weak var taskContactLbl: UILabel!
     @IBOutlet weak var taskContactImageView: UIImageView!
@@ -44,9 +43,7 @@ class TaskContactViewController: UIViewController {
         taskContactImageView.image = image
         let title = dataDict.object(forKey: "headerText") as! String?
         taskContactLbl.text = title
-        let titleColor = addContactBtn.titleColor(for: .normal)
-        addContactBtn.setRadius(10, titleColor!, 2)
-        addContactBtn.isHidden = true
+       
         
     }
     override func didReceiveMemoryWarning() {
@@ -100,7 +97,10 @@ class TaskContactViewController: UIViewController {
 
 extension TaskContactViewController : UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return (dataModel?.data?.count)!
+        if let count = dataModel?.data?.count{
+            return count
+        }
+        return 0
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -202,33 +202,30 @@ extension TaskContactViewController{
         
         dataModel = AddContactBase(dictionary: userData as! NSDictionary)
         if(dataModel?.status == 1){
-          
-            if(dataModel?.data?.count == 0){
-                if(!addContactBtn.isHidden){
-                self.addContactBtn.isHidden = true
+            taskContactCollectionView.delegate = self
+            taskContactCollectionView.dataSource  = self
+            taskContactCollectionView.reloadData()
+        
+            if let count = dataModel?.data?.count{
+                if(count == 0){
+                    self.waterMarkLbl.isHidden = false
+
                 }else{
-                    self.addContactBtn.isHidden = false
+                    self.waterMarkLbl.isHidden = true
 
                 }
-
-            }else{
-                taskContactCollectionView.delegate = self
-                taskContactCollectionView.dataSource  = self
-                taskContactCollectionView.reloadData()
-                self.addContactBtn.isHidden = true
 
             }
 
         }else{
             
             self.view.makeToast("No contacts available")
-            self.addContactBtn.isHidden = false
+            self.waterMarkLbl.isHidden = false
         }
     }
 }
 extension TaskContactViewController : ContactUpdatedDelegate{
     func contactUpdated() {
-        self.addContactBtn.isHidden = true
 
         requestServer()
     }

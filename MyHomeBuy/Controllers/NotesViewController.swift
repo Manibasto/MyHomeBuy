@@ -183,6 +183,12 @@ extension NotesViewController{
             notesTableView.rowHeight = UITableViewAutomaticDimension
             notesTableView.estimatedRowHeight = 50
             notesTableView.reloadData()
+            if let count = dataModel?.data?.count{
+                if(count == 0){
+                    self.view.makeToast("No notes available")
+
+                }
+            }
         }else{
             
             self.view.makeToast("No notes available")

@@ -3047,7 +3047,7 @@
                                         <rect key="frame" x="0.0" y="28" width="320" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="eVb-uc-uXM" id="K8e-nV-ISg">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="79.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="79"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="next_arrow" translatesAutoresizingMaskIntoConstraints="NO" id="xtt-3n-uce">
@@ -3548,7 +3548,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MileStoneDropDownTableCell" rowHeight="60" id="2p6-Kw-74N" customClass="MileStoneDropDownTableCell" customModule="MyHomeBuy" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="55.5" width="320" height="60"/>
+                                        <rect key="frame" x="0.0" y="55" width="320" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2p6-Kw-74N" id="U1H-mj-uai">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
@@ -3604,7 +3604,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MileStoneSelectionTableCell" rowHeight="208" id="Ljy-cW-L0H" customClass="MileStoneSelectionTableCell" customModule="MyHomeBuy" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="115.5" width="320" height="208"/>
+                                        <rect key="frame" x="0.0" y="115" width="320" height="208"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ljy-cW-L0H" id="g7X-oa-krc">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="208"/>
@@ -4071,7 +4071,7 @@
                                         <rect key="frame" x="0.0" y="28" width="320" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nMv-hd-F0x" id="RhN-b3-o7q">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="79.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="79"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="next_arrow" translatesAutoresizingMaskIntoConstraints="NO" id="Avy-g8-vxV">
@@ -4778,8 +4778,8 @@
                                                         <color key="titleColor" red="0.73333333329999995" green="0.1333333333" blue="0.32549019610000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </state>
                                                 </button>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter cash deposit amount." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qVg-0j-arF">
-                                                    <rect key="frame" x="20" y="57" width="335" height="40"/>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter cash deposit amount." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qVg-0j-arF">
+                                                    <rect key="frame" x="20" y="61" width="335" height="40"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="40" id="3wd-QS-PwN"/>
                                                     </constraints>
@@ -4787,8 +4787,8 @@
                                                     <fontDescription key="fontDescription" name="AvenirNextLTPro-Regular" family="Avenir Next LT Pro" pointSize="17"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
-                                                <textField opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter borrow amount." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6Er-gv-5my">
-                                                    <rect key="frame" x="20" y="107" width="335" height="40"/>
+                                                <textField opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter borrow amount." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6Er-gv-5my">
+                                                    <rect key="frame" x="20" y="111" width="335" height="40"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="40" id="Zfl-24-WUG"/>
                                                     </constraints>
@@ -4796,8 +4796,8 @@
                                                     <fontDescription key="fontDescription" name="AvenirNextLTPro-Regular" family="Avenir Next LT Pro" pointSize="17"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
-                                                <textField opaque="NO" clipsSubviews="YES" tag="2" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter grants or concessions amount." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pGc-uu-yo8">
-                                                    <rect key="frame" x="20" y="157" width="335" height="40"/>
+                                                <textField opaque="NO" clipsSubviews="YES" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter grants or concessions amount." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pGc-uu-yo8">
+                                                    <rect key="frame" x="20" y="161" width="335" height="40"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="40" id="KoX-p6-pB6"/>
                                                     </constraints>
@@ -4805,8 +4805,8 @@
                                                     <fontDescription key="fontDescription" name="AvenirNextLTPro-Regular" family="Avenir Next LT Pro" pointSize="17"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
-                                                <textField opaque="NO" clipsSubviews="YES" tag="3" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter purchase costs amount." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="OPl-gd-l6H">
-                                                    <rect key="frame" x="20" y="207" width="335" height="40"/>
+                                                <textField opaque="NO" clipsSubviews="YES" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter purchase costs amount." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="OPl-gd-l6H">
+                                                    <rect key="frame" x="20" y="211" width="335" height="40"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="40" id="P1b-Lu-AP0"/>
                                                     </constraints>
@@ -4814,20 +4814,31 @@
                                                     <fontDescription key="fontDescription" name="AvenirNextLTPro-Regular" family="Avenir Next LT Pro" pointSize="17"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
-                                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hZa-st-EWj">
-                                                    <rect key="frame" x="64" y="267" width="247" height="64"/>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hZa-st-EWj">
+                                                    <rect key="frame" x="64" y="271" width="247" height="60"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Calculate your budget and maximum purchase price" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xk4-am-8jz">
-                                                            <rect key="frame" x="5" y="15" width="237" height="34"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Calculate your budget and maximum purchase price" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xk4-am-8jz">
+                                                            <rect key="frame" x="5" y="15" width="237" height="30"/>
                                                             <fontDescription key="fontDescription" name="AvenirNextLTPro-Regular" family="Avenir Next LT Pro" pointSize="17"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PQx-tV-ARW">
+                                                            <rect key="frame" x="5" y="15" width="237" height="30"/>
+                                                            <fontDescription key="fontDescription" name="AvenirNextLTPro-Regular" family="Avenir Next LT Pro" pointSize="15"/>
+                                                            <state key="normal" title="Calculate your budget and maximum purchase price">
+                                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            </state>
+                                                        </button>
                                                     </subviews>
                                                     <color key="backgroundColor" red="0.50980392156862742" green="0.50980392156862742" blue="0.50980392156862742" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
+                                                        <constraint firstItem="PQx-tV-ARW" firstAttribute="leading" secondItem="hZa-st-EWj" secondAttribute="leading" constant="5" id="F9P-Ti-Lzn"/>
+                                                        <constraint firstAttribute="trailing" secondItem="PQx-tV-ARW" secondAttribute="trailing" constant="5" id="NTT-k6-ZNw"/>
                                                         <constraint firstAttribute="bottom" secondItem="Xk4-am-8jz" secondAttribute="bottom" constant="15" id="QJb-Ud-PbV"/>
                                                         <constraint firstAttribute="trailing" secondItem="Xk4-am-8jz" secondAttribute="trailing" constant="5" id="aKt-Gx-MVw"/>
+                                                        <constraint firstItem="PQx-tV-ARW" firstAttribute="top" secondItem="hZa-st-EWj" secondAttribute="top" constant="15" id="cop-V9-BTj"/>
+                                                        <constraint firstAttribute="bottom" secondItem="PQx-tV-ARW" secondAttribute="bottom" constant="15" id="lYo-r3-lZ3"/>
                                                         <constraint firstItem="Xk4-am-8jz" firstAttribute="leading" secondItem="hZa-st-EWj" secondAttribute="leading" constant="5" id="wDx-9O-gp9"/>
                                                         <constraint firstItem="Xk4-am-8jz" firstAttribute="top" secondItem="hZa-st-EWj" secondAttribute="top" constant="15" id="zdc-AX-qdJ"/>
                                                     </constraints>
@@ -4870,6 +4881,7 @@
                                         <connections>
                                             <outlet property="customView" destination="Sgs-Fs-RSG" id="oDu-RR-PV5"/>
                                             <outlet property="mileStoneStatusBtn" destination="shw-pi-HTi" id="5YX-5R-APz"/>
+                                            <outlet property="resultButton" destination="PQx-tV-ARW" id="Gr5-Xx-myO"/>
                                             <outlet property="resultLbl" destination="Xk4-am-8jz" id="Zfg-m0-ieC"/>
                                             <outlet property="resultView" destination="hZa-st-EWj" id="qta-Oh-zhY"/>
                                             <outlet property="taskCompleteBtn" destination="6MQ-ig-fMU" id="Fdi-m4-bBj"/>
@@ -5535,40 +5547,24 @@
                                 </collectionReusableView>
                             </collectionView>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No contacts available" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gYX-Ql-E7d">
-                                <rect key="frame" x="10" y="269.5" width="300" height="29.5"/>
+                                <rect key="frame" x="10" y="346" width="300" height="29.5"/>
                                 <fontDescription key="fontDescription" name="AvenirNextLTPro-Demi" family="Avenir Next LT Pro" pointSize="25"/>
                                 <color key="textColor" red="0.18039215689999999" green="0.18039215689999999" blue="0.18039215689999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qTF-YF-RVy">
-                                <rect key="frame" x="40" y="508" width="240" height="50"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="i67-HW-yC8"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="AvenirNextLTPro-Demi" family="Avenir Next LT Pro" pointSize="17"/>
-                                <state key="normal" title="ADD CONTACT">
-                                    <color key="titleColor" red="0.26274509800000001" green="0.35686274509999999" blue="0.74117647060000003" alpha="1" colorSpace="calibratedRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="addContactBtnPressed:" destination="aeS-pk-QTd" eventType="touchUpInside" id="79J-Je-Fpi"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="fua-bS-Trc" firstAttribute="top" secondItem="dfZ-vZ-X5z" secondAttribute="bottom" id="2xT-ai-bjl"/>
                             <constraint firstItem="dfZ-vZ-X5z" firstAttribute="height" secondItem="ONt-CM-rAU" secondAttribute="height" multiplier="0.12" id="9Dc-y7-sFM"/>
                             <constraint firstItem="dfZ-vZ-X5z" firstAttribute="leading" secondItem="pOT-PJ-snx" secondAttribute="leading" id="9ve-A2-aF2"/>
-                            <constraint firstItem="gYX-Ql-E7d" firstAttribute="centerY" secondItem="ONt-CM-rAU" secondAttribute="centerY" id="MBP-7y-TgX"/>
                             <constraint firstItem="LwM-hB-MJ0" firstAttribute="top" secondItem="fua-bS-Trc" secondAttribute="bottom" constant="5" id="Mpw-i9-hvU"/>
-                            <constraint firstItem="qTF-YF-RVy" firstAttribute="centerX" secondItem="pOT-PJ-snx" secondAttribute="centerX" id="QPT-WK-dfb"/>
                             <constraint firstItem="pOT-PJ-snx" firstAttribute="trailing" secondItem="LwM-hB-MJ0" secondAttribute="trailing" id="VXf-KL-ZHs"/>
-                            <constraint firstItem="pOT-PJ-snx" firstAttribute="bottom" secondItem="qTF-YF-RVy" secondAttribute="bottom" constant="10" id="VpQ-U3-7pB"/>
                             <constraint firstItem="pOT-PJ-snx" firstAttribute="trailing" secondItem="fua-bS-Trc" secondAttribute="trailing" id="WaY-t1-LQP"/>
                             <constraint firstItem="pOT-PJ-snx" firstAttribute="trailing" secondItem="dfZ-vZ-X5z" secondAttribute="trailing" id="XFw-aT-qn4"/>
                             <constraint firstItem="dfZ-vZ-X5z" firstAttribute="top" secondItem="ONt-CM-rAU" secondAttribute="top" id="jgx-bR-AUX"/>
+                            <constraint firstItem="gYX-Ql-E7d" firstAttribute="centerY" secondItem="LwM-hB-MJ0" secondAttribute="centerY" id="jug-dP-iXl"/>
                             <constraint firstItem="pOT-PJ-snx" firstAttribute="trailing" secondItem="gYX-Ql-E7d" secondAttribute="trailing" constant="10" id="k41-d5-AMP"/>
-                            <constraint firstItem="qTF-YF-RVy" firstAttribute="width" secondItem="ONt-CM-rAU" secondAttribute="width" multiplier="0.75" id="puE-uo-gCZ"/>
                             <constraint firstItem="LwM-hB-MJ0" firstAttribute="leading" secondItem="pOT-PJ-snx" secondAttribute="leading" id="tVr-p4-UTK"/>
                             <constraint firstItem="gYX-Ql-E7d" firstAttribute="leading" secondItem="pOT-PJ-snx" secondAttribute="leading" constant="10" id="vQB-Do-MeY"/>
                             <constraint firstItem="fua-bS-Trc" firstAttribute="leading" secondItem="pOT-PJ-snx" secondAttribute="leading" id="wZm-Lm-3QW"/>
@@ -5577,7 +5573,6 @@
                         <viewLayoutGuide key="safeArea" id="pOT-PJ-snx"/>
                     </view>
                     <connections>
-                        <outlet property="addContactBtn" destination="qTF-YF-RVy" id="VOS-Kq-Oyp"/>
                         <outlet property="navigationBarView" destination="dfZ-vZ-X5z" id="eFo-4K-nfr"/>
                         <outlet property="taskContactCollectionView" destination="LwM-hB-MJ0" id="7pa-FC-Cc0"/>
                         <outlet property="taskContactImageView" destination="IeZ-Gl-9R1" id="wOU-QV-1Y4"/>
@@ -8033,7 +8028,7 @@
                                         <rect key="frame" x="0.0" y="28" width="320" height="92"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="w3S-Co-QLT" id="9Fm-Jz-MJo">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="91.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="91"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1j1-Pm-Hym">
