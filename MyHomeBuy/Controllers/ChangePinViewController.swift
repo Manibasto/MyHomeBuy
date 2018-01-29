@@ -63,7 +63,17 @@ class ChangePinViewController: UIViewController {
         }
     }
     
-  
+    @IBAction func homeButtonTapped(_ sender: Any) {
+        let navController : UINavigationController  = storyboard?.instantiateViewController(withIdentifier: "SlidingNavigationController") as! UINavigationController
+        var controller: UIViewController!
+        
+        controller = storyboard?.instantiateViewController(withIdentifier: "MyHomeViewController") as? MyHomeViewController
+        
+        navController.viewControllers = [controller]
+        
+        frostedViewController.contentViewController = navController
+    }
+    
     
     
     @IBAction func changeBtnPressed(_ sender: Any) {

@@ -97,6 +97,19 @@ class EditProfileViewController: UIViewController {
         }
     }
     
+    @IBAction func homeButtonPressed(_ sender: Any) {
+        let navController : UINavigationController  = storyboard?.instantiateViewController(withIdentifier: "SlidingNavigationController") as! UINavigationController
+        var controller: UIViewController!
+        
+        controller = storyboard?.instantiateViewController(withIdentifier: "MyHomeViewController") as? MyHomeViewController
+        
+        navController.viewControllers = [controller]
+        
+        frostedViewController.contentViewController = navController
+    
+    }
+    
+    
     @IBAction func cameraBtnPressed(_ sender: Any) {
         let actionSheetController = UIAlertController(title: NSLocalizedString("Capture Photo", comment: "nil"), message: "", preferredStyle: .actionSheet)
         

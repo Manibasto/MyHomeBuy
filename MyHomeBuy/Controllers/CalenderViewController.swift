@@ -336,23 +336,26 @@ extension CalenderViewController{
             calender.reloadData()
             if let count = dataModel?.data?.count{
                 if(count>0){
-                addHeaderView()
+                    addHeaderView(status : 1)
                 }else{
                     view.makeToast("No upcoming events available")
+                    addHeaderView(status : 0)
 
                 }
 
             }
         }else{
-            
+            addHeaderView(status : 0)
+
             view.makeToast("No upcoming events available")
         }
         
     }
-    func addHeaderView(){
+    func addHeaderView(status : Int){
         headerView.frame(forAlignmentRect: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 110))
         eventsTableView.tableHeaderView = headerView
        nextEventView.setRadius(5)
+        if(status == 1){
         let model = dataModel?.data?[0]
         let dateStr = model?.date
         let dateFormatter = DateFormatter()
@@ -366,7 +369,10 @@ extension CalenderViewController{
         }else{
          nextEventLbl.text = "Invalid date formate"
         }
-        
+        }else{
+            nextEventLbl.text = "No upcoming events available"
+
+        }
     }
 }
 

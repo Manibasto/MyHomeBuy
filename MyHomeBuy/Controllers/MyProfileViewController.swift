@@ -143,6 +143,18 @@ class MyProfileViewController: UIViewController {
         if let navCon = navigationController{
             navCon.popViewController(animated: true)
         }    }
+    
+    @IBAction func homeButtonTapped(_ sender: Any) {
+        let navController : UINavigationController  = storyboard?.instantiateViewController(withIdentifier: "SlidingNavigationController") as! UINavigationController
+        var controller: UIViewController!
+        
+        controller = storyboard?.instantiateViewController(withIdentifier: "MyHomeViewController") as? MyHomeViewController
+        
+        navController.viewControllers = [controller]
+        
+        frostedViewController.contentViewController = navController
+    }
+    
 }
 
 extension MyProfileViewController{

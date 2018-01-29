@@ -46,7 +46,7 @@ class MainMileStoneViewController: UIViewController {
          let data3 = ["image" : "main_offer_icon" , "colorCode" : UIColor.mileStoneColor3 , "text" : "OFFER TO PURCHASE"] as [String : Any]
          let data4 = ["image" : "main_legal_icon" , "colorCode" : UIColor.mileStoneColor4 , "text" : "LEGAL"] as [String : Any]
          let data5 = ["image" : "main_contract_icon" , "colorCode" : UIColor.mileStoneColor5 , "text" : "CONTRACT"] as [String : Any]
-         let data6 = ["image" : "main_property_settlement_icon" , "colorCode" : UIColor.mileStoneColor6 , "text" : "PROPERTY SETTELMENT"] as [String : Any]
+         let data6 = ["image" : "main_property_settlement_icon" , "colorCode" : UIColor.mileStoneColor6 , "text" : "PROPERTY SETTLEMENT"] as [String : Any]
          let data7 = ["image" : "main_moving_icon" , "colorCode" : UIColor.mileStoneColor7 , "text" : "MOVING IN"] as [String : Any]
         
         dataArray.append(data1)

@@ -94,10 +94,22 @@ class AddPropertyViewController: UIViewController {
         
     }
     
+    
+    
     @IBAction func cancelBtnPressed(_ sender: Any) {
         dropDownView.removeFromSuperview()
     }
     
+    @IBAction func homeButtonTapped(_ sender: Any) {
+        let navController : UINavigationController  = storyboard?.instantiateViewController(withIdentifier: "SlidingNavigationController") as! UINavigationController
+        var controller: UIViewController!
+        
+        controller = storyboard?.instantiateViewController(withIdentifier: "MyHomeViewController") as? MyHomeViewController
+        
+        navController.viewControllers = [controller]
+        
+        frostedViewController.contentViewController = navController
+    }
     
     @IBAction func doneBtnPressed(_ sender: Any) {
         

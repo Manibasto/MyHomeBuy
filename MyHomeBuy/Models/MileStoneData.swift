@@ -32,7 +32,7 @@ class MileStoneData{
             let data5 = ["image" : "main_contract_icon" , "colorCode" : UIColor.mileStoneColor5 , "colorCodeDark" : UIColor.mileStoneColor15, "text" : "CONTRACT"] as [String : Any]
             return data5
         case 6:
-            let data6 = ["image" : "main_property_settlement_icon" , "colorCode" : UIColor.mileStoneColor6, "colorCodeDark" : UIColor.mileStoneColor16 , "text" : "PROPERTY SETTELMENT"] as [String : Any]
+            let data6 = ["image" : "main_property_settlement_icon" , "colorCode" : UIColor.mileStoneColor6, "colorCodeDark" : UIColor.mileStoneColor16 , "text" : "PROPERTY SETTLEMENT"] as [String : Any]
             return data6
         case 7:
             let data7 = ["image" : "main_moving_icon" , "colorCode" : UIColor.mileStoneColor7 , "colorCodeDark" : UIColor.mileStoneColor17, "text" : "MOVING IN"] as [String : Any]
