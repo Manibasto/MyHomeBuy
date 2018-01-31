@@ -11,6 +11,7 @@ import UIKit
 class GetPropertyTableCell: UITableViewCell {
    @IBOutlet weak var bedRoomBtn: UIButton!
     
+    @IBOutlet weak var editButton: UIButton!
     @IBOutlet weak var bathRoomBtn: UIButton!
     @IBOutlet weak var garageBtn: UIButton!
     @IBOutlet weak var addressLbl: UILabel!

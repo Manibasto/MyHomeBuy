@@ -35,6 +35,8 @@ class PropertyDetailViewController: UIViewController {
     @IBOutlet weak var navigationBarView: UIView!
     @IBOutlet weak var homeDetailView: UIView!
    
+    @IBOutlet weak var editPropertyBtn: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -157,6 +159,9 @@ class PropertyDetailViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    @IBAction func editButtonTapped(_ sender: Any) {
     }
     
     @IBAction func menuBtnPressed(_ sender: Any) {

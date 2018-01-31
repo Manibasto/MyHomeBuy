@@ -114,7 +114,7 @@ class ApiManager
             print("No of images to upload ==  \(imageArray.count)")
             for image in imageArray{
                 //                let newImage = image.resizeImageWith(newSize: CGSize(width: 500, height: 500))
-                if let imageData = UIImageJPEGRepresentation(image, 0.5) {
+                if let imageData = UIImageJPEGRepresentation(image, 1) {
                     print("***** compressed Size \(imageData.description) **** ")
                     
                     let fileName = "image_no_\(count).png"

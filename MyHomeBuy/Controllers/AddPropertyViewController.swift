@@ -11,7 +11,7 @@ import MBProgressHUD
 import Toast_Swift
 class AddPropertyViewController: UIViewController {
     let  imagePicker =  UIImagePickerController()
-    var imageArray = [UIImage]()
+    var imageArray = [Any]()
     var dropDownArray = [String]()
     var currentIndex = -1
     var currentTextField : UITextField?
@@ -20,7 +20,7 @@ class AddPropertyViewController: UIViewController {
     let headingText = ["Price" , "Area/size" , "Bedrooms" , "Rest/Bathrooms", "Car parking in Garage" , "Address", "Description" , "Agent Name", "Agent Contact" ]
     let placeHolderText = ["Enter Price" , "Enter Area" , "Bedrooms" , "Rest/Bathrooms", "Car parking in Garage" , "Enter Address", "Enter Description" , "Enter Agent Name", "Enter Agent Contact" ]
     let model = AddPropertyModel()
-    var canAdd = false
+    var canAdd = true
     @IBOutlet weak var titleLabel: UILabel!
     // dropdownpopup
     
@@ -34,6 +34,7 @@ class AddPropertyViewController: UIViewController {
     @IBOutlet var footerView: UIView!
     
     @IBOutlet weak var addPropertyBtn: UIButton!
+    var propertyModel = GetPropertyDetailModel(dictionary: ["" : ""])
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -51,16 +52,26 @@ class AddPropertyViewController: UIViewController {
         }else{
             titleLabel.text = "Edit Property"
             //requestPropertyAPI()
-             model.price = "1234"
-             model.area_sqft = "3456"
-             model.bedrooms = "3"
-             model.bathrooms = "4"
-             model.car_parking_garage = "1"
-            model.address = "This is address"
-            model.description = "This is description"
-            model.agent_name = "vikas"
-            model.agent_contact = "1234567890"
-            model.imageUrls = ""
+            model.price = (propertyModel?.price)!
+            model.area_sqft = (propertyModel?.area_sqft)!
+            model.bedrooms = (propertyModel?.bedrooms)!
+            model.bathrooms = (propertyModel?.bathrooms)!
+            model.car_parking_garage = (propertyModel?.car_parking_garage)!
+            model.address = (propertyModel?.address)!
+            model.description = (propertyModel?.description)!
+            model.agent_name = (propertyModel?.agent_name)!
+            model.agent_contact = (propertyModel?.agent_contact)!
+
+            if let validimage = propertyModel?.image{
+               model.imageUrls = validimage
+
+            }
+            if(!model.imageUrls.isEmpty){
+               let urlArray =  model.imageUrls.components(separatedBy: ",")
+                for url in urlArray {
+                imageArray.append(url)
+                }
+            }
             model.initArray()
             navigationBarView.setBottomShadow()
             propertyTableView.delegate  = self
@@ -86,6 +97,12 @@ class AddPropertyViewController: UIViewController {
         imageCollectioView.delegate = self
         imageCollectioView.dataSource = self
         addPropertyBtn.setRadius(10)
+        if(canAdd){
+        addPropertyBtn.setTitle("ADD PROPERTY DETAILS", for: .normal)
+        }else{
+        addPropertyBtn.setTitle("EDIT PROPERTY DETAILS", for: .normal)
+
+        }
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -132,7 +149,11 @@ class AddPropertyViewController: UIViewController {
 //                view.makeToast("Please select atleast one image")
 //
 //            }else{
+            if(canAdd){
                 requestAddPropertyAPI()
+            }else{
+                requestEditPropertyAPI()
+            }
                 
            // }
         }else{
@@ -261,25 +282,43 @@ extension AddPropertyViewController : UITextViewDelegate{
     
 }
 extension AddPropertyViewController{
-    func requestPropertyAPI(){
-    let userId = UserDefaults.standard.object(forKey: USER_ID) as! String
-        let parmDict = ["user_id" : userId ,"method_name" : ApiUrl.METHOD_ADD_PROPERTY , "price" : model.price , "area_sqft" : model.area_sqft , "bedrooms" : model.bedrooms , "bathrooms" : model.bathrooms , "car_parking_garage" : model.car_parking_garage , "address" : model.address , "description" : model.description , "agent_name" : model.agent_name , "agent_contact" : model.agent_contact ] as [String : Any]
+    func requestEditPropertyAPI(){
         
+        var images = [UIImage]()
+        var urls = [String]()
+        
+        for image in imageArray {
+            if let validimage = image as? UIImage{
+                images.append(validimage)
+            }else{
+                urls.append(image as! String)
+            }
+        }
+        var allUrlString = ""
+        if(urls.count > 0){
+            allUrlString = urls.joined(separator: ",")
+        }
+    let userId = UserDefaults.standard.object(forKey: USER_ID) as! String
+        let parmDict = ["user_id" : userId ,"method_name" : ApiUrl.METHOD_ADD_PROPERTY , "price" : model.price , "area_sqft" : model.area_sqft , "bedrooms" : model.bedrooms , "bathrooms" : model.bathrooms , "car_parking_garage" : model.car_parking_garage , "address" : model.address , "description" : model.description , "agent_name" : model.agent_name , "agent_contact" : model.agent_contact , "image" : allUrlString] as [String : Any]
+        if(!canAdd){
+            view.makeToast("Under Development")
+            return
+        }
         MBProgressHUD.showAdded(to: self.view, animated: true)
-        ApiManager.sharedInstance.uploadMultipleImagesWithData(parmDict, imageArray, {(data) ->() in
+        ApiManager.sharedInstance.uploadMultipleImagesWithData(parmDict, images, {(data) ->() in
             MBProgressHUD.hide(for: self.view, animated: true)
-            
-            
+
+
         }, {(error)-> () in
             print("failure \(error)")
             MBProgressHUD.hide(for: self.view, animated: true)
             self.view.makeToast(NETWORK_ERROR)
-            
-            
+
+
         },{(progress)-> () in
             print("progress \(progress)")
-            
-            
+
+
         })
         
     }
@@ -301,25 +340,40 @@ extension AddPropertyViewController{
         //
         //    }
         
+        var images = [UIImage]()
+        //var urls = [String]()
+
+        for image in imageArray {
+            if let validimage = image as? UIImage{
+                images.append(validimage)
+            }
+//            else{
+//                urls.append(image as! String)
+//            }
+        }
+//        var allUrlString = ""
+//        if(urls.count > 0){
+//            allUrlString = urls.joined(separator: ",")
+//        }
         let userId = UserDefaults.standard.object(forKey: USER_ID) as! String
-        let parmDict = ["user_id" : userId ,"method_name" : ApiUrl.METHOD_ADD_PROPERTY , "price" : model.price , "area_sqft" : model.area_sqft , "bedrooms" : model.bedrooms , "bathrooms" : model.bathrooms , "car_parking_garage" : model.car_parking_garage , "address" : model.address , "description" : model.description , "agent_name" : model.agent_name , "agent_contact" : model.agent_contact ] as [String : Any]
-        
+        let parmDict = ["user_id" : userId ,"method_name" : ApiUrl.METHOD_ADD_PROPERTY , "price" : model.price , "area_sqft" : model.area_sqft , "bedrooms" : model.bedrooms , "bathrooms" : model.bathrooms , "car_parking_garage" : model.car_parking_garage , "address" : model.address , "description" : model.description , "agent_name" : model.agent_name , "agent_contact" : model.agent_contact] as [String : Any]
+
         MBProgressHUD.showAdded(to: self.view, animated: true)
-        ApiManager.sharedInstance.uploadMultipleImagesWithData(parmDict, imageArray, {(data) ->() in
+        ApiManager.sharedInstance.uploadMultipleImagesWithData(parmDict, images, {(data) ->() in
             MBProgressHUD.hide(for: self.view, animated: true)
-            
+
             self.responseOfAddProperty(data)
-            
+
         }, {(error)-> () in
             print("failure \(error)")
             MBProgressHUD.hide(for: self.view, animated: true)
             self.view.makeToast(NETWORK_ERROR)
-            
-            
+
+
         },{(progress)-> () in
             print("progress \(progress)")
-            
-            
+
+
         })
         
     }
@@ -365,7 +419,15 @@ extension AddPropertyViewController : UICollectionViewDataSource{
         }else{
             cell.deleteBtn.isHidden = false
             
-            cell.propertyImageView.image = imageArray[indexPath.row]
+            if let validUrl = imageArray[indexPath.row] as? String{
+                cell.propertyImageView.sd_setImage(with: URL(string : validUrl), placeholderImage: UIImage.init(named: "add_home_placeholder"))
+            }else{
+                if let validImage = imageArray[indexPath.row] as? UIImage{
+                cell.propertyImageView.image = validImage
+                }else{
+                  cell.propertyImageView.image = UIImage.init(named: "add_home_placeholder")
+                }
+            }
             
             
         }

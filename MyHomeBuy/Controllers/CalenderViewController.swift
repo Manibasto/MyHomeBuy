@@ -35,6 +35,7 @@ class CalenderViewController: UIViewController {
     @IBOutlet weak var descriptionTextView: UITextView!
     @IBOutlet weak var subjectTextField: UITextField!
     
+    @IBOutlet weak var timeIntervaltextField: UITextField!
     @IBOutlet weak var timeTextField: UITextField!
     @IBOutlet weak var midPopup: UIView!
     
@@ -43,9 +44,11 @@ class CalenderViewController: UIViewController {
     @IBOutlet var timePickerPopupView: UIView!
     var dateFormatter = DateFormatter()
     var currentDateStr = ""
-   
+   let customPickerData = ["15 Mins","30 Min","60 Min","1 Day"]
   //  pickerDoneBtnAction
     @IBOutlet weak var timePickerView: UIDatePicker!
+    @IBOutlet weak var customPickerView: UIPickerView!
+
     var calender = FSCalendar()
     var selectedDate = ""
     var selectedDateObject = Date()
@@ -136,18 +139,24 @@ class CalenderViewController: UIViewController {
     }
     @IBAction func pickerDoneBtnAction(_ sender: Any)
     {
-        let dateFormatter = DateFormatter()
-        
-        dateFormatter.dateStyle = DateFormatter.Style.short
-        dateFormatter.timeStyle = DateFormatter.Style.short
- 
-
-        dateFormatter.dateFormat = "HH:mm"
-         strTime = dateFormatter.string(from: timePickerView.date)
-       // let timeArray =  strDate.components(separatedBy: ", ")
-        timeTextField.text = strTime
+        if(!customPickerView.isHidden){
+            timeIntervaltextField.text = customPickerData[customPickerView.selectedRow(inComponent: 0)]
+        }else{
+            let dateFormatter = DateFormatter()
+            
+            dateFormatter.dateStyle = DateFormatter.Style.short
+            dateFormatter.timeStyle = DateFormatter.Style.short
+            
+            
+            dateFormatter.dateFormat = "HH:mm"
+            strTime = dateFormatter.string(from: timePickerView.date)
+            // let timeArray =  strDate.components(separatedBy: ", ")
+            timeTextField.text = strTime
+            // dateLabel.text = strDate
+        }
         timePickerPopupView.removeFromSuperview()
-       // dateLabel.text = strDate
+
+        
     }
     @IBAction func homeBtnPressed(_ sender: Any) {
         let navController : UINavigationController  = storyboard?.instantiateViewController(withIdentifier: "SlidingNavigationController") as! UINavigationController
@@ -181,7 +190,7 @@ class CalenderViewController: UIViewController {
         saveBtn.addTarget(self, action: #selector(saveBtnTapped), for: .touchUpInside)
         saveBtn.setRadius(10)
         cancelBtn.setRadius(10)
-        midPopup.setRadius(5)
+        midPopup.setRadius(10)
         descriptionTextView.delegate = self
         subjectTextField.applyPadding(padding: 5)
         timeTextField.applyPadding(padding: 5)
@@ -190,7 +199,9 @@ class CalenderViewController: UIViewController {
         descriptionTextView.text = ""
         timeTextField.text = ""
         timeTextField.delegate = self
-        
+        timeIntervaltextField.text = ""
+        timeIntervaltextField.delegate = self
+        timeIntervaltextField.applyPadding(padding: 5)
         
     }
     func saveBtnTapped(){
@@ -232,7 +243,7 @@ class CalenderViewController: UIViewController {
                 let event = EKEvent(eventStore: eventStore)
                 event.title = title
                 event.startDate = startDate
-                event.endDate = endDate
+                //event.endDate = endDate
                 event.notes = description
                 event.calendar = eventStore.defaultCalendarForNewEvents
                 do {
@@ -576,17 +587,43 @@ extension CalenderViewController : FSCalendarDataSource{
 extension CalenderViewController : UITextFieldDelegate
 {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        if textField == timeTextField{
+        if textField == timeTextField || textField == timeIntervaltextField{
             view.endEditing(true)
             timePickerPopupView.frame = view.frame
             view.addSubview(timePickerPopupView)
-            timePickerView.minimumDate = Date()
+            if(textField == timeTextField){
+                timePickerView.minimumDate = Date()
+                timePickerView.locale = Locale.current
+                timePickerView.isHidden = false
+                customPickerView.isHidden = true
+            }else{
+                timePickerView.isHidden = true
+                customPickerView.isHidden = false
+                customPickerView.dataSource = self
+                customPickerView.delegate = self
+            }
+            
         return false
     }
         return true
     }
     
 }
-
+extension CalenderViewController : UIPickerViewDataSource{
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return customPickerData.count
+    }
+   
+}
+extension CalenderViewController : UIPickerViewDelegate{
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        let value = customPickerData[row]
+        return value
+    }
+}
 
 

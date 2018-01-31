@@ -110,12 +110,22 @@ extension PropertyViewController : UITableViewDataSource{
 
         }
         
-        
+        cell.editButton.addTarget(self, action: #selector(editButtonTapped(_:)), for: .touchUpInside)
+        cell.editButton.tag = indexPath.row
         
         return cell
     }
     
-    
+    func editButtonTapped(_ button : UIButton){
+        let model = dataModel?.data?[button.tag]
+
+        let navController : UINavigationController  = storyboard?.instantiateViewController(withIdentifier: "SlidingNavigationController") as! UINavigationController
+        let controller = storyboard?.instantiateViewController(withIdentifier: "AddPropertyViewController") as? AddPropertyViewController
+        controller?.canAdd = false
+        controller?.propertyModel = model
+        navController.viewControllers = [controller!]
+        frostedViewController.contentViewController = navController
+    }
 }
 extension PropertyViewController : UITableViewDelegate{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
