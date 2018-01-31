@@ -17,10 +17,11 @@ class AddPropertyViewController: UIViewController {
     var currentTextField : UITextField?
     @IBOutlet weak var propertyTableView: UITableView!
     @IBOutlet weak var navigationBarView: UIView!
-    let headingText = ["Price" , "Area/size sqft" , "Bedrooms" , "Rest/Bathrooms", "Car parking in Garage" , "Address", "Description" , "Agent Name", "Agent Contact" ]
+    let headingText = ["Price" , "Area/size" , "Bedrooms" , "Rest/Bathrooms", "Car parking in Garage" , "Address", "Description" , "Agent Name", "Agent Contact" ]
     let placeHolderText = ["Enter Price" , "Enter Area" , "Bedrooms" , "Rest/Bathrooms", "Car parking in Garage" , "Enter Address", "Enter Description" , "Enter Agent Name", "Enter Agent Contact" ]
     let model = AddPropertyModel()
-    
+    var canAdd = false
+    @IBOutlet weak var titleLabel: UILabel!
     // dropdownpopup
     
     @IBOutlet var dropDownView: UIView!
@@ -37,6 +38,7 @@ class AddPropertyViewController: UIViewController {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
+        if(canAdd){
         model.initArray()
         navigationBarView.setBottomShadow()
         propertyTableView.delegate  = self
@@ -45,6 +47,29 @@ class AddPropertyViewController: UIViewController {
         propertyTableView.estimatedRowHeight = 100
         for i in 0..<5 {
             dropDownArray.append("\(i+1)")
+        }
+        }else{
+            titleLabel.text = "Edit Property"
+            //requestPropertyAPI()
+             model.price = "1234"
+             model.area_sqft = "3456"
+             model.bedrooms = "3"
+             model.bathrooms = "4"
+             model.car_parking_garage = "1"
+            model.address = "This is address"
+            model.description = "This is description"
+            model.agent_name = "vikas"
+            model.agent_contact = "1234567890"
+            model.imageUrls = ""
+            model.initArray()
+            navigationBarView.setBottomShadow()
+            propertyTableView.delegate  = self
+            propertyTableView.dataSource = self
+            propertyTableView.rowHeight = UITableViewAutomaticDimension
+            propertyTableView.estimatedRowHeight = 100
+            for i in 0..<5 {
+                dropDownArray.append("\(i+1)")
+            }
         }
         
     }
@@ -56,32 +81,11 @@ class AddPropertyViewController: UIViewController {
     }
     
     func addFooterView(){
-        
-        
-        
-        
-        
         footerView.frame(forAlignmentRect: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 300))
         propertyTableView.tableFooterView = footerView
         imageCollectioView.delegate = self
         imageCollectioView.dataSource = self
         addPropertyBtn.setRadius(10)
-        //        let color = dataDict.object(forKey: "colorCode") as! UIColor?
-        //        submitBtn.backgroundColor = color
-        
-        
-        //        if let headerView = propertyTableView.tableFooterView {
-        //
-        //            let height = headerView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
-        //            var headerFrame = headerView.frame
-        //
-        //            //Comparison necessary to avoid infinite loop
-        //            if height != headerFrame.size.height {
-        //                headerFrame.size.height = height
-        //                headerView.frame = headerFrame
-        //                propertyTableView.tableFooterView = headerView
-        //            }
-        //        }
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -157,15 +161,10 @@ extension AddPropertyViewController : UITableViewDataSource{
         if(indexPath.row == 5 || indexPath.row == 6){
             let cell = tableView.dequeueReusableCell(withIdentifier: "AddPropertyTextViewTableCell", for: indexPath) as! AddPropertyTextViewTableCell;
             cell.nameLbl.text  = headingText[indexPath.row]
-//            if(model.dataArray[indexPath.row] == ""){
-//                cell.descTextView.text = placeHolderText[indexPath.row]
-//                
-//            }else{
-//                cell.descTextView.text = model.dataArray[indexPath.row]
-//            }
             cell.descTextView.placeholder = placeHolderText[indexPath.row]
             cell.descTextView.tag = indexPath.row
             cell.descTextView.setRadius(5)
+            cell.descTextView.text = model.dataArray[indexPath.row]
             cell.descTextView.delegate = self
             return cell
         }else{
@@ -198,7 +197,6 @@ extension AddPropertyViewController : UITableViewDataSource{
             cell.descTextField.addTarget(self, action: #selector(textFieldDidChange(_:)),
                                          for: UIControlEvents.editingChanged)
             cell.descTextField.setRadius(5)
-            //cell.descTextField.applyPadding(padding: 5)
             return cell
         }
     }
@@ -256,19 +254,36 @@ extension AddPropertyViewController : UITextViewDelegate{
         
     }
     func textViewDidEndEditing(_ textView: UITextView) {
-        
-//        if(textView.text == "" || textView.text == placeHolderText[textView.tag]){
-//            textView.text = placeHolderText[textView.tag]
-//        }else{
-//            model.dataArray[textView.tag] = textView.text
-//            
-//        }
+
          model.dataArray[textView.tag] = textView.text
         
     }
     
 }
-
+extension AddPropertyViewController{
+    func requestPropertyAPI(){
+    let userId = UserDefaults.standard.object(forKey: USER_ID) as! String
+        let parmDict = ["user_id" : userId ,"method_name" : ApiUrl.METHOD_ADD_PROPERTY , "price" : model.price , "area_sqft" : model.area_sqft , "bedrooms" : model.bedrooms , "bathrooms" : model.bathrooms , "car_parking_garage" : model.car_parking_garage , "address" : model.address , "description" : model.description , "agent_name" : model.agent_name , "agent_contact" : model.agent_contact ] as [String : Any]
+        
+        MBProgressHUD.showAdded(to: self.view, animated: true)
+        ApiManager.sharedInstance.uploadMultipleImagesWithData(parmDict, imageArray, {(data) ->() in
+            MBProgressHUD.hide(for: self.view, animated: true)
+            
+            
+        }, {(error)-> () in
+            print("failure \(error)")
+            MBProgressHUD.hide(for: self.view, animated: true)
+            self.view.makeToast(NETWORK_ERROR)
+            
+            
+        },{(progress)-> () in
+            print("progress \(progress)")
+            
+            
+        })
+        
+    }
+}
 extension AddPropertyViewController{
     func requestAddPropertyAPI(){
         //        method_name":"add_user_Property",

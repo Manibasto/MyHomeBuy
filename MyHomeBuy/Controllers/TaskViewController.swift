@@ -190,7 +190,7 @@ extension TaskViewController : UITableViewDataSource{
             let model = dataModel?.data?[indexPath.row]
             let color = dataDict.object(forKey: "colorCode") as! UIColor?
 
-            if(indexPath.row != (dataModel?.data?.count)!-1){
+            if(indexPath.row != 2){
                 let cell = tableView.dequeueReusableCell(withIdentifier: "TaskTableCell", for: indexPath) as! TaskTableCell;
                 underlineText(of: cell, for: indexPath)
                 //cell.taskLbl.text = model?.name
@@ -370,7 +370,7 @@ extension TaskViewController : UITableViewDataSource{
         }
     }
     func setupCellDataForDone(_ indexPath : IndexPath , _ cell : TaskCalculationTableCell , _ model : TaskData){
-        cell.resultLbl.text = "My maximum purchase price\nTotal\n$ 0.0"
+        cell.resultLbl.text = "My maximum purchase price\nTotal\n$ 0.00"
         
         let value = model.value
         let valueList = value?.components(separatedBy: ",")
@@ -387,7 +387,8 @@ extension TaskViewController : UITableViewDataSource{
             valueFourth = fourth
             if let firstvalue = first , let secondvalue = second , let thirdValue = third , let fourthValue = fourth{
                 let result = firstvalue + secondvalue + thirdValue - fourthValue
-      cell.resultLbl.text = "My maximum purchase price\nTotal\n$ \(result)"
+                let twoDecimalPlaces = String(format: "%.2f", result)
+      cell.resultLbl.text = "My maximum purchase price\nTotal\n$ \(twoDecimalPlaces)"
             }
             
             
@@ -414,7 +415,7 @@ extension TaskViewController : UITableViewDataSource{
     }
     
     func setupCellDataForUndone(_ indexPath : IndexPath , _ cell : TaskCalculationTableCell , _ model : TaskData){
-        cell.resultLbl.text = "My maximum purchase price\nTotal\n$ 0.0"
+        cell.resultLbl.text = "My maximum purchase price\nTotal\n$ 0.00"
       for (index , textField) in cell.amountTextFieldArray.enumerated() {
             textField.delegate = self
         textField.addTarget(self, action: #selector(textFieldDidChange(_:)),
@@ -478,8 +479,9 @@ extension TaskViewController : UITableViewDataSource{
             }
 
             }
+        let twoDecimalPlaces = String(format: "%.2f", getTotal())
 
-        cell.resultLbl.text = "My maximum purchase price\nTotal\n$ \(getTotal())"
+        cell.resultLbl.text = "My maximum purchase price\nTotal\n$ \(twoDecimalPlaces)"
 
         }
         
@@ -550,7 +552,9 @@ extension TaskViewController : UITableViewDataSource{
         
         let cell = getCellForView(view: textField) as? TaskCalculationTableCell
         if let calculationCell = cell{
-            calculationCell.resultLbl.text = "My maximum purchase price\nTotal\n$ \(getTotal())"
+            let twoDecimalPlaces = String(format: "%.2f", getTotal())
+            
+            calculationCell.resultLbl.text = "My maximum purchase price\nTotal\n$ \(twoDecimalPlaces)"
 
             
         }

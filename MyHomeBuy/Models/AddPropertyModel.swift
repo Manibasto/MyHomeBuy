@@ -18,6 +18,7 @@ class AddPropertyModel{
     var description = ""
     var agent_name = ""
     var agent_contact = ""
+    var imageUrls = ""
     var dataArray = [String]()
     func initArray(){
         dataArray.append(price)

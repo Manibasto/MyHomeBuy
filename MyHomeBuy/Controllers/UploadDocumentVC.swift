@@ -33,6 +33,7 @@ class UploadDocumentVC: UIViewController {
     {
         super.viewDidLoad()
        fileNameLabel.text = ""
+        userImageView.image  = nil
         // Do any additional setup after loading the view.
     }
 
@@ -152,10 +153,10 @@ class UploadDocumentVC: UIViewController {
         
         let alertController = UIAlertController(title: title, message: msg, preferredStyle: UIAlertControllerStyle.alert)
         
-        let DestructiveAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: "nil"), style: .default) {
-            (result : UIAlertAction) -> Void in
-            print("Destructive")
-        }
+//        let DestructiveAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: "nil"), style: .default) {
+//            (result : UIAlertAction) -> Void in
+//            print("Destructive")
+//        }
         
         
         let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "nil"), style: UIAlertActionStyle.default) {
@@ -163,7 +164,7 @@ class UploadDocumentVC: UIViewController {
             print("OK")
         }
         
-        alertController.addAction(DestructiveAction)
+        //alertController.addAction(DestructiveAction)
         alertController.addAction(okAction)
         self.present(alertController, animated: true, completion: nil)
         alertController.view.tintColor = UIColor.black
@@ -251,6 +252,7 @@ extension UploadDocumentVC
             if(status == 1){
                 self.view.makeToast("Add Image Successfully")
                 self.canUpload = false
+                self.userImageView.image  = nil
             }else{
                 self.view.makeToast(msg!)
             }
@@ -289,6 +291,8 @@ extension UploadDocumentVC
                 self.fileNameLabel.text = ""
                 self.view.makeToast("Add Document Successfully")
                 self.canUpload = false
+                self.userImageView.image  = nil
+
             }else{
                 self.view.makeToast(msg!)
             }

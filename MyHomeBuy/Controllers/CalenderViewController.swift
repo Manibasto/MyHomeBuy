@@ -52,9 +52,7 @@ class CalenderViewController: UIViewController {
     var dateArray = [Date]()
     // header outlets
     var strTime = ""
-    @IBOutlet weak var nextEventView: UIView!
     @IBOutlet var headerView: UIView!
-    @IBOutlet weak var nextEventLbl: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -338,39 +336,51 @@ extension CalenderViewController{
                 if(count>0){
                     addHeaderView(status : 1)
                 }else{
-                    view.makeToast("No upcoming events available")
-                    addHeaderView(status : 0)
+                   noDataFound()
 
                 }
 
             }
         }else{
-            addHeaderView(status : 0)
-
-            view.makeToast("No upcoming events available")
+           noDataFound()
         }
         
     }
+    
+    func noDataFound(){
+        addHeaderView(status : 0)
+        
+        view.makeToast("No upcoming events available")
+        
+    }
     func addHeaderView(status : Int){
-        headerView.frame(forAlignmentRect: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 110))
+      
+        
+        headerView.frame(forAlignmentRect: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 50))
         eventsTableView.tableHeaderView = headerView
-       nextEventView.setRadius(5)
+       //nextEventView.setRadius(5)
         if(status == 1){
-        let model = dataModel?.data?[0]
-        let dateStr = model?.date
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        if let date = dateFormatter.date(from: dateStr!){
-            dateFormatter.dateFormat = "MMM. dd, yyyy"
-
-            let stringDate =  dateFormatter.string(from: date)
-            nextEventLbl.text = "Next event on \(stringDate)"
-
+        //let model = dataModel?.data?[0]
+        //let dateStr = model?.date
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "yyyy-MM-dd"
+//        if let date = dateFormatter.date(from: dateStr!){
+//            dateFormatter.dateFormat = "MMM. dd, yyyy"
+//
+//            let stringDate =  dateFormatter.string(from: date)
+//           // nextEventLbl.text = "Next event on \(stringDate)"
+//
+//        }else{
+//        // nextEventLbl.text = "Invalid date formate"
+//        }
+           // nextEventView.isHidden = true
+            waterMarkLbl.isHidden = true
         }else{
-         nextEventLbl.text = "Invalid date formate"
-        }
-        }else{
-            nextEventLbl.text = "No upcoming events available"
+            waterMarkLbl.isHidden = false
+
+           // nextEventView.isHidden = false
+
+            //nextEventLbl.text = "No upcoming events available"
 
         }
     }
