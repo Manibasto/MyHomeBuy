@@ -14,6 +14,7 @@ import EventKit
 class CalenderViewController: UIViewController {
     @IBOutlet var adddEventPopupView: UIView!
     
+    @IBOutlet weak var eventHeaderLabel: UILabel!
     @IBOutlet weak var waterMarkLbl: UILabel!
     
     @IBOutlet weak var calenderView: UIView!
@@ -44,8 +45,8 @@ class CalenderViewController: UIViewController {
     @IBOutlet var timePickerPopupView: UIView!
     var dateFormatter = DateFormatter()
     var currentDateStr = ""
-   let customPickerData = ["15 Mins","30 Min","60 Min","1 Day"]
-  //  pickerDoneBtnAction
+    let customPickerData = ["15 Mins","30 Min","60 Min","1 Day"]
+    //  pickerDoneBtnAction
     @IBOutlet weak var timePickerView: UIDatePicker!
     @IBOutlet weak var customPickerView: UIPickerView!
 
@@ -55,6 +56,9 @@ class CalenderViewController: UIViewController {
     var dateArray = [Date]()
     // header outlets
     var strTime = ""
+    var isFromEdit = false
+    var currentTappedIndex = -1
+    var eventId = ""
     @IBOutlet var headerView: UIView!
     
     override func viewDidLoad() {
@@ -64,7 +68,6 @@ class CalenderViewController: UIViewController {
         frostedViewController.panGestureEnabled = false
 //        navigationBarView.setBottomShadow()
 //        headingView.setBottomShadow()
-        setupData()
         if(fromTask){
             setupHeaderData()
             
@@ -110,10 +113,11 @@ class CalenderViewController: UIViewController {
         //calendar.appearance.todayColor = UIColor.orangeColor
        // calendar.appearance.todaySelectionColor = UIColor.blackColor
     }
-    func setupData(){
-        
-        
-    }
+   
+    
+    
+
+    
     func setupHeaderData(){
         let image = UIImage.init(named: (dataDict.object(forKey: "image_white") as! String?)!)
         headingImageView.image = image
@@ -147,7 +151,6 @@ class CalenderViewController: UIViewController {
             dateFormatter.dateStyle = DateFormatter.Style.short
             dateFormatter.timeStyle = DateFormatter.Style.short
             
-            
             dateFormatter.dateFormat = "HH:mm"
             strTime = dateFormatter.string(from: timePickerView.date)
             // let timeArray =  strDate.components(separatedBy: ", ")
@@ -177,6 +180,7 @@ class CalenderViewController: UIViewController {
         //11-23-2017 09:41
         //MM-dd-yyyy HH:mm
         //yyyy-MM-dd HH:mm:ss Z
+        eventHeaderLabel.text = "Add an Event"
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMM dd, yyyy"
         let stringDate =  dateFormatter.string(from: date)
@@ -209,15 +213,22 @@ class CalenderViewController: UIViewController {
         if(subjectTextField.text?.isEmpty)!{
             view.makeToast("Please enter subject")
         }
-//        else if(descriptionTextView.text.isEmpty){
-//            view.makeToast("Please enter description")
+//        else if(timeIntervaltextField.text?.isEmpty)!{
+//            view.makeToast("Please enter ti")
 //
 //        }
         else if(timeTextField.text?.isEmpty)!{
             view.makeToast("Please enter time")
             
         }else{
-            requestAddEventAPI()
+            if isFromEdit{
+                requestEditEventAPI()
+            }
+            else
+            {
+                 saveEvent()
+            }
+        
         }
     }
     func cancelBtnTapped(){
@@ -243,9 +254,22 @@ class CalenderViewController: UIViewController {
                 let event = EKEvent(eventStore: eventStore)
                 event.title = title
                 event.startDate = startDate
-                //event.endDate = endDate
+                event.endDate = endDate
                 event.notes = description
                 event.calendar = eventStore.defaultCalendarForNewEvents
+                //DispatchQueue.main.async {
+                    if(self.getSeconds() == 0){
+                        event.alarms = [EKAlarm(relativeOffset: 0)]
+                        print("one alarm set")
+                    }
+                    else
+                    {
+                        event.alarms = [EKAlarm(relativeOffset: 0),EKAlarm(relativeOffset: TimeInterval(-1*self.getSeconds()))]
+                        print("two alarm set")
+                    }
+                   
+               // }
+               
                 do {
                     try eventStore.save(event, span: .thisEvent)
                 } catch let e as NSError {
@@ -254,11 +278,29 @@ class CalenderViewController: UIViewController {
                     completion?(false, e)
                     return
                 }
-                let timeInterval = TimeInterval(60 * -60)
-                let alarm = EKAlarm(relativeOffset: timeInterval)
-                event.addAlarm(alarm)
+//                let timeInterval = TimeInterval(60 * -60)
+//                let alarm = EKAlarm(relativeOffset: timeInterval)
+//                event.addAlarm(alarm)
+                let eventID = event.eventIdentifier
+                print(eventID)
+                DispatchQueue.main.async {
+                self.requestAddEventAPI(eventId: eventID)
+                }
+//                let existingEvent = eventStore.event(withIdentifier: eventID)
+//                if let event1 = existingEvent {
+//                    print(event1)
+//                }
+                
+//                EKEvent *existingEvent = [eventStore eventWithIdentifier:[[NSUserDefaults standardUserDefaults] objectForKey:self.showId]];
+//                NSLog(@"Existing event: %@",existingEvent);
+//                if (existingEvent != nil) {
+//                    success = [eventStore removeEvent:existingEvent span:EKSpanThisEvent error:&err];
+//                }
+//                if (success) {
+//                    [[NSUserDefaults standardUserDefaults] removeObjectForKey:self.showId];
+//                }
+                
                 self.showMsg("Event saved in your device")
-
                 completion?(true, nil)
             } else {
                 self.showMsg("No permission to add events")
@@ -267,7 +309,23 @@ class CalenderViewController: UIViewController {
             }
         })
     }
-    
+   
+    func getSeconds()->Int{
+        var initialValue = 0;
+        switch timeIntervaltextField.text! {
+        case customPickerData[0]:
+            initialValue = 15*60
+        case customPickerData[1]:
+            initialValue = 30*60
+        case customPickerData[0]:
+            initialValue = 60*60
+        case customPickerData[0]:
+            initialValue = 60*60*60*24
+        default:
+            break
+        }
+        return initialValue
+    }
     func showMsg(_ msg : String){
         DispatchQueue.main.async {
             self.view.makeToast(msg)
@@ -390,7 +448,6 @@ extension CalenderViewController{
             waterMarkLbl.isHidden = false
 
            // nextEventView.isHidden = false
-
             //nextEventLbl.text = "No upcoming events available"
 
         }
@@ -398,7 +455,7 @@ extension CalenderViewController{
 }
 
 extension CalenderViewController{
-    func requestAddEventAPI(){
+    func requestAddEventAPI(eventId : String){
         //        {
         //            "method_name":"add_user_TaskCalendar",
         //            "user_id":"11",
@@ -408,11 +465,9 @@ extension CalenderViewController{
         //            "date":"2017-07-20"
         //        }
         
-        
-        
         let userId = UserDefaults.standard.object(forKey: USER_ID) as! String
-        let parmDict = ["user_id" : userId ,"time" : strTime ,"method_name" : ApiUrl.METHOD_ADD_EVENTS , "task_id" : currentTaskID , "subject" : subjectTextField.text! , "description" : descriptionTextView.text , "date" : selectedDate] as [String : Any]
-        
+        let parmDict = ["user_id" : userId ,"time" : strTime ,"method_name" : ApiUrl.METHOD_ADD_EVENTS , "task_id" : currentTaskID ,"event_id" : eventId , "reminder" : timeIntervaltextField.text! , "subject" : subjectTextField.text! , "description" : descriptionTextView.text , "date" : selectedDate] as [String : Any]
+     
         MBProgressHUD.showAdded(to: self.view, animated: true)
         ApiManager.sharedInstance.requestApiServer(parmDict, [UIImage](), {(data) ->() in
             MBProgressHUD.hide(for: self.view, animated: true)
@@ -435,14 +490,209 @@ extension CalenderViewController{
             self.view.makeToast("Events added successfully")
             adddEventPopupView.removeFromSuperview()
             requestGetAllEventsAPI()
-            saveEvent()
         }else{
             self.view.makeToast("Unable to  save events")
         }
     }
     
     func saveEvent(){
-        addEventToCalendar(title: subjectTextField.text!, description: descriptionTextView.text, startDate: selectedDateObject, endDate: selectedDateObject)
+        // "2018-02-22 14:44"
+        
+        let dateTimeStr = "\(selectedDate) \(strTime)"  //append date and Time
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale.current
+        dateFormatter.timeZone = TimeZone.current
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
+        let finalDate = dateFormatter.date(from: dateTimeStr)!
+        
+       // let yourDate = dateFormatter.date(from: finalDate)
+        //then again set the date format whhich type of output you need
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
+        // again convert your date to string
+        let finalDateStr = dateFormatter.string(from: finalDate)
+        print(finalDateStr)
+        
+        addEventToCalendar(title: subjectTextField.text!, description: descriptionTextView.text, startDate: finalDate, endDate: finalDate)
+    }
+    // Edit Event Api Hit
+  
+}
+extension CalenderViewController{
+    func requestEditEventAPI(){
+        //        {
+        //            "method_name":"add_user_TaskCalendar",
+        //            "user_id":"11",
+        //            "task_id":"2",
+        //            "subject":"composer ",
+        //            "description":"please fill the composers",
+        //            "date":"2017-07-20"
+        //        }
+        let model = dataModel?.data?[currentTappedIndex]
+        eventId = (model?.event_id)!
+        let id  = (model?.id)!
+
+        let userId = UserDefaults.standard.object(forKey: USER_ID) as! String
+        let parmDict = ["user_id" : userId ,"time" : strTime ,"method_name" : ApiUrl.METHOD_EDIT_EVENTS , "task_id" : currentTaskID ,"event_id" :eventId , "reminder" : timeIntervaltextField.text! , "id" : id, "subject" : subjectTextField.text! , "description" : descriptionTextView.text , "date" : selectedDate] as [String : Any]
+        
+        MBProgressHUD.showAdded(to: self.view, animated: true)
+        ApiManager.sharedInstance.requestApiServer(parmDict, [UIImage](), {(data) ->() in
+            MBProgressHUD.hide(for: self.view, animated: true)
+            self.responseOfEditEvents(data)
+        }, {(error)-> () in
+            print("failure \(error)")
+            MBProgressHUD.hide(for: self.view, animated: true)
+            self.view.makeToast(NETWORK_ERROR)
+        },{(progress)-> () in
+            print("progress \(progress)")
+            
+        })
+        
+    }
+    func responseOfEditEvents(_ userData : Any){
+        
+        dataModel = EventBase(dictionary: userData as! NSDictionary)
+        if(dataModel?.status == 1){
+            editEventOnDevice()
+
+            eventsTableView.reloadData()
+            self.view.makeToast("Events edited successfully")
+            adddEventPopupView.removeFromSuperview()
+            requestGetAllEventsAPI()
+            
+            
+        }else{
+            
+            self.view.makeToast("Unable to  save events")
+        }
+        
+    }
+    func editEventOnDevice(){
+        //let eventID = event.eventIdentifier
+        let eventStore = EKEventStore()
+
+        let existingEvent = eventStore.event(withIdentifier: eventId)
+                        if let event1 = existingEvent {
+                            let dateTimeStr = "\(selectedDate) \(strTime)"  //append date and Time
+                            let dateFormatter = DateFormatter()
+                            dateFormatter.locale = Locale.current
+                            dateFormatter.timeZone = TimeZone.current
+                            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
+                            let finalDate = dateFormatter.date(from: dateTimeStr)!
+                            
+                            // let yourDate = dateFormatter.date(from: finalDate)
+                            //then again set the date format whhich type of output you need
+                            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
+                            // again convert your date to string
+                            let finalDateStr = dateFormatter.string(from: finalDate)
+                            print(finalDateStr)
+                            
+                            event1.title = subjectTextField.text!
+                            event1.startDate = finalDate
+                            event1.endDate = finalDate
+                            event1.notes = description
+                            event1.calendar = eventStore.defaultCalendarForNewEvents
+                            // remove all alarm
+                            if let alarms = event1.alarms {
+                                for alarm in alarms {
+                                    event1.removeAlarm(alarm)
+                                }
+                            }
+  
+                          //  event1.alarms
+                            //DispatchQueue.main.async {
+                            if(self.getSeconds() == 0){
+                                event1.alarms = [EKAlarm(relativeOffset: 0)]
+                                print("one alarm set")
+                            }
+                            else
+                            {
+                                event1.alarms = [EKAlarm(relativeOffset: 0),EKAlarm(relativeOffset: TimeInterval(-1*self.getSeconds()))]
+                                print("two alarm set")
+                            }
+                            
+                            // }
+                            
+                            do {
+                                try eventStore.save(event1, span: .thisEvent)
+                            } catch let e as NSError {
+                                self.showMsg("Unable to save event in your device")
+                                
+                                //completion?(false, e)
+                                return
+                            }
+                            
+                            
+                            
+                    //   editEventToCalendar(title: subjectTextField.text!, eventId: event1, description: descriptionTextView.text, startDate: finalDate, endDate: finalDate)
+//                            editEventToCalendar(title: subjectTextField.text!, event1: event1, description: descriptionTextView.text, startDate: finalDate, endDate: finalDate)
+                            
+//                             addEventToCalendar(title: subjectTextField.text!, description: descriptionTextView.text, startDate: finalDate, endDate: finalDate)
+                        }
+    }
+    
+    func deleteEventFromDevice(){
+        //let eventID = event.eventIdentifier
+        let eventStore = EKEventStore()
+        
+        let existingEvent = eventStore.event(withIdentifier: eventId)
+        if let event1 = existingEvent {
+            
+            do {
+                try eventStore.remove(event1, span: .thisEvent)
+                print("Event removed")
+            }catch {
+                
+            }
+//            if let alarms = event1.alarms {
+//                for alarm in alarms {
+//                    event1.removeAlarm(alarm)
+//                }
+//            }
+        }
+    }
+}
+
+extension CalenderViewController{
+    func requestDeleteApi(){
+        let model = dataModel?.data?[currentTappedIndex]
+        let id  = (model?.id)!
+        
+        let parmDict = ["method_name" : ApiUrl.METHOD_DELETE_EVENTS , "id" : id]
+        
+        MBProgressHUD.showAdded(to: self.view, animated: true)
+        ApiManager.sharedInstance.requestApiServer(parmDict, [UIImage](), {(data) ->() in
+            MBProgressHUD.hide(for: self.view, animated: true)
+            if let model = self.dataModel?.data?[self.currentTappedIndex], let id = model.event_id {
+                self.eventId = id
+                self.responseOfDeleteEvents(data)
+            }
+        }, {(error)-> () in
+            print("failure \(error)")
+            MBProgressHUD.hide(for: self.view, animated: true)
+            self.view.makeToast(NETWORK_ERROR)
+        },{(progress)-> () in
+            print("progress \(progress)")
+            
+            
+        })
+        
+
+    }
+    func responseOfDeleteEvents(_ userData : Any){
+        
+        dataModel = EventBase(dictionary: userData as! NSDictionary)
+        if(dataModel?.status == 1){
+            deleteEventFromDevice()
+            eventsTableView.reloadData()
+            self.view.makeToast("Events Delete successfully")
+            adddEventPopupView.removeFromSuperview()
+            requestGetAllEventsAPI()
+            
+            
+        }else{
+            
+            self.view.makeToast("Unable to  Delete events")
+        }
         
     }
 }
@@ -468,6 +718,13 @@ extension CalenderViewController : UITableViewDataSource{
             cell.dateLbl.text = model?.created_date
             
         }
+        cell.editButton.addTarget(self, action: #selector(editBtnTapped(_:)), for: .touchUpInside)
+        cell.editButton.tag = indexPath.row
+
+        
+        cell.deleteButton.addTarget(self, action: #selector(deleteBtnTapped(_:)), for: .touchUpInside)
+        cell.deleteButton.tag = indexPath.row
+
 //        if(indexPath.row % 2 != 0){
 //            cell.contentView.backgroundColor = UIColor.lighterGray
 //        }else{
@@ -484,19 +741,61 @@ extension CalenderViewController : UITableViewDataSource{
         }
         return cell
     }
+    func editBtnTapped(_ btn : UIButton){
+        currentTappedIndex = btn.tag
+        isFromEdit = true
+        print("edit")
+        let model = dataModel?.data?[btn.tag]
+        let dateStr = model?.date
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale.current
+        dateFormatter.timeZone = TimeZone.current
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let finalDate = dateFormatter.date(from: dateStr!)!
+        
+        addEventBtnTapped(finalDate)
+        eventHeaderLabel.text = "Edit an Event"
+
+
+       // let model = dataModel?.data?[indexPath.row]
+       // cell.nameLbl.text = model?.subject
+        subjectTextField.text = model?.subject
+        descriptionTextView.text = model?.description
+        let time = model?.time
+        let endIndex = time?.index((time?.endIndex)!, offsetBy: -3)
+        let truncated = time?.substring(to: endIndex!)
+        timeTextField.text = truncated
+        timeIntervaltextField.text = model?.reminder
+
+      // descLbl.text = model?.description
+        //date object
+        
+    }
     
+    func deleteBtnTapped(_ btn : UIButton){
+        currentTappedIndex = btn.tag
+        let model = dataModel?.data?[btn.tag]
+        requestDeleteApi()
+        print("delete")
+    }
+//    func fillData(){
+//
+//    }
+   // delete_user_TaskCalendar
 }
 extension CalenderViewController : UITableViewDelegate{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        //
+      
         
-        
-    }
+       }
     
     
 }
 
 extension CalenderViewController : FSCalendarDelegate{
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+        isFromEdit = false
         addEventBtnTapped(date)
         
     }
@@ -592,8 +891,16 @@ extension CalenderViewController : UITextFieldDelegate
             timePickerPopupView.frame = view.frame
             view.addSubview(timePickerPopupView)
             if(textField == timeTextField){
-                timePickerView.minimumDate = Date()
+           //     timePickerView.minimumDate = Date()
                 timePickerView.locale = Locale.current
+                timePickerView.timeZone = TimeZone.current
+                timePickerView.datePickerMode = .time
+                timePickerView.locale = Locale(identifier: "en_GB")
+
+               // [datePickerFormat setDateFormat:@"HH:mm"];
+
+                // if come from edit then  timePickerView.datePickerMode = .datetime
+//                timePickerView.datePickerMode = .time
                 timePickerView.isHidden = false
                 customPickerView.isHidden = true
             }else{

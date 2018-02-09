@@ -29,12 +29,12 @@ class PropertyDetailViewController: UIViewController {
     @IBOutlet weak var detailLbl: UILabel!
     @IBOutlet weak var areaLbl: UILabel!
     
+    @IBOutlet weak var deleteButton: UIButton!
     @IBOutlet weak var propertyInfoView: UIView!
     var currentIndex = 0
     @IBOutlet weak var contactAgentView: UIView!
     @IBOutlet weak var navigationBarView: UIView!
     @IBOutlet weak var homeDetailView: UIView!
-   
     @IBOutlet weak var editPropertyBtn: UIButton!
     
     override func viewDidLoad() {
@@ -58,6 +58,9 @@ class PropertyDetailViewController: UIViewController {
         homeDetailView.setRadius(5)
         contactAgentView.setRadius(5)
         homeDetailView.setRadius(5)
+       // let titleColor = editPropertyBtn.titleColor(for: .normal)
+       // editPropertyBtn.setRadius(10, titleColor!, 2)
+        
         rightBtn.addTarget(self, action: #selector(rightBtnTapped), for: .touchUpInside)
         leftBtn.addTarget(self, action: #selector(leftBtnTapped), for: .touchUpInside)
         
@@ -151,17 +154,25 @@ class PropertyDetailViewController: UIViewController {
         let price = model?.price
         priceLbl.text = "$ \(price!)"
         addressLbl.text = model?.address
-        
-        
-        
-        
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func editButtonTapped(_ sender: Any) {
+    @IBAction func editButtonTapped(_ sender: Any)
+    {
+            let navController : UINavigationController  = storyboard?.instantiateViewController(withIdentifier: "SlidingNavigationController") as! UINavigationController
+            let controller = storyboard?.instantiateViewController(withIdentifier: "AddPropertyViewController") as? AddPropertyViewController
+            controller?.canAdd = false
+            controller?.propertyModel = model
+            navController.viewControllers = [controller!]
+            frostedViewController.contentViewController = navController
+    }
+    
+    @IBAction func deleteButtonTapped(_ sender: Any) {
+        
+    requestDeletePropertAPI()
     }
     
     @IBAction func menuBtnPressed(_ sender: Any) {
@@ -250,6 +261,47 @@ extension PropertyDetailViewController : UICollectionViewDataSource{
     }
 }
 
-
+extension PropertyDetailViewController
+{
+    func requestDeletePropertAPI( ){
+        //  {"id":"3","method_name":"delete_user_document"}
+        //let userId = UserDefaults.standard.object(forKey: USER_ID) as! String
+        // let id =  model?.id!
+        let id  = (model?.id)!
+        let parmDict = ["id" :id,"method_name" : ApiUrl.METHOD_DELETE_PROPERTY,"image" :"","tablename" : "user_property"] as [String : Any]
+        
+        MBProgressHUD.showAdded(to: self.view, animated: true)
+        ApiManager.sharedInstance.apiCall(parmDict, [UIImage](), {(data) ->() in
+            
+            let dictionary = data as! NSDictionary
+            
+            let status = dictionary["status"] as? Int
+            let msg = dictionary["msg"] as? String
+            if(status == 1){
+                //  self.pdfArray.remove(at: tag)
+                //   self.pdfTableView.reloadData()
+               // self.propertyTableView.reloadData()
+                self.navigationController?.popViewController(animated: true)
+                self.view.makeToast("Image deleted succesfully")
+            }else{
+                self.view.makeToast(msg!)
+            }
+            
+            
+            MBProgressHUD.hide(for: self.view, animated: true)
+        }, {(error)-> () in
+            print("failure \(error)")
+            MBProgressHUD.hide(for: self.view, animated: true)
+            self.view.makeToast(NETWORK_ERROR)
+            
+            
+        },{(progress)-> () in
+            print("progress \(progress)")
+            
+        })
+        
+    }
+    
+}
 
 

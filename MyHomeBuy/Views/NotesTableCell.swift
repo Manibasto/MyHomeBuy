@@ -11,6 +11,7 @@ import UIKit
 class NotesTableCell: UITableViewCell {
 
     @IBOutlet weak var editBtn: UIButton!
+    @IBOutlet weak var deleteBtn: UIButton!
     @IBOutlet weak var descriptionLbl: UILabel!
     @IBOutlet weak var dataLbl: UILabel!
     @IBOutlet weak var headingLbl: UILabel!

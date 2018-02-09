@@ -1,5 +1,5 @@
 /* 
-Copyright (c) 2017 Swift Models Generated from JSON powered by http://www.json4swift.com
+Copyright (c) 2018 Swift Models Generated from JSON powered by http://www.json4swift.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -14,7 +14,7 @@ import Foundation
 
 public class GalleryImagesBase {
 	public var status : Int?
-	public var data : GalleryImagesModel?
+	public var data : Array<GalleryImagesModel>?
 	public var msg : String?
 
 /**
@@ -50,7 +50,7 @@ public class GalleryImagesBase {
 	required public init?(dictionary: NSDictionary) {
 
 		status = dictionary["status"] as? Int
-		if (dictionary["data"] != nil) { data = GalleryImagesModel(dictionary: dictionary["data"] as! NSDictionary) }
+        if (dictionary["data"] != nil) { data = GalleryImagesModel.modelsFromDictionaryArray(array: dictionary["data"] as! NSArray) }
 		msg = dictionary["msg"] as? String
 	}
 
@@ -65,7 +65,6 @@ public class GalleryImagesBase {
 		let dictionary = NSMutableDictionary()
 
 		dictionary.setValue(self.status, forKey: "status")
-		dictionary.setValue(self.data?.dictionaryRepresentation(), forKey: "data")
 		dictionary.setValue(self.msg, forKey: "msg")
 
 		return dictionary

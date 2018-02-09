@@ -9,6 +9,7 @@
 import Foundation
 
 class AddPropertyModel{
+    var propertyId = ""
     var price = ""
     var area_sqft = ""
     var bedrooms = "1"

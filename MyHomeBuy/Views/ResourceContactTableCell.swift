@@ -9,7 +9,7 @@
 import UIKit
 
 class ResourceContactTableCell: UITableViewCell {
-
+    
     @IBOutlet weak var profileView: UIView!
     @IBOutlet weak var initialLbl: UILabel!
     

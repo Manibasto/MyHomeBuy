@@ -14,18 +14,19 @@ class PropertyViewController: UIViewController {
     @IBOutlet weak var addPropertyBtn: UIButton!
     @IBOutlet var footerView: UIView!
     var dataModel = GetPropertyDetailBase(dictionary: ["" : ""] )
+    var currenttag = -1
     
     @IBOutlet weak var propertyTableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        //addLongPressGesture()
         // Do any additional setup after loading the view.
-        requestGetAllPropertyAPI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         frostedViewController.panGestureEnabled = true
+        requestGetAllPropertyAPI()
         addFooterView()
     }
     func addFooterView(){
@@ -41,7 +42,6 @@ class PropertyViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    
     @IBAction func menuBtnPressed(_ sender: Any) {
         frostedViewController.presentMenuViewController()
     }
@@ -53,7 +53,6 @@ class PropertyViewController: UIViewController {
         controller = storyboard?.instantiateViewController(withIdentifier: "MyHomeViewController") as? MyHomeViewController
         
         navController.viewControllers = [controller]
-        
         frostedViewController.contentViewController = navController
     }
     
@@ -110,22 +109,22 @@ extension PropertyViewController : UITableViewDataSource{
 
         }
         
-        cell.editButton.addTarget(self, action: #selector(editButtonTapped(_:)), for: .touchUpInside)
-        cell.editButton.tag = indexPath.row
+       // cell.editButton.addTarget(self, action: #selector(editButtonTapped(_:)), for: .touchUpInside)
+       // cell.editButton.tag = indexPath.row
         
         return cell
     }
     
-    func editButtonTapped(_ button : UIButton){
-        let model = dataModel?.data?[button.tag]
-
-        let navController : UINavigationController  = storyboard?.instantiateViewController(withIdentifier: "SlidingNavigationController") as! UINavigationController
-        let controller = storyboard?.instantiateViewController(withIdentifier: "AddPropertyViewController") as? AddPropertyViewController
-        controller?.canAdd = false
-        controller?.propertyModel = model
-        navController.viewControllers = [controller!]
-        frostedViewController.contentViewController = navController
-    }
+//    func editButtonTapped(_ button : UIButton){
+//        let model = dataModel?.data?[button.tag]
+//
+//        let navController : UINavigationController  = storyboard?.instantiateViewController(withIdentifier: "SlidingNavigationController") as! UINavigationController
+//        let controller = storyboard?.instantiateViewController(withIdentifier: "AddPropertyViewController") as? AddPropertyViewController
+//        controller?.canAdd = false
+//        controller?.propertyModel = model
+//        navController.viewControllers = [controller!]
+//        frostedViewController.contentViewController = navController
+//    }
 }
 extension PropertyViewController : UITableViewDelegate{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -135,7 +134,6 @@ extension PropertyViewController : UITableViewDelegate{
         vc.model = model
         self.navigationController?.pushViewController(vc, animated: true)
     }
-    
     
 }
 
@@ -172,7 +170,7 @@ extension PropertyViewController{
             //self.view.makeToast("Got property detail successfully")
             if((dataModel?.data?.count)! > 0){
                 setupControllerData()
-
+               
             }else{
                 self.view.makeToast("No property available")
 
@@ -192,3 +190,111 @@ extension PropertyViewController{
         
     }
 }
+extension PropertyViewController{
+
+//func addLongPressGesture() {
+//    let lpgr = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
+//    // lpgr.delegate = self
+//    lpgr.delaysTouchesBegan = true
+//    propertyTableView.addGestureRecognizer(lpgr)
+//
+//}
+//func handleLongPress(_ gestureRecognizer : UILongPressGestureRecognizer)
+//{
+//    if(gestureRecognizer.state != .ended){
+//        return
+//    }
+//
+//    let p  = gestureRecognizer.location(in: propertyTableView)
+//    // if  let indexPath = propertyTableView.indexPathForItem(at: p){
+//    if let indexPath = propertyTableView.indexPathForRow(at: p){
+//           currenttag = indexPath.row
+//           showAlert("MyHomeBuy", "Do you really want to delete this image?")
+//
+//        // showAlert("MyHomeBuy", "Do you really want to delete this image?", DocumentType.Image)
+//
+//    }
+//
+////}
+//func showAlert(_ title : String , _ msg : String ){
+//
+//    let alertController = UIAlertController(title: title, message: msg, preferredStyle: UIAlertControllerStyle.alert)
+//
+//    let DestructiveAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: "nil"), style: .default) {
+//        (result : UIAlertAction) -> Void in
+//        print("Destructive")
+//    }
+//
+//
+//    let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "nil"), style: UIAlertActionStyle.default) {
+//        (result : UIAlertAction) -> Void in
+//
+//        let model = self.dataModel?.data?[self.currenttag]
+//       // self.requestDeletePropertAPI(self.currenttag, (model?.id)!)
+//        self.requestDeletePropertAPI(self.currenttag, (model?.id)!, _image: (model?.image)!)
+//
+//        //            if(type == .Image){
+//        //                let model = self.imageArray[self.currenttag]
+//        //                // self.deleteDocumentAPI(self.currenttag, model.id!)
+//        //                self.deleteImageAPI(self.currenttag, model.id!)
+//        //
+//        //            }else{
+//        //                let model = self.pdfArray[self.currenttag]
+//        //                self.deleteDocumentAPI(self.currenttag, model.id!)
+//        //
+//        //            }
+//
+//        print("OK")
+//
+//    }
+//
+//    alertController.addAction(DestructiveAction)
+//    alertController.addAction(okAction)
+//    self.present(alertController, animated: true, completion: nil)
+//    alertController.view.tintColor = UIColor.black
+//
+//}
+}
+
+/*
+extension PropertyViewController
+{
+    func requestDeletePropertAPI(_ tag : Int , _ id : String , _image :String ){
+        //  {"id":"3","method_name":"delete_user_document"}
+        //let userId = UserDefaults.standard.object(forKey: USER_ID) as! String
+        
+        let parmDict = ["id" : id,"method_name" : ApiUrl.METHOD_DELETE_PROPERTY,"tablename" : "user_property"] as [String : Any]
+        
+        MBProgressHUD.showAdded(to: self.view, animated: true)
+        ApiManager.sharedInstance.apiCall(parmDict, [UIImage](), {(data) ->() in
+            
+            let dictionary = data as! NSDictionary
+            
+            let status = dictionary["status"] as? Int
+            let msg = dictionary["msg"] as? String
+            if(status == 1){
+              //  self.pdfArray.remove(at: tag)
+             //   self.pdfTableView.reloadData()
+                  self.propertyTableView.reloadData()
+                self.view.makeToast("Image deleted succesfully")
+            }else{
+                self.view.makeToast(msg!)
+            }
+            
+            
+            MBProgressHUD.hide(for: self.view, animated: true)
+        }, {(error)-> () in
+            print("failure \(error)")
+            MBProgressHUD.hide(for: self.view, animated: true)
+            self.view.makeToast(NETWORK_ERROR)
+            
+            
+        },{(progress)-> () in
+            print("progress \(progress)")
+            
+        })
+        
+    }
+    
+}
+ */

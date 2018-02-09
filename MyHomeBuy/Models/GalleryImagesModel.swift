@@ -1,5 +1,5 @@
 /* 
-Copyright (c) 2017 Swift Models Generated from JSON powered by http://www.json4swift.com
+Copyright (c) 2018 Swift Models Generated from JSON powered by http://www.json4swift.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -13,8 +13,8 @@ import Foundation
 /* For support, please feel free to contact me at https://www.linkedin.com/in/syedabsar */
 
 public class GalleryImagesModel {
+	public var id : String?
 	public var image : String?
-    public var URLArray : [String] = []
 
 /**
     Returns an array of models based on given dictionary.
@@ -48,15 +48,8 @@ public class GalleryImagesModel {
 */
 	required public init?(dictionary: NSDictionary) {
 
+		id = dictionary["id"] as? String
 		image = dictionary["image"] as? String
-        let imageArray = image?.components(separatedBy: ",")
-        if let count = imageArray?.count{
-            if(count > 0){
-                for url in imageArray! {
-                    URLArray.append(url)
-                }
-            }
-        }
 	}
 
 		
@@ -69,6 +62,7 @@ public class GalleryImagesModel {
 
 		let dictionary = NSMutableDictionary()
 
+		dictionary.setValue(self.id, forKey: "id")
 		dictionary.setValue(self.image, forKey: "image")
 
 		return dictionary

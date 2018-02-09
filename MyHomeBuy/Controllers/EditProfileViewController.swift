@@ -92,12 +92,14 @@ class EditProfileViewController: UIViewController {
      */
     
     @IBAction func backBtnPressed(_ sender: Any) {
+        view.endEditing(true)
         if let navCon = navigationController{
             navCon.popViewController(animated: true)
         }
     }
     
     @IBAction func homeButtonPressed(_ sender: Any) {
+        
         let navController : UINavigationController  = storyboard?.instantiateViewController(withIdentifier: "SlidingNavigationController") as! UINavigationController
         var controller: UIViewController!
         

@@ -33,8 +33,16 @@ class UploadDocumentVC: UIViewController {
     {
         super.viewDidLoad()
        fileNameLabel.text = ""
-        userImageView.image  = nil
+       // userImageView.image  = nil
         // Do any additional setup after loading the view.
+        
+        if(currentDocumentType == .Image){
+            self.userImageView.image = UIImage(named: "uploadDocuments")
+        }
+        else{
+            self.userImageView.image = UIImage(named: "pdf_file")
+        }
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -253,6 +261,8 @@ extension UploadDocumentVC
                 self.view.makeToast("Add Image Successfully")
                 self.canUpload = false
                 self.userImageView.image  = nil
+                
+
             }else{
                 self.view.makeToast(msg!)
             }
@@ -278,7 +288,6 @@ extension UploadDocumentVC
         //{"method_name":"add_user_Document","description","user_id":"5","task_id":"1","file_type:"image","file_name":"" }
         
         let userId = UserDefaults.standard.object(forKey: USER_ID) as! String
-        
         let parmDict = ["user_id" : userId,"task_id" : currentTaskID,"file_type" : "pdf","method_name" : ApiUrl.METHOD_ADD_DOCUMENT] as [String : Any]
         
         MBProgressHUD.showAdded(to: self.view, animated: true)
@@ -292,6 +301,7 @@ extension UploadDocumentVC
                 self.view.makeToast("Add Document Successfully")
                 self.canUpload = false
                 self.userImageView.image  = nil
+
 
             }else{
                 self.view.makeToast(msg!)

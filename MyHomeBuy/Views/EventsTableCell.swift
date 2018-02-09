@@ -14,6 +14,11 @@ class EventsTableCell: UITableViewCell {
     @IBOutlet weak var bottomLineView: UIView!
     @IBOutlet weak var descLbl: UILabel!
     @IBOutlet weak var nameLbl: UILabel!
+    
+    @IBOutlet weak var editButton: UIButton!
+    
+    @IBOutlet weak var deleteButton: UIButton!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

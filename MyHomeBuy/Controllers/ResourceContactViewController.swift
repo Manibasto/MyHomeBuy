@@ -190,6 +190,7 @@ extension ResourceContactViewController : UITableViewDelegate{
         let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ContactDetailViewController") as! ContactDetailViewController
         vc.model = dataModel?.data?[indexPath.row]
         vc.fromTask = false
+        vc.delegate = self
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -201,7 +202,13 @@ extension ResourceContactViewController : ContactUpdatedDelegate{
     }
     
 }
+extension ResourceContactViewController : ContactDeleteDelegate{
+    func contactDelete() {
+        requestServer()
 
+    }
+    
+}
 extension ResourceContactViewController : GetPhoneNumbers{
     func getAllContact(contactArray: [String]) {
         print(contactArray)

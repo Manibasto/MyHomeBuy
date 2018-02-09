@@ -61,7 +61,7 @@ class AddPropertyViewController: UIViewController {
             model.description = (propertyModel?.description)!
             model.agent_name = (propertyModel?.agent_name)!
             model.agent_contact = (propertyModel?.agent_contact)!
-
+             model.propertyId = (propertyModel?.id)!
             if let validimage = propertyModel?.image{
                model.imageUrls = validimage
 
@@ -110,11 +110,8 @@ class AddPropertyViewController: UIViewController {
     }
     
     @IBAction func menuBtnPressed(_ sender: Any) {
-        
         frostedViewController.presentMenuViewController()
-        
     }
-    
     
     
     @IBAction func cancelBtnPressed(_ sender: Any) {
@@ -299,14 +296,15 @@ extension AddPropertyViewController{
             allUrlString = urls.joined(separator: ",")
         }
     let userId = UserDefaults.standard.object(forKey: USER_ID) as! String
-        let parmDict = ["user_id" : userId ,"method_name" : ApiUrl.METHOD_ADD_PROPERTY , "price" : model.price , "area_sqft" : model.area_sqft , "bedrooms" : model.bedrooms , "bathrooms" : model.bathrooms , "car_parking_garage" : model.car_parking_garage , "address" : model.address , "description" : model.description , "agent_name" : model.agent_name , "agent_contact" : model.agent_contact , "image" : allUrlString] as [String : Any]
-        if(!canAdd){
-            view.makeToast("Under Development")
-            return
-        }
+        let parmDict = ["user_id" : userId ,"method_name" : ApiUrl.METHOD_EDIT_PROPERTY , "price" : model.price , "area_sqft" : model.area_sqft , "bedrooms" : model.bedrooms , "bathrooms" : model.bathrooms , "car_parking_garage" : model.car_parking_garage , "address" : model.address , "description" : model.description , "agent_name" : model.agent_name , "agent_contact" : model.agent_contact , "oldimage" : allUrlString ,"property_id" : model.propertyId] as [String : Any]
+        //if(!canAdd){
+//            view.makeToast("Under Development")
+//            return
+//        }
         MBProgressHUD.showAdded(to: self.view, animated: true)
         ApiManager.sharedInstance.uploadMultipleImagesWithData(parmDict, images, {(data) ->() in
             MBProgressHUD.hide(for: self.view, animated: true)
+            self.responseOfEditProperty(data)
 
 
         }, {(error)-> () in
@@ -322,7 +320,20 @@ extension AddPropertyViewController{
         })
         
     }
+    func responseOfEditProperty(_ userData : Any){
+        
+        let dictionary = userData as! NSDictionary
+        
+        let status = dictionary["status"] as? Int
+        let msg = dictionary["msg"] as? String
+        if(status == 1){
+            switchController()
+        }else{
+        }
+        self.view.makeToast(msg!)
+    }
 }
+
 extension AddPropertyViewController{
     func requestAddPropertyAPI(){
         //        method_name":"add_user_Property",

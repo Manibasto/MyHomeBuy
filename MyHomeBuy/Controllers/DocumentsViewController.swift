@@ -362,6 +362,7 @@ extension DocumentsViewController : UICollectionViewDataSource{
     {
         let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "UploadDocumentVC") as! UploadDocumentVC
          vc.currentTaskID = currentTaskID
+         
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -378,7 +379,6 @@ extension DocumentsViewController : UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DocumentViewerViewController") as! DocumentViewerViewController
         let model = imageArray[indexPath.row]
-        
         vc.model = model
         self.navigationController?.pushViewController(vc, animated: true)
     }

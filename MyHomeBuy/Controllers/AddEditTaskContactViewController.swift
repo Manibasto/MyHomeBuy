@@ -65,7 +65,6 @@ class AddEditTaskContactViewController: UIViewController {
             setupHeaderData()
         }else{
             headingHeightConstraint.constant = 0
-            
         }
     }
     func setupData(){
@@ -94,7 +93,7 @@ class AddEditTaskContactViewController: UIViewController {
             setEditContactData()
             currentTitle.text = "Edit Contact"
             profileViewHeightConstraint.constant = 100
-            leftBtn.setTitle("REMOVE", for: .normal)
+            leftBtn.setTitle("CANCEL", for: .normal)
             rightBtn.setTitle("DONE", for: .normal)
             leftBtn.addTarget(self, action: #selector(removeBtnPressed(_:)), for: .touchUpInside)
             rightBtn.addTarget(self, action: #selector(doneBtnPressed(_:)), for: .touchUpInside)
@@ -232,7 +231,10 @@ class AddEditTaskContactViewController: UIViewController {
         
     }
     func removeBtnPressed(_ btn : UIButton ){
-        requestDeleteContactAPI()
+       // requestDeleteContactAPI()
+        if let navCon = navigationController{
+            navCon.popViewController(animated: true)
+        }
     }
     func doneBtnPressed(_ btn : UIButton ){
         view.endEditing(true)
