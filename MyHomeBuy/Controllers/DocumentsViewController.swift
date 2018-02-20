@@ -43,7 +43,6 @@ class DocumentsViewController: UIViewController {
     var dataModel = DocumentBase(dictionary: ["" : ""] )
     var currenttag = -1
 
-   
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,24 +63,27 @@ class DocumentsViewController: UIViewController {
         }
         updateView(type: .ImageScreen)
         // Long Tap gesture
-        addLongPressGesture()
-        waterMarkLabel.isHidden = true
+       // addLongPressGesture()
+       // waterMarkLabel.isHidden = true
       
     }
     func showWaterMark(_ type : ScreenType){
         if(type == .ImageScreen){
             if(imageArray.isEmpty){
-                waterMarkLabel.text = "No images available"
-                waterMarkLabel.isHidden = false
+//                waterMarkLabel.text = "No images available"
+//                waterMarkLabel.isHidden = false
+                self.view.makeToast("No images available")
             }else{
-                waterMarkLabel.isHidden = true
+              //  waterMarkLabel.isHidden = true
             }
         }else{
             if(pdfArray.isEmpty){
-                waterMarkLabel.text = "No PDF available"
-                waterMarkLabel.isHidden = false
+//                waterMarkLabel.text = "No PDF available"
+//                waterMarkLabel.isHidden = false
+                self.view.makeToast("No PDF available")
+
             }else{
-                waterMarkLabel.isHidden = true
+               // waterMarkLabel.isHidden = true
                 
             }
             
@@ -89,6 +91,7 @@ class DocumentsViewController: UIViewController {
        
         
     }
+    /*
     func addLongPressGesture() {
         let lpgr = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
          lpgr.delegate = self
@@ -110,6 +113,7 @@ class DocumentsViewController: UIViewController {
         }
         
     }
+ */
 
     func setupHeaderData(){
         let image = UIImage.init(named: (dataDict.object(forKey: "image_white") as! String?)!)
@@ -171,7 +175,7 @@ class DocumentsViewController: UIViewController {
            pdfBtn.setTitleColor(UIColor.lightWhite, for: .normal)
         
            updateView(type: .ImageScreen)
-          showWaterMark(.ImageScreen)
+           showWaterMark(.ImageScreen)
 
    }
    
@@ -211,7 +215,6 @@ class DocumentsViewController: UIViewController {
             (result : UIAlertAction) -> Void in
             if(type == .Image){
                 let model = self.imageArray[self.currenttag]
-               // self.deleteDocumentAPI(self.currenttag, model.id!)
                 self.deleteImageAPI(self.currenttag, model.id!)
                 
             }else{
@@ -318,33 +321,31 @@ extension DocumentsViewController : UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let model = imageArray[indexPath.row]
         let cell  = collectionView.dequeueReusableCell(withReuseIdentifier: "DocumentCollectionCell", for: indexPath) as! DocumentCollectionCell
-        
-        
-        //let url = dataModel?.data?.URLArray[indexPath.row]
-        //cell.userImageView.sd_setImage(with: URL(string: url!)) { (image, error, cache, url) in
-        // cell.borderView.setRadius(5)
-        // cell.profileView.setRadius(cell.profileView.frame.size.width/2)
-        //cell.profileView.clipsToBounds = true
-        //cell.contactImageView.setRadius(cell.profileView.frame.size.width/2)
-        //    cell.initialLbl.text = model?.name?.getInitials("").uppercased()
-        //    cell.nameLbl.text = model?.name
-        //    cell.contactLbl.text = model?.phone_number
-        //  cell.contactImageView.image = nil
-        //    if(model?.image == ""){
-        //
-        //    }else{
           cell.userImageView.sd_setImage(with: URL(string: model.file_name!))
-            // Your code inside completion block
-            //                if(image != nil){
-            //                    cell.initialLbl.text = ""
-            //                }
-        //
-        //    }
-        //}
+      //   cell.crossButton.addTarget(self, action: #selector(crossButtonTap(_:)), for: .touchUpInside)
+        cell.crossBtn.addTarget(self, action: #selector(crossButtonTap(_:)), for: .touchUpInside)
+        // currenttag = indexPath.row
+           cell.crossBtn.tag = indexPath.row
         
         return cell
-        
     }
+        func crossButtonTap(_ button : UIButton){
+            currenttag = button.tag
+            showAlert("MyHomeBuy", "Do you really want to delete this image?", DocumentType.Image)
+          //  showAlert("MyHomeBuy", "Do you really want to delete this image?")
+            //requestDeletePropertAPI()
+            //currenttag = indexPath.row
+            //        let model = dataModel?.data?[button.tag]
+            //
+            //        let navController : UINavigationController  = storyboard?.instantiateViewController(withIdentifier: "SlidingNavigationController") as! UINavigationController
+            //        let controller = storyboard?.instantiateViewController(withIdentifier: "AddPropertyViewController") as? AddPropertyViewController
+            //        controller?.canAdd = false
+            //        controller?.propertyModel = model
+            //        navController.viewControllers = [controller!]
+            //        frostedViewController.contentViewController = navController
+        }
+        
+    
     
     func collectionView(_ collectionView: UICollectionView,
                         viewForSupplementaryElementOfKind kind: String,

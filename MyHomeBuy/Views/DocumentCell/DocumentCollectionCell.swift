@@ -11,4 +11,6 @@ import UIKit
 class DocumentCollectionCell: UICollectionViewCell {
     
     @IBOutlet weak var userImageView: UIImageView!
+    
+    @IBOutlet weak var crossBtn: UIButton!
 }

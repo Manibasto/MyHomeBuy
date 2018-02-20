@@ -315,11 +315,11 @@ extension AddEditTaskContactViewController{
         let status = dictionary["status"] as? Int
         let msg = dictionary["msg"] as? String
         if(status == 1){
+            SharedAppDelegate.window?.makeToast(msg!)
             self.switchViewController()
         }else{
             
         }
-        SharedAppDelegate.window?.makeToast(msg!)
         
     }
     func switchViewController(){

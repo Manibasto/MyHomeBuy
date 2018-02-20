@@ -40,6 +40,8 @@ class NotesViewController: UIViewController {
         frostedViewController.panGestureEnabled = false
 //        navigationBarView.setBottomShadow()
 //        headingView.setBottomShadow()
+        notesTableView.rowHeight = UITableViewAutomaticDimension
+        notesTableView.estimatedRowHeight = 44
         setupData()
         if(fromTask){
             setupHeaderData()
@@ -89,31 +91,30 @@ class NotesViewController: UIViewController {
         frostedViewController.contentViewController = navController
     }
         
-//    func showAlert(_ title : String , _ msg : String , _ btn : UIButton ){
-//
-//        let alertController = UIAlertController(title: title, message: msg, preferredStyle: UIAlertControllerStyle.alert)
-//
-//        let DestructiveAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: "nil"), style: .default) {
-//            (result : UIAlertAction) -> Void in
-//            print("Destructive")
-//        }
-//
-//
-//        let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "nil"), style: UIAlertActionStyle.default) {
-//            (result : UIAlertAction) -> Void in
-//           // self.requestDeletePropertAPI()
-//            self.requestRemoveNotesAPI(btn.tag)
-//
-//            print("OK")
-//
-//        }
-//
-//        alertController.addAction(DestructiveAction)
-//        alertController.addAction(okAction)
-//        self.present(alertController, animated: true, completion: nil)
-//        alertController.view.tintColor = UIColor.black
-//
-//    }
+    func showAlert(_ title : String , _ msg : String , _ btn : Int ){
+
+        let alertController = UIAlertController(title: title, message: msg, preferredStyle: UIAlertControllerStyle.alert)
+
+        let DestructiveAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: "nil"), style: .default) {
+            (result : UIAlertAction) -> Void in
+            print("Destructive")
+        }
+
+        let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "nil"), style: UIAlertActionStyle.default) {
+            (result : UIAlertAction) -> Void in
+           // self.requestDeletePropertAPI()
+            self.requestRemoveNotesAPI(btn)
+
+            print("OK")
+
+        }
+
+        alertController.addAction(DestructiveAction)
+        alertController.addAction(okAction)
+        self.present(alertController, animated: true, completion: nil)
+        alertController.view.tintColor = UIColor.black
+
+    }
     /*
      // MARK: - Navigation
      
@@ -154,7 +155,6 @@ extension NotesViewController : UITableViewDataSource{
             cell.dataLbl.text = model?.created_date
 
         }
-       
         
         
         if(indexPath.row % 2 == 0){
@@ -177,15 +177,14 @@ extension NotesViewController : UITableViewDataSource{
     }
     func deleteBtnTapped(_ btn : UIButton){
       //  showAlert("MyHomeBuy", "Do you really want to delete this image?")
-      //  showAlert("MyHomeBuy", "Do you really want to delete this image?", btn.tag)
-
-        requestRemoveNotesAPI(btn.tag)
+        showAlert("MyHomeBuy", "Do you really want to delete this Note?", btn.tag)
+        
+       // requestRemoveNotesAPI(btn.tag)
 
     }
 }
 extension NotesViewController : UITableViewDelegate{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-      //  requestRemoveNotesAPI(indexPath.row)
 
         
     }
@@ -257,6 +256,8 @@ extension NotesViewController{
     }
     func cancelBtnTapped(){
         addNotePopupView.removeFromSuperview()
+        subjectTextField.text = ""
+        descriptionTextView.text = ""
         
     }
     func addNotesBtnTapped(){

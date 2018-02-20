@@ -155,7 +155,7 @@ class EditProfileViewController: UIViewController {
     }
     
     @IBAction func saveBtnPressed(_ sender: Any) {
-        
+        view.endEditing(true)
         if(nameTextField.text?.isEmpty)!{
             view.makeToast("Please enter name")
         }else if(addressTextField.text?.isEmpty)!{

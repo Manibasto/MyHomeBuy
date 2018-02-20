@@ -89,7 +89,18 @@ extension PropertyViewController : UITableViewDataSource{
         cell.propertyImageView.setRadius(10)
         cell.addressLbl.text = model?.address
         let price = model?.price
-        cell.priceLbl.text = "$ \(price!)"
+        
+        if let myInteger = Float(price!) {
+            let myNumber = NSNumber(value:myInteger)
+            let numberFormatter = NumberFormatter()
+            numberFormatter.numberStyle = NumberFormatter.Style.decimal
+            let price = numberFormatter.string(from: myNumber)
+            cell.priceLbl.text = "$ \(price!)"
+        }
+       
+        
+        
+      //  cell.priceLbl.text = "$ \(price!)"
         cell.bathRoomBtn.setTitle(" \(noOfBathrooms!)", for: .normal)
         cell.garageBtn.setTitle(" \(noOfGarage!)", for: .normal)
         cell.bedRoomBtn.setTitle(" \(noOfBedrooms!)", for: .normal)

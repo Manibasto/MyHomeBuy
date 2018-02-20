@@ -41,15 +41,17 @@ class TaskViewController: UIViewController {
     @IBOutlet weak var addTaskCancelBtn: UIButton!
     
     @IBOutlet weak var addTaskCreateBtn: UIButton!
-    var valueFirst : Float?
-    var valueSecond : Float?
-    var valueThird : Float?
-    var valueFourth : Float?
+    var valueFirst : Double?
+    var valueSecond : Double?
+    var valueThird : Double?
+    var valueFourth : Double?
+    let numberFormatter = NumberFormatter()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
+        numberFormatter.numberStyle = NumberFormatter.Style.decimal
         frostedViewController.panGestureEnabled = false
         //navigationBarView.setBottomShadow()
         //taskHeadingView.setBottomShadow()
@@ -128,13 +130,10 @@ class TaskViewController: UIViewController {
     }
     
     func checkListButtonAction(_ button : UIButton){
-        
         switchToTaskListVC(button)
 
-        
     }
     @IBAction func checkListBtnPressed(_ sender: Any) {
-      
         switchToTaskListVC(sender as! UIButton)
         
     }
@@ -180,7 +179,7 @@ class TaskViewController: UIViewController {
     
 }
 extension TaskViewController : UITableViewDataSource{
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
         
         return (dataModel?.data?.count)!
         
@@ -263,7 +262,7 @@ extension TaskViewController : UITableViewDataSource{
 //            }
                 cell.suggestionCheckListButton.setRadius(10, color!, 2)
                 cell.suggestionCheckListButton.setTitleColor(color, for: .normal)
-           cell.suggestionCheckListButton.addTarget(self, action: #selector(checkListButtonAction(_:)), for: .touchUpInside)
+                cell.suggestionCheckListButton.addTarget(self, action: #selector(checkListButtonAction(_:)), for: .touchUpInside)
                 return cell
             }
         }else{
@@ -377,23 +376,30 @@ extension TaskViewController : UITableViewDataSource{
         var hasValue = false
         if(valueList?.count == 4){
             hasValue = true
-            let first = Float((valueList?[0])!)
+            let first = Double((valueList?[0])!)
             valueFirst = first
-            let second = Float((valueList?[1])!)
+            let second = Double((valueList?[1])!)
             valueSecond = second
-            let third = Float((valueList?[2])!)
+            let third = Double((valueList?[2])!)
             valueThird = third
-            let fourth = Float((valueList?[3])!)
+            let fourth = Double((valueList?[3])!)
             valueFourth = fourth
             if let firstvalue = first , let secondvalue = second , let thirdValue = third , let fourthValue = fourth{
                 let result = firstvalue + secondvalue + thirdValue - fourthValue
                 let twoDecimalPlaces = String(format: "%.2f", result)
-      cell.resultLbl.text = "My maximum purchase price\nTotal\n$ \(twoDecimalPlaces)"
+                
+                if let myInteger = Double(twoDecimalPlaces.replacingOccurrences(of: ",", with: "")) {
+                    let myNumber = NSNumber(value:myInteger)
+                
+                    let price = numberFormatter.string(from: myNumber)
+                    let newPrice = price!
+                    cell.resultLbl.text = "My maximum purchase price\nTotal\n$ \(newPrice)"
+                    
+                }
+                
+            // cell.resultLbl.text = "My maximum purchase price\nTotal\n$ \(twoDecimalPlaces)"
             }
-            
-            
-           
-            
+
         }
         for (index , textField) in cell.amountTextFieldArray.enumerated() {
             textField.isUserInteractionEnabled = false
@@ -402,8 +408,18 @@ extension TaskViewController : UITableViewDataSource{
             textField.backgroundColor = UIColor.white
             if(hasValue){
                 let currentField = UIView.getViewWithTag(cell.amountTextFieldArray, textField.tag) as! UITextField
-                if(Float((valueList?[index])!) != 0){
-                    currentField.text = valueList?[index]
+                if(Double((valueList?[index])!) != 0){
+                    
+                    
+                    if let myInteger = Double((valueList?[index])!) {
+                        let myNumber = NSNumber(value:myInteger)
+                       
+                        let price = numberFormatter.string(from: myNumber)
+                        let newPrice = price!
+                        currentField.text = newPrice
+
+                    }
+                    
                 }else{
                   currentField.text = ""
                 }
@@ -416,6 +432,7 @@ extension TaskViewController : UITableViewDataSource{
     
     func setupCellDataForUndone(_ indexPath : IndexPath , _ cell : TaskCalculationTableCell , _ model : TaskData){
         cell.resultLbl.text = "My maximum purchase price\nTotal\n$ 0.00"
+     
       for (index , textField) in cell.amountTextFieldArray.enumerated() {
             textField.delegate = self
         textField.addTarget(self, action: #selector(textFieldDidChange(_:)),
@@ -431,7 +448,8 @@ extension TaskViewController : UITableViewDataSource{
                     if(value == 0){
                        currentField.text = ""
                     }else{
-                        currentField.text = "\(value)"
+                       // currentField.text = "\(value)"
+                        setFormattedText(number: value, textField: textField)
                     }
                 }else{
                     currentField.text = ""
@@ -443,7 +461,9 @@ extension TaskViewController : UITableViewDataSource{
                     if(value == 0){
                         currentField.text = ""
                     }else{
-                        currentField.text = "\(value)"
+                       // currentField.text = "\(value)"
+                        setFormattedText(number: value, textField: textField)
+
                     }
                 }else{
                     currentField.text = ""
@@ -455,7 +475,9 @@ extension TaskViewController : UITableViewDataSource{
                     if(value == 0){
                         currentField.text = ""
                     }else{
-                        currentField.text = "\(value)"
+                       // currentField.text = "\(value)"
+                        setFormattedText(number: value, textField: textField)
+
                     }
                 }else{
                     currentField.text = ""
@@ -467,7 +489,9 @@ extension TaskViewController : UITableViewDataSource{
                     if(value == 0){
                         currentField.text = ""
                     }else{
-                        currentField.text = "\(value)"
+                        //currentField.text = "\(value)"
+                        setFormattedText(number: value, textField: textField)
+
                     }
                 }else{
                     currentField.text = ""
@@ -481,27 +505,43 @@ extension TaskViewController : UITableViewDataSource{
             }
         let twoDecimalPlaces = String(format: "%.2f", getTotal())
 
-        cell.resultLbl.text = "My maximum purchase price\nTotal\n$ \(twoDecimalPlaces)"
+       // cell.resultLbl.text = "My maximum purchase price\nTotal\n$ \(twoDecimalPlaces)"
+        
+        if let myInteger = Double(twoDecimalPlaces.replacingOccurrences(of: ",", with: "")) {
+            let myNumber = NSNumber(value:myInteger)
+           
+            let price = numberFormatter.string(from: myNumber)
+            let newPrice = price!
+            cell.resultLbl.text = "My maximum purchase price\nTotal\n$ \(newPrice))"
 
         }
+
+        }
+    func setFormattedText(number : Double , textField : UITextField){
+        let myNumber = NSNumber(value:number)
         
+        let str = numberFormatter.string(from: myNumber)
+        textField.text = str
+        
+    }
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let nsString = NSString(string: textField.text!)
         let newText = nsString.replacingCharacters(in: range, with: string)
         if(!newText.isEmpty){
-        let value = Float(newText)
+        let value = Double(newText.replacingOccurrences(of: ",", with: ""))
         guard let validValue = value else{return false}
         print(validValue)
         }
         return true
     }
     func textFieldDidChange(_ textField: UITextField) {
-        print("textFieldDidChange  \(textField.text!)")
+        let filledText = textField.text?.replacingOccurrences(of: ",", with: "")
+        print("textFieldDidChange  \(filledText!)")
         switch textField.tag {
         case 0:
-            if let value = textField.text{
+            if let value = filledText{
                 if(!value.isEmpty){
-                    let floatValue = Float(value)
+                    let floatValue = Double(value)
                     if let validFloatValue = floatValue{
                         valueFirst = validFloatValue
                     }
@@ -511,9 +551,9 @@ extension TaskViewController : UITableViewDataSource{
             }
             break
         case 1:
-            if let value = textField.text{
+            if let value = filledText{
                 if(!value.isEmpty){
-                    let floatValue = Float(value)
+                    let floatValue = Double(value)
                     if let validFloatValue = floatValue{
                         valueSecond = validFloatValue
                     }
@@ -523,9 +563,9 @@ extension TaskViewController : UITableViewDataSource{
             }
             break
         case 2:
-            if let value = textField.text{
+            if let value = filledText{
                 if(!value.isEmpty){
-                    let floatValue = Float(value)
+                    let floatValue = Double(value)
                     if let validFloatValue = floatValue{
                         valueThird = validFloatValue
                     }
@@ -535,9 +575,9 @@ extension TaskViewController : UITableViewDataSource{
             }
             break
         case 3:
-            if let value = textField.text{
+            if let value = filledText{
                 if(!value.isEmpty){
-                    let floatValue = Float(value)
+                    let floatValue = Double(value)
                     if let validFloatValue = floatValue{
                         valueFourth = validFloatValue
                     }
@@ -554,15 +594,27 @@ extension TaskViewController : UITableViewDataSource{
         if let calculationCell = cell{
             let twoDecimalPlaces = String(format: "%.2f", getTotal())
             
-            calculationCell.resultLbl.text = "My maximum purchase price\nTotal\n$ \(twoDecimalPlaces)"
+           // calculationCell.resultLbl.text = "My maximum purchase price\nTotal\n$ \(twoDecimalPlaces)"
 
+            
+            if let myInteger = Double(twoDecimalPlaces) {
+                let myNumber = NSNumber(value:myInteger)
+              
+                let price = numberFormatter.string(from: myNumber)
+                calculationCell.resultLbl.text = "My maximum purchase price\nTotal\n$ \(price!)"
+                if let myNewInteger = Double(filledText!) {
+                    let myNewNumber = NSNumber(value:myNewInteger)
+                textField.text = numberFormatter.string(from: myNewNumber)
+                }
+
+            }
             
         }
     
         
         
     }
-    func getTotal()->Float{
+    func getTotal()->Double{
         let first = valueFirst ?? 0
         let second = valueSecond ?? 0
         let third = valueThird ?? 0
@@ -720,15 +772,14 @@ extension TaskViewController : UITableViewDataSource{
     }
     
     func cancelBtnTapped(){
-       
-    addTaskPopupView.removeFromSuperview()
+        addTaskPopupView.removeFromSuperview()
     }
     
     func createBtnTapped(){
         if(!addTaskTextView.text.isEmpty){
             requestAddTaskAPI()
         }else{
-            view.makeToast("Please enter task description")
+            view.makeToast("Please enter new task")
         }
         
     }

@@ -14,6 +14,7 @@ class GalleryViewController: UIViewController {
     var currenttag = -1
     
     @IBOutlet weak var navigationBarView: UIView!
+    
     @IBOutlet weak var galleryCollectionView: UICollectionView!
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,7 +23,7 @@ class GalleryViewController: UIViewController {
         
         //navigationBarView.setBottomShadow()
         // Long Tap gesture
-        addLongPressGesture()
+     //   addLongPressGesture()
         frostedViewController.panGestureEnabled = false
         requestGetAllPropertyImagesAPI()
     }
@@ -40,6 +41,8 @@ class GalleryViewController: UIViewController {
             navCon.popViewController(animated: true)
         }
     }
+    
+    /*
     func addLongPressGesture() {
         let lpgr = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
        // lpgr.delegate = self
@@ -58,11 +61,10 @@ class GalleryViewController: UIViewController {
             showAlert("MyHomeBuy", "Do you really want to delete this image?")
               currenttag = indexPath.row
             // showAlert("MyHomeBuy", "Do you really want to delete this image?", DocumentType.Image)
-            
         }
         
     }
-    
+    */
     func showAlert(_ title : String , _ msg : String ){
         
         let alertController = UIAlertController(title: title, message: msg, preferredStyle: UIAlertControllerStyle.alert)
@@ -122,11 +124,28 @@ extension GalleryViewController : UICollectionViewDataSource{
         cell.galleryImageView.clipsToBounds = true
         let model = dataModel?.data![indexPath.row]
         cell.galleryImageView.sd_setImage(with: URL(string: (model?.image)!))
+        // Cross Button
+         cell.crossButton.addTarget(self, action: #selector(crossButtonTapped(_:)), for: .touchUpInside)
+        cell.crossButton.tag = indexPath.row
         return cell
         
     }
     
-    
+        func crossButtonTapped(_ button : UIButton){
+            currenttag = button.tag
+
+            showAlert("MyHomeBuy", "Do you really want to delete this image?")
+            //requestDeletePropertAPI()
+            //currenttag = indexPath.row
+    //        let model = dataModel?.data?[button.tag]
+    //
+    //        let navController : UINavigationController  = storyboard?.instantiateViewController(withIdentifier: "SlidingNavigationController") as! UINavigationController
+    //        let controller = storyboard?.instantiateViewController(withIdentifier: "AddPropertyViewController") as? AddPropertyViewController
+    //        controller?.canAdd = false
+    //        controller?.propertyModel = model
+    //        navController.viewControllers = [controller!]
+    //        frostedViewController.contentViewController = navController
+       }
     
     
 }
@@ -209,25 +228,22 @@ extension GalleryViewController
         ApiManager.sharedInstance.apiCall(parmDict, [UIImage](), {(data) ->() in
             
             let dictionary = data as! NSDictionary
-            
             let status = dictionary["status"] as? Int
             let msg = dictionary["msg"] as? String
             if(status == 1){
-                 // self.dataModel?.data.remove(at: currenttag)
+             // self.dataModel?.data.remove(at: currenttag)
                 self.dataModel?.data?.remove(at: self.currenttag)
-                   self.galleryCollectionView.reloadData()
+                self.galleryCollectionView.reloadData()
+                
                 self.view.makeToast("Image deleted succesfully")
             }else{
                 self.view.makeToast(msg!)
             }
-            
-            
             MBProgressHUD.hide(for: self.view, animated: true)
         }, {(error)-> () in
             print("failure \(error)")
             MBProgressHUD.hide(for: self.view, animated: true)
             self.view.makeToast(NETWORK_ERROR)
-            
             
         },{(progress)-> () in
             print("progress \(progress)")

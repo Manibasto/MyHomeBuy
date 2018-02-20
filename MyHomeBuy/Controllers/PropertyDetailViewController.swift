@@ -147,12 +147,19 @@ class PropertyDetailViewController: UIViewController {
         bathRoomLbl.text = ". \(noOfBathrooms!) Bathrooms"
         parkingLbl.text = ". \(noOfGarage!) Car Parking"
         bedroomLbl.text = ". \(noOfBedrooms!) Bedrooms"
-        areaLbl.text = ". \(area!) sqrt Area"
+        areaLbl.text = ". \(area!) Area"
         detailLbl.text = model?.description
         agentNameBtn.setTitle(model?.agent_name, for: .normal)
         agentNoBtn.setTitle(model?.agent_contact, for: .normal)
         let price = model?.price
-        priceLbl.text = "$ \(price!)"
+        if let myInteger = Float(price!) {
+            let myNumber = NSNumber(value:myInteger)
+            let numberFormatter = NumberFormatter()
+            numberFormatter.numberStyle = NumberFormatter.Style.decimal
+            let price = numberFormatter.string(from: myNumber)
+            priceLbl.text = "$ \(price!)"
+        }
+       // priceLbl.text = "$ \(price!)"
         addressLbl.text = model?.address
     }
     override func didReceiveMemoryWarning() {
@@ -170,11 +177,35 @@ class PropertyDetailViewController: UIViewController {
             frostedViewController.contentViewController = navController
     }
     
-    @IBAction func deleteButtonTapped(_ sender: Any) {
-        
-    requestDeletePropertAPI()
+    @IBAction func deleteButtonTapped(_ sender: Any) 
+    {
+        showAlert("MyHomeBuy", "Do you really want to delete this Property?")
     }
     
+    func showAlert(_ title : String , _ msg : String ){
+        
+        let alertController = UIAlertController(title: title, message: msg, preferredStyle: UIAlertControllerStyle.alert)
+        
+        let DestructiveAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: "nil"), style: .default) {
+            (result : UIAlertAction) -> Void in
+            print("Destructive")
+        }
+        
+        let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "nil"), style: UIAlertActionStyle.default) {
+            (result : UIAlertAction) -> Void in
+            self.requestDeletePropertAPI()
+
+            
+            print("OK")
+            
+        }
+        
+        alertController.addAction(DestructiveAction)
+        alertController.addAction(okAction)
+        self.present(alertController, animated: true, completion: nil)
+        alertController.view.tintColor = UIColor.black
+        
+    }
     @IBAction func menuBtnPressed(_ sender: Any) {
         if let navCon = navigationController{
             navCon.popViewController(animated: true)

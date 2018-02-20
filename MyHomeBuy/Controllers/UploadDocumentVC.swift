@@ -27,6 +27,8 @@ class UploadDocumentVC: UIViewController {
     var canUpload = false
 
 
+    @IBOutlet weak var cancelBtn: UIButton!
+    @IBOutlet weak var uploadBtn: UIButton!
     @IBOutlet weak var userImageView: UIImageView!
     @IBOutlet weak var fileNameLabel: UILabel!
     override func viewDidLoad()
@@ -40,8 +42,10 @@ class UploadDocumentVC: UIViewController {
             self.userImageView.image = UIImage(named: "uploadDocuments")
         }
         else{
-            self.userImageView.image = UIImage(named: "pdf_file")
+            self.userImageView.image = UIImage(named: "pdf")
         }
+        cancelBtn.setRadius(5)
+        uploadBtn.setRadius(5)
 
     }
 
@@ -83,8 +87,6 @@ class UploadDocumentVC: UIViewController {
 
         }else{
             mySpecialFunction()
-
-            
         }
     }
     
@@ -260,7 +262,9 @@ extension UploadDocumentVC
             if(status == 1){
                 self.view.makeToast("Add Image Successfully")
                 self.canUpload = false
-                self.userImageView.image  = nil
+                //self.userImageView.image  = nil
+                self.userImageView.image = UIImage(named: "uploadDocuments")
+
                 
 
             }else{
@@ -300,20 +304,19 @@ extension UploadDocumentVC
                 self.fileNameLabel.text = ""
                 self.view.makeToast("Add Document Successfully")
                 self.canUpload = false
-                self.userImageView.image  = nil
+              //  self.userImageView.image  = nil
+                self.userImageView.image = UIImage(named: "pdf")
 
 
             }else{
                 self.view.makeToast(msg!)
             }
 
-
             MBProgressHUD.hide(for: self.view, animated: true)
         }, {(error)-> () in
             print("failure \(error)")
             MBProgressHUD.hide(for: self.view, animated: true)
             self.view.makeToast(NETWORK_ERROR)
-            
             
         },{(progress)-> () in
             print("progress \(progress)")

@@ -42,7 +42,7 @@ class DocumentViewerViewController: UIViewController {
                 let requestObj = URLRequest(url: url!)
                 documentWebView.loadRequest(requestObj)
             }
-             headerLabel.text = "Documents"
+             headerLabel.text = "Document"
         }
         
     }

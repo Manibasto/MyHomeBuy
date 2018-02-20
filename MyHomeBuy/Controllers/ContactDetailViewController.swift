@@ -108,9 +108,31 @@ class ContactDetailViewController: UIViewController {
     }
     
     @IBAction func deleteButtonPressed(_ sender: Any) {
-        requestDeleteContactAPI()
+        showAlert("MyHomeBuy", "Do you really want to delete this contact?")
     }
-    
+    func showAlert(_ title : String , _ msg : String ){
+        
+        let alertController = UIAlertController(title: title, message: msg, preferredStyle: UIAlertControllerStyle.alert)
+        
+        let DestructiveAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: "nil"), style: .default) {
+            (result : UIAlertAction) -> Void in
+            print("Destructive")
+        }
+        
+        
+        let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "nil"), style: UIAlertActionStyle.default) {
+            (result : UIAlertAction) -> Void in
+            self.requestDeleteContactAPI()
+            print("OK")
+            
+        }
+        
+        alertController.addAction(DestructiveAction)
+        alertController.addAction(okAction)
+        self.present(alertController, animated: true, completion: nil)
+        alertController.view.tintColor = UIColor.black
+        
+    }
     @IBAction func homeBtnPressed(_ sender: Any) {
         let navController : UINavigationController  = storyboard?.instantiateViewController(withIdentifier: "SlidingNavigationController") as! UINavigationController
         var controller: UIViewController!
@@ -259,7 +281,6 @@ extension ContactDetailViewController{
             
         },{(progress)-> () in
             print("progress \(progress)")
-            
         })
         
     }

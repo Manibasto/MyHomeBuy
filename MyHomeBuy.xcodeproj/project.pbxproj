@@ -671,8 +671,8 @@
 				TargetAttributes = {
 					1D331C9E1F6A51CD0002374F = {
 						CreatedOnToolsVersion = 8.1;
-						DevelopmentTeam = FY2462DH3V;
-						ProvisioningStyle = Automatic;
+						DevelopmentTeam = X7JM4NHRU7;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.iCloud = {
 								enabled = 1;
@@ -1024,15 +1024,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = MyHomeBuy/MyHomeBuy.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = FY2462DH3V;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = X7JM4NHRU7;
 				INFOPLIST_FILE = MyHomeBuy/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.MyHomeBuy.com;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "10910b55-fa0f-4358-a2bd-67f3d1f50fa0";
+				PROVISIONING_PROFILE_SPECIFIER = MyHomeBuy;
 				SWIFT_OBJC_BRIDGING_HEADER = "MyHomeBuy/MyHomeBuy-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1046,15 +1046,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = MyHomeBuy/MyHomeBuy.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = FY2462DH3V;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = X7JM4NHRU7;
 				INFOPLIST_FILE = MyHomeBuy/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.MyHomeBuy.com;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "10910b55-fa0f-4358-a2bd-67f3d1f50fa0";
+				PROVISIONING_PROFILE_SPECIFIER = MyHomeBuy;
 				SWIFT_OBJC_BRIDGING_HEADER = "MyHomeBuy/MyHomeBuy-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;

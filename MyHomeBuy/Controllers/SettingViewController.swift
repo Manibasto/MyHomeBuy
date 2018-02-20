@@ -37,7 +37,7 @@ class SettingViewController: UIViewController {
         if(userPin == ""){
             value = "Generate Pin"
         }else{
-            value = "Change Pin"
+            value = "Change Pin Number"
             
         }
         textString[3] = value;

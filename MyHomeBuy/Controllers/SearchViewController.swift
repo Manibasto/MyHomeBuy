@@ -36,7 +36,7 @@ class SearchViewController: UIViewController {
     
     @IBAction func menuBtnPressed(_ sender: Any) {
         frostedViewController.presentMenuViewController()
-
+        self.view.endEditing(true)
     }
 
     @IBAction func homeBtnPressed(_ sender: Any) {

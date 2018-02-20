@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import MessageUI
+
 
 class SideMenuViewController: UIViewController {
     var dataArray = [Any]()
@@ -65,7 +67,6 @@ class SideMenuViewController: UIViewController {
             frostedViewController.hideMenuViewController()
             
         }else{
-            
             currentIndex = indexPath.row
             var push = true
             let navController : UINavigationController  = storyboard?.instantiateViewController(withIdentifier: "SlidingNavigationController") as! UINavigationController
@@ -93,7 +94,9 @@ class SideMenuViewController: UIViewController {
                 
             case 4:
                 push = false
-             view.makeToast("Under Development")
+            // view.makeToast("Under Development")
+                currentIndex = -1
+                sendEmail()
                 
                 break
                 
@@ -114,6 +117,21 @@ class SideMenuViewController: UIViewController {
                 frostedViewController.contentViewController = navController
                 frostedViewController.hideMenuViewController()
             }
+        }
+    }
+    func sendEmail() {
+            if MFMailComposeViewController.canSendMail() {
+            let mail = MFMailComposeViewController()
+            mail.mailComposeDelegate = self
+            //mail.setToRecipients = "hyth"
+            mail.setToRecipients(["info@myhomebuyapp.com"])
+            mail.setMessageBody("<p></p>", isHTML: true)
+            
+            present(mail, animated: true)
+        } else {
+            // show failure alert
+            view.makeToast("Unable to send Email")
+            
         }
     }
     func showAlert(_ title : String , _ msg : String){
@@ -211,4 +229,11 @@ extension SideMenuViewController : UITableViewDelegate{
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return CGFloat(view.frame.size.height)/CGFloat(dataArray.count)
     }
+}
+extension SideMenuViewController : MFMailComposeViewControllerDelegate{
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true, completion: nil)
+        
+    }
+    
 }

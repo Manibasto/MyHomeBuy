@@ -35,9 +35,12 @@ class AddPropertyViewController: UIViewController {
     
     @IBOutlet weak var addPropertyBtn: UIButton!
     var propertyModel = GetPropertyDetailModel(dictionary: ["" : ""])
+    let numberFormatter = NumberFormatter()
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        numberFormatter.numberStyle = NumberFormatter.Style.decimal
+
         // Do any additional setup after loading the view.
         if(canAdd){
         model.initArray()
@@ -52,7 +55,16 @@ class AddPropertyViewController: UIViewController {
         }else{
             titleLabel.text = "Edit Property"
             //requestPropertyAPI()
-            model.price = (propertyModel?.price)!
+            
+          //  model.price = (propertyModel?.price)!
+            if let myInteger = Float((propertyModel?.price)!) {
+                let myNumber = NSNumber(value:myInteger)
+                let numberFormatter = NumberFormatter()
+                numberFormatter.numberStyle = NumberFormatter.Style.decimal
+                let price = numberFormatter.string(from: myNumber)
+               // priceLbl.text = "$ \(price!)"
+                model.price = price!
+            }
             model.area_sqft = (propertyModel?.area_sqft)!
             model.bedrooms = (propertyModel?.bedrooms)!
             model.bathrooms = (propertyModel?.bathrooms)!
@@ -188,7 +200,21 @@ extension AddPropertyViewController : UITableViewDataSource{
         }else{
             let cell = tableView.dequeueReusableCell(withIdentifier: "AddPropertyTextFieldTableCell", for: indexPath) as! AddPropertyTextFieldTableCell;
             cell.nameLbl.text  = headingText[indexPath.row]
+            if indexPath.row == 0{
+               let value = model.dataArray[indexPath.row].replacingOccurrences(of: ",", with: "")
+                if let myInteger = Double(value) {
+                    let myNumber = NSNumber(value:myInteger)
+                    let numberFormatter = NumberFormatter()
+                    numberFormatter.numberStyle = NumberFormatter.Style.decimal
+                    let price = numberFormatter.string(from: myNumber)
+                    // priceLbl.text = "$ \(price!)"
+                    cell.descTextField.text = price
+                }
+                
+            }
+            else{
             cell.descTextField.text = model.dataArray[indexPath.row]
+            }
             cell.descTextField.placeholder = placeHolderText[indexPath.row]
             if(indexPath.row == 2 || indexPath.row == 3 || indexPath.row == 4){
                 cell.dropDownImageView.isHidden = false
@@ -219,7 +245,17 @@ extension AddPropertyViewController : UITableViewDataSource{
         }
     }
     func textFieldDidChange(_ textField: UITextField) {
-        
+        if textField.tag == 0 {
+            let value = textField.text?.replacingOccurrences(of: ",", with: "")
+            if let myInteger = Double(value!) {
+                let myNumber = NSNumber(value:myInteger)
+                let numberFormatter = NumberFormatter()
+                numberFormatter.numberStyle = NumberFormatter.Style.decimal
+                let price = numberFormatter.string(from: myNumber)
+                // priceLbl.text = "$ \(price!)"
+                textField.text = price
+            }
+        }
         model.dataArray[textField.tag] = textField.text!
     }
     
@@ -295,8 +331,12 @@ extension AddPropertyViewController{
         if(urls.count > 0){
             allUrlString = urls.joined(separator: ",")
         }
+        let price = model.price
+        let currentPrice = price.replacingOccurrences(of: ",", with: "")
+        
+        
     let userId = UserDefaults.standard.object(forKey: USER_ID) as! String
-        let parmDict = ["user_id" : userId ,"method_name" : ApiUrl.METHOD_EDIT_PROPERTY , "price" : model.price , "area_sqft" : model.area_sqft , "bedrooms" : model.bedrooms , "bathrooms" : model.bathrooms , "car_parking_garage" : model.car_parking_garage , "address" : model.address , "description" : model.description , "agent_name" : model.agent_name , "agent_contact" : model.agent_contact , "oldimage" : allUrlString ,"property_id" : model.propertyId] as [String : Any]
+        let parmDict = ["user_id" : userId ,"method_name" : ApiUrl.METHOD_EDIT_PROPERTY , "price" : currentPrice , "area_sqft" : model.area_sqft , "bedrooms" : model.bedrooms , "bathrooms" : model.bathrooms , "car_parking_garage" : model.car_parking_garage , "address" : model.address , "description" : model.description , "agent_name" : model.agent_name , "agent_contact" : model.agent_contact , "oldimage" : allUrlString ,"property_id" : model.propertyId] as [String : Any]
         //if(!canAdd){
 //            view.makeToast("Under Development")
 //            return
@@ -327,10 +367,13 @@ extension AddPropertyViewController{
         let status = dictionary["status"] as? Int
         let msg = dictionary["msg"] as? String
         if(status == 1){
+            SharedAppDelegate.window?.makeToast(msg!)
+          //  self.view.makeToast(msg!)
             switchController()
         }else{
+            self.view.makeToast(msg!)
+
         }
-        self.view.makeToast(msg!)
     }
 }
 

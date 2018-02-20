@@ -45,7 +45,7 @@ class CalenderViewController: UIViewController {
     @IBOutlet var timePickerPopupView: UIView!
     var dateFormatter = DateFormatter()
     var currentDateStr = ""
-    let customPickerData = ["15 Mins","30 Min","60 Min","1 Day"]
+    let customPickerData = ["15 mins","30 mins","60 mins","1 Day"]
     //  pickerDoneBtnAction
     @IBOutlet weak var timePickerView: UIDatePicker!
     @IBOutlet weak var customPickerView: UIPickerView!
@@ -114,10 +114,6 @@ class CalenderViewController: UIViewController {
        // calendar.appearance.todaySelectionColor = UIColor.blackColor
     }
    
-    
-    
-
-    
     func setupHeaderData(){
         let image = UIImage.init(named: (dataDict.object(forKey: "image_white") as! String?)!)
         headingImageView.image = image
@@ -151,15 +147,14 @@ class CalenderViewController: UIViewController {
             dateFormatter.dateStyle = DateFormatter.Style.short
             dateFormatter.timeStyle = DateFormatter.Style.short
             
-            dateFormatter.dateFormat = "HH:mm"
+          //  dateFormatter.dateFormat = "HH:mm"
+            dateFormatter.dateFormat = "H:mm"
             strTime = dateFormatter.string(from: timePickerView.date)
             // let timeArray =  strDate.components(separatedBy: ", ")
             timeTextField.text = strTime
             // dateLabel.text = strDate
         }
         timePickerPopupView.removeFromSuperview()
-
-        
     }
     @IBAction func homeBtnPressed(_ sender: Any) {
         let navController : UINavigationController  = storyboard?.instantiateViewController(withIdentifier: "SlidingNavigationController") as! UINavigationController
@@ -429,23 +424,10 @@ extension CalenderViewController{
         eventsTableView.tableHeaderView = headerView
        //nextEventView.setRadius(5)
         if(status == 1){
-        //let model = dataModel?.data?[0]
-        //let dateStr = model?.date
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.dateFormat = "yyyy-MM-dd"
-//        if let date = dateFormatter.date(from: dateStr!){
-//            dateFormatter.dateFormat = "MMM. dd, yyyy"
-//
-//            let stringDate =  dateFormatter.string(from: date)
-//           // nextEventLbl.text = "Next event on \(stringDate)"
-//
-//        }else{
-//        // nextEventLbl.text = "Invalid date formate"
-//        }
-           // nextEventView.isHidden = true
-            waterMarkLbl.isHidden = true
+  
+           // waterMarkLbl.isHidden = true
         }else{
-            waterMarkLbl.isHidden = false
+           // waterMarkLbl.isHidden = false
 
            // nextEventView.isHidden = false
             //nextEventLbl.text = "No upcoming events available"
@@ -688,7 +670,6 @@ extension CalenderViewController{
             adddEventPopupView.removeFromSuperview()
             requestGetAllEventsAPI()
             
-            
         }else{
             
             self.view.makeToast("Unable to  Delete events")
@@ -710,7 +691,7 @@ extension CalenderViewController : UITableViewDataSource{
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         
         if let date = dateFormatter.date(from: fullDateStr){
-            dateFormatter.dateFormat = "MMM dd, yyyy hh:mm a"
+            dateFormatter.dateFormat = "MMM dd, yyyy h:mm a"
             
             let stringDate =  dateFormatter.string(from: date)
             cell.dateLbl.text = stringDate
@@ -761,10 +742,21 @@ extension CalenderViewController : UITableViewDataSource{
        // cell.nameLbl.text = model?.subject
         subjectTextField.text = model?.subject
         descriptionTextView.text = model?.description
-        let time = model?.time
-        let endIndex = time?.index((time?.endIndex)!, offsetBy: -3)
-        let truncated = time?.substring(to: endIndex!)
-        timeTextField.text = truncated
+       // let time = model?.time
+        
+        let fullDateStr  = model?.time
+        let dateFormatterT = DateFormatter()
+        dateFormatterT.dateFormat = "HH:mm:ss"
+        if let date = dateFormatterT.date(from: fullDateStr!){
+            dateFormatter.dateFormat = "h:mm"
+            let stringDate =  dateFormatter.string(from: date)
+            timeTextField.text = stringDate
+           // cell.dateLbl.text = stringDate
+        
+        }
+//        let endIndex = time?.index((time?.endIndex)!, offsetBy: -3)
+//        let truncated = time?.substring(to: endIndex!)
+//        timeTextField.text = truncated
         timeIntervaltextField.text = model?.reminder
 
       // descLbl.text = model?.description
@@ -895,10 +887,11 @@ extension CalenderViewController : UITextFieldDelegate
                 timePickerView.locale = Locale.current
                 timePickerView.timeZone = TimeZone.current
                 timePickerView.datePickerMode = .time
-                timePickerView.locale = Locale(identifier: "en_GB")
+               // timePickerView.locale = Locale(identifier: "en_GB")
+                timePickerView.locale = Locale(identifier: "bg_BG")
+
 
                // [datePickerFormat setDateFormat:@"HH:mm"];
-
                 // if come from edit then  timePickerView.datePickerMode = .datetime
 //                timePickerView.datePickerMode = .time
                 timePickerView.isHidden = false
