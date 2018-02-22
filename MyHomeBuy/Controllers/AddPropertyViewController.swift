@@ -62,6 +62,8 @@ class AddPropertyViewController: UIViewController {
                 let numberFormatter = NumberFormatter()
                 numberFormatter.numberStyle = NumberFormatter.Style.decimal
                 let price = numberFormatter.string(from: myNumber)
+                
+                
                // priceLbl.text = "$ \(price!)"
                 model.price = price!
             }
@@ -208,7 +210,12 @@ extension AddPropertyViewController : UITableViewDataSource{
                     numberFormatter.numberStyle = NumberFormatter.Style.decimal
                     let price = numberFormatter.string(from: myNumber)
                     // priceLbl.text = "$ \(price!)"
-                    cell.descTextField.text = price
+                    
+                    let myPrice = (price! as NSString).doubleValue
+                    let strValue = String(format: "%.2f", myPrice)
+                    cell.descTextField.text = "\(strValue)"
+                    
+                   // cell.descTextField.text = "\(price!).00"
                 }
                 
             }
@@ -247,6 +254,9 @@ extension AddPropertyViewController : UITableViewDataSource{
     func textFieldDidChange(_ textField: UITextField) {
         if textField.tag == 0 {
             let value = textField.text?.replacingOccurrences(of: ",", with: "")
+            if(textField.text?.last == "."){
+                return
+            }
             if let myInteger = Double(value!) {
                 let myNumber = NSNumber(value:myInteger)
                 let numberFormatter = NumberFormatter()
@@ -259,6 +269,23 @@ extension AddPropertyViewController : UITableViewDataSource{
         model.dataArray[textField.tag] = textField.text!
     }
     
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let nsString = NSString(string: textField.text!)
+        let newText = nsString.replacingCharacters(in: range, with: string)
+        if(!newText.isEmpty){
+            let value = Double(newText.replacingOccurrences(of: ",", with: ""))
+            guard let validValue = value else{return false}
+            print(validValue)
+        }
+        let arr = newText.components(separatedBy: ".")
+        if(arr.count == 2){
+            let num = arr.last
+            if((num?.count)! >= 3 ){
+                return false
+            }
+        }
+        return true
+    }
 }
 extension AddPropertyViewController : UITableViewDelegate{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

@@ -180,7 +180,6 @@ class TaskViewController: UIViewController {
 }
 extension TaskViewController : UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
-        
         return (dataModel?.data?.count)!
         
     }
@@ -215,8 +214,11 @@ extension TaskViewController : UITableViewDataSource{
                 cell.taskCompleteBtn.setTitleColor(color, for: .normal)
                 for btn in cell.btnArray {
                     btn.addTarget(self, action: #selector(btnTapped(_:)), for: .touchUpInside)
+                    
                 }
                 changeBackgoundColor(of: cell, with: indexPath)
+                
+                
 
 //                if(indexPath.row % 2 == 0){
 //                    cell.contentView.backgroundColor = UIColor.lighterGray
@@ -224,6 +226,17 @@ extension TaskViewController : UITableViewDataSource{
 //                    cell.contentView.backgroundColor = UIColor.white
 //
 //                }
+                
+                if(model?.userID == "0"){
+                    cell.deleteBtn.isHidden = true
+                }
+                else{
+                    cell.deleteBtn.addTarget(self, action: #selector(taskDeleteBtnTapped(_:)), for: .touchUpInside)
+                    cell.deleteBtn.tag = indexPath.row
+                    cell.deleteBtn.isHidden = false
+
+                }
+                
                 return cell
             }else{
             //let color = dataDict.object(forKey: "colorCode") as! UIColor?
@@ -263,6 +276,16 @@ extension TaskViewController : UITableViewDataSource{
                 cell.suggestionCheckListButton.setRadius(10, color!, 2)
                 cell.suggestionCheckListButton.setTitleColor(color, for: .normal)
                 cell.suggestionCheckListButton.addTarget(self, action: #selector(checkListButtonAction(_:)), for: .touchUpInside)
+                
+                if(model?.userID == "0"){
+                    cell.deleteBtn.isHidden = true
+                }
+                else{
+                    cell.deleteBtn.addTarget(self, action: #selector(taskDeleteBtnTapped(_:)), for: .touchUpInside)
+                    cell.deleteBtn.tag = indexPath.row
+                    cell.deleteBtn.isHidden = false
+                    
+                }
                 return cell
             }
         }else{
@@ -302,7 +325,15 @@ extension TaskViewController : UITableViewDataSource{
                 }
                 // cell.contentView.backgroundColor = UIColor.lighterGray
                 changeBackgoundColor(of: cell, with: indexPath)
-                
+                if(model?.userID == "0"){
+                    cell.deleteBtn.isHidden = true
+                }
+                else{
+                    cell.deleteBtn.addTarget(self, action: #selector(taskDeleteBtnTapped(_:)), for: .touchUpInside)
+                    cell.deleteBtn.tag = indexPath.row
+                    cell.deleteBtn.isHidden = false
+                    
+                }
                 return cell
             }else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "TaskTableCell", for: indexPath) as! TaskTableCell;
@@ -332,6 +363,16 @@ extension TaskViewController : UITableViewDataSource{
                     btn.addTarget(self, action: #selector(btnTapped(_:)), for: .touchUpInside)
                 }
                 changeBackgoundColor(of: cell, with: indexPath)
+                
+                if(model?.userID == "0"){
+                    cell.deleteBtn.isHidden = true
+                }
+                else{
+                    cell.deleteBtn.addTarget(self, action: #selector(taskDeleteBtnTapped(_:)), for: .touchUpInside)
+                    cell.deleteBtn.tag = indexPath.row
+                    cell.deleteBtn.isHidden = false
+                    
+                }
                 //                if(indexPath.row % 2 == 0){
                 //                    cell.contentView.backgroundColor = UIColor.lighterGray
                 //                }else{
@@ -532,10 +573,21 @@ extension TaskViewController : UITableViewDataSource{
         guard let validValue = value else{return false}
         print(validValue)
         }
+        let arr = newText.components(separatedBy: ".")
+        if(arr.count == 2){
+            let num = arr.last
+            if((num?.count)! >= 3 ){
+                return false
+            }
+        }
         return true
     }
     func textFieldDidChange(_ textField: UITextField) {
         let filledText = textField.text?.replacingOccurrences(of: ",", with: "")
+        if(textField.text?.last == "."){
+            return
+        }
+        
         print("textFieldDidChange  \(filledText!)")
         switch textField.tag {
         case 0:
@@ -801,6 +853,36 @@ extension TaskViewController : UITableViewDataSource{
         
         return nil
     }
+    
+    func taskDeleteBtnTapped(_ btn : UIButton ){
+        showAlert("MyHomeBuy", "Do you really want to delete this Task?", btn.tag)
+    }
+    func showAlert(_ title : String , _ msg : String , _ btn : Int ){
+        
+        let alertController = UIAlertController(title: title, message: msg, preferredStyle: UIAlertControllerStyle.alert)
+        
+        let DestructiveAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: "nil"), style: .default) {
+            (result : UIAlertAction) -> Void in
+            print("Destructive")
+        }
+        
+        let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "nil"), style: UIAlertActionStyle.default) {
+            (result : UIAlertAction) -> Void in
+         //   self.requestRemoveNotesAPI(btn)
+             
+          //  self.requestDeleteTaskAPI(btn)
+            self.requestDeleteTaskAPI(buttonId: btn)
+            
+            print("OK")
+            
+        }
+        
+        alertController.addAction(DestructiveAction)
+        alertController.addAction(okAction)
+        self.present(alertController, animated: true, completion: nil)
+        alertController.view.tintColor = UIColor.black
+        
+    }
 }
 
 extension TaskViewController : UITextFieldDelegate{
@@ -1002,6 +1084,50 @@ extension TaskViewController{
     }
     
 }
-
+extension TaskViewController{
+   
+    func requestDeleteTaskAPI(buttonId : Int){
+        //{"method_name":"add_user_tasks","milestone_cat_id":"2","user_id":"11","name":"my new tasks"}
+      //  { "method_name":"tasks_delete", "id":" ","user_id":"" }
+          let model = dataModel?.data?[buttonId]
+          let id = (model?.id)!
+        
+        
+        let userId = UserDefaults.standard.object(forKey: USER_ID) as! String
+        let parmDict = ["user_id" : userId ,"method_name" : ApiUrl.METHOD_TASK_DELETE_MILESTONE , "id" : id ] as [String : Any]
+        
+        MBProgressHUD.showAdded(to: self.view, animated: true)
+        ApiManager.sharedInstance.requestApiServer(parmDict, [UIImage](), {(data) ->() in
+            MBProgressHUD.hide(for: self.view, animated: true)
+            //self.responseWithDeleteTask(data, id: Int(id)!)
+            self.responseWithDeleteTask(data, id: buttonId)
+        }, {(error)-> () in
+            print("failure \(error)")
+            MBProgressHUD.hide(for: self.view, animated: true)
+            self.view.makeToast(NETWORK_ERROR)
+            
+            
+        },{(progress)-> () in
+            print("progress \(progress)")
+            
+        })
+        
+    }
+    func responseWithDeleteTask(_ userData : Any ,id :Int){
+        let dictionary = userData as! NSDictionary
+        let status = dictionary["status"] as? Int
+        //let msg = dictionary["msg"] as? String
+        if(status == 1){
+            self.view.makeToast("Task Delete successfully")
+            dataModel?.data?.remove(at: id)
+            taskTableView.reloadData()
+        }else{
+            
+        }
+        //self.view.makeToast(msg!)
+        
+    }
+   
+}
 
 

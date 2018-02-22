@@ -155,9 +155,16 @@ class PropertyDetailViewController: UIViewController {
         if let myInteger = Float(price!) {
             let myNumber = NSNumber(value:myInteger)
             let numberFormatter = NumberFormatter()
+           // numberFormatter.numberStyle = .currency
+
             numberFormatter.numberStyle = NumberFormatter.Style.decimal
             let price = numberFormatter.string(from: myNumber)
-            priceLbl.text = "$ \(price!)"
+            
+            let myPrice = (price! as NSString).doubleValue
+            let strValue = String(format: "%.2f", myPrice)
+            priceLbl.text = "$ \(strValue)"
+            
+           // priceLbl.text = "$ \(price!).00"
         }
        // priceLbl.text = "$ \(price!)"
         addressLbl.text = model?.address

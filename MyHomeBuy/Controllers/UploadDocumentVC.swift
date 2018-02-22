@@ -264,6 +264,10 @@ extension UploadDocumentVC
                 self.canUpload = false
                 //self.userImageView.image  = nil
                 self.userImageView.image = UIImage(named: "uploadDocuments")
+                if let navCon = self.navigationController
+                {
+                    navCon.popViewController(animated: true)
+                }
 
                 
 
@@ -306,6 +310,10 @@ extension UploadDocumentVC
                 self.canUpload = false
               //  self.userImageView.image  = nil
                 self.userImageView.image = UIImage(named: "pdf")
+                if let navCon = self.navigationController
+                {
+                    navCon.popViewController(animated: true)
+                }
 
 
             }else{

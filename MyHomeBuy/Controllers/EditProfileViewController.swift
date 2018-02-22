@@ -32,6 +32,7 @@ class EditProfileViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         //frostedViewController.panGestureEnabled = false
+        emailTextField.isUserInteractionEnabled = false
         setupUI()
         navigationBarView.setBottomShadow()
 
@@ -55,6 +56,8 @@ class EditProfileViewController: UIViewController {
         if let userImage = UserDefaults.standard.object(forKey: USER_IMAGE){
             let url = userImage as? String
             profileImageView.sd_setImage(with: URL(string: url!), placeholderImage: UIImage(named: "user_icon"))
+            profileImageView.contentMode = .scaleAspectFill
+
            
         }
         let userName = UserDefaults.standard.object(forKey: USER_NAME)
@@ -158,19 +161,23 @@ class EditProfileViewController: UIViewController {
         view.endEditing(true)
         if(nameTextField.text?.isEmpty)!{
             view.makeToast("Please enter name")
-        }else if(addressTextField.text?.isEmpty)!{
-            view.makeToast("Please enter your address")
-            
-        }else if(emailTextField.text?.isEmpty)!{
+        }
+//        else if(addressTextField.text?.isEmpty)!{
+//            view.makeToast("Please enter your address")
+//        }
+        else if(emailTextField.text?.isEmpty)!{
             view.makeToast("Please enter your email")
         }else if(!(emailTextField.text?.isValidEmail())!){
             view.makeToast("Please enter valid email")
-        }else if(phoneTextField.text?.isEmpty)!{
-            view.makeToast("Please enter your Phone Number")
-
-        }else if(!(phoneTextField.text?.isLengthValidWithRange(8,16))!){
-        view.makeToast("Please enter valid Phone Number")
-        }else{
+        }
+//        else if(phoneTextField.text?.isEmpty)!{
+//            view.makeToast("Please enter your Phone Number")
+//
+//        }
+//        else if(!(phoneTextField.text?.isLengthValidWithRange(8,16))!){
+//        view.makeToast("Please enter valid Phone Number")
+//        }
+        else{
             requestEditProfileAPI()
         }
     }

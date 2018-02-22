@@ -47,6 +47,8 @@ class ApiUrl {
     static let METHOD_EDIT_EVENTS = "edit_user_TaskCalendar"
     static let METHOD_DELETE_EVENTS = "delete_user_TaskCalendar"
     static let METHOD_DELETE_PROPERTY = "delete_data"
+    static let METHOD_TASK_DELETE_MILESTONE = "tasks_delete"
+
 
 
 

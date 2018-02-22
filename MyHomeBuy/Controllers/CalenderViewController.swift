@@ -635,7 +635,7 @@ extension CalenderViewController{
 }
 
 extension CalenderViewController{
-    func requestDeleteApi(){
+    func requestDeleteApi(_ id : Int){
         let model = dataModel?.data?[currentTappedIndex]
         let id  = (model?.id)!
         
@@ -766,9 +766,36 @@ extension CalenderViewController : UITableViewDataSource{
     
     func deleteBtnTapped(_ btn : UIButton){
         currentTappedIndex = btn.tag
-        let model = dataModel?.data?[btn.tag]
-        requestDeleteApi()
+        showAlert("MyHomeBuy", "Do you really want to delete this event?", btn.tag)
+        
+       // let model = dataModel?.data?[btn.tag]
+       // requestDeleteApi()
         print("delete")
+    }
+    
+    func showAlert(_ title : String , _ msg : String , _ btn : Int ){
+        
+        let alertController = UIAlertController(title: title, message: msg, preferredStyle: UIAlertControllerStyle.alert)
+        
+        let DestructiveAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: "nil"), style: .default) {
+            (result : UIAlertAction) -> Void in
+            print("Destructive")
+        }
+        
+        let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "nil"), style: UIAlertActionStyle.default) {
+            (result : UIAlertAction) -> Void in
+            self.requestDeleteApi(btn)
+        //    self.requestRemoveNotesAPI(btn)
+            
+            print("OK")
+            
+        }
+        
+        alertController.addAction(DestructiveAction)
+        alertController.addAction(okAction)
+        self.present(alertController, animated: true, completion: nil)
+        alertController.view.tintColor = UIColor.black
+        
     }
 //    func fillData(){
 //

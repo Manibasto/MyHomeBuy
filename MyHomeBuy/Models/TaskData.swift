@@ -19,6 +19,7 @@ public class TaskData {
 	public var name : String?
     public var calculation : String?
     public var value : String?
+    public var userID : String?
 
 
 /**
@@ -58,7 +59,9 @@ public class TaskData {
 		status = dictionary["status"] as? String
         name = dictionary["name"] as? String
         calculation = dictionary["calculation"] as? String
+        userID = dictionary["user_id"] as? String
 
+        
         value = dictionary["value"] as? String
 
 	}
