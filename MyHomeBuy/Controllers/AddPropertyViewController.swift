@@ -57,16 +57,34 @@ class AddPropertyViewController: UIViewController {
             //requestPropertyAPI()
             
           //  model.price = (propertyModel?.price)!
+//            if let myInteger = Float((propertyModel?.price)!) {
+//                let myNumber = NSNumber(value:myInteger)
+//                let numberFormatter = NumberFormatter()
+//                numberFormatter.numberStyle = NumberFormatter.Style.decimal
+//                let price = numberFormatter.string(from: myNumber)
+//               // priceLbl.text = "$ \(price!)"
+//                model.price = price!
+//            }
+            
+            
             if let myInteger = Float((propertyModel?.price)!) {
                 let myNumber = NSNumber(value:myInteger)
                 let numberFormatter = NumberFormatter()
-                numberFormatter.numberStyle = NumberFormatter.Style.decimal
+                //  numberFormatter.numberStyle = .currency
+                numberFormatter.numberStyle = NumberFormatter.Style.currency
                 let price = numberFormatter.string(from: myNumber)
                 
-                
-               // priceLbl.text = "$ \(price!)"
-                model.price = price!
+                if let price = price {
+                    var priceValue = price
+                    if price.count > 1 {
+                        priceValue = String(priceValue.dropFirst())
+                    }
+                    model.price = priceValue
+                }
             }
+            
+            
+            
             model.area_sqft = (propertyModel?.area_sqft)!
             model.bedrooms = (propertyModel?.bedrooms)!
             model.bathrooms = (propertyModel?.bathrooms)!
@@ -204,20 +222,34 @@ extension AddPropertyViewController : UITableViewDataSource{
             cell.nameLbl.text  = headingText[indexPath.row]
             if indexPath.row == 0{
                let value = model.dataArray[indexPath.row].replacingOccurrences(of: ",", with: "")
-                if let myInteger = Double(value) {
+//                if let myInteger = Double(value) {
+//                    let myNumber = NSNumber(value:myInteger)
+//                    let numberFormatter = NumberFormatter()
+//                    numberFormatter.numberStyle = NumberFormatter.Style.decimal
+//                    let price = numberFormatter.string(from: myNumber)
+//                    // priceLbl.text = "$ \(price!)"
+//
+//                    let myPrice = (price! as NSString).doubleValue
+//                    let strValue = String(format: "%.2f", myPrice)
+//                    cell.descTextField.text = "\(strValue)"
+//
+//                   // cell.descTextField.text = "\(price!).00"
+//                }
+                if let myInteger = Float(value) {
                     let myNumber = NSNumber(value:myInteger)
                     let numberFormatter = NumberFormatter()
-                    numberFormatter.numberStyle = NumberFormatter.Style.decimal
+                    //  numberFormatter.numberStyle = .currency
+                    numberFormatter.numberStyle = NumberFormatter.Style.currency
                     let price = numberFormatter.string(from: myNumber)
-                    // priceLbl.text = "$ \(price!)"
                     
-                    let myPrice = (price! as NSString).doubleValue
-                    let strValue = String(format: "%.2f", myPrice)
-                    cell.descTextField.text = "\(strValue)"
-                    
-                   // cell.descTextField.text = "\(price!).00"
+                    if let price = price {
+                        var priceValue = price
+                        if price.count > 1 {
+                            priceValue = String(priceValue.dropFirst())
+                        }
+                        cell.descTextField.text = "\(priceValue)"
+                    }
                 }
-                
             }
             else{
             cell.descTextField.text = model.dataArray[indexPath.row]

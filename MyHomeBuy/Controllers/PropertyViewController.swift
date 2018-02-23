@@ -94,12 +94,16 @@ extension PropertyViewController : UITableViewDataSource{
             let myNumber = NSNumber(value:myInteger)
             let numberFormatter = NumberFormatter()
           //  numberFormatter.numberStyle = .currency
-            numberFormatter.numberStyle = NumberFormatter.Style.decimal
+            numberFormatter.numberStyle = NumberFormatter.Style.currency
             let price = numberFormatter.string(from: myNumber)
-            let myPrice = (price! as NSString).doubleValue
-            let strValue = String(format: "%.2f", myPrice)
-            cell.priceLbl.text = "$ \(strValue)"
-
+            
+            if let price = price {
+                var priceValue = price
+                if price.count > 1 {
+                    priceValue = String(priceValue.dropFirst())
+                }
+                cell.priceLbl.text = "$ \(priceValue)"
+            }
         }
        
         
@@ -120,7 +124,6 @@ extension PropertyViewController : UITableViewDataSource{
             }
         }else{
             cell.propertyImageView.image = UIImage.init(named: "add_home_placeholder")
-
         }
         
        // cell.editButton.addTarget(self, action: #selector(editButtonTapped(_:)), for: .touchUpInside)

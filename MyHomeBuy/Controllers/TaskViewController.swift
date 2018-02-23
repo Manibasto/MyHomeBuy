@@ -46,7 +46,8 @@ class TaskViewController: UIViewController {
     var valueThird : Double?
     var valueFourth : Double?
     let numberFormatter = NumberFormatter()
-
+     var once = false
+    var more = false
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -301,7 +302,9 @@ extension TaskViewController : UITableViewDataSource{
                     cell.mileStoneStatusBtn.setTitle("Milestone task is incomplete" , for: .normal)
                     cell.mileStoneStatusBtn.setImage(UIImage.init(named: ""), for: .normal)
                     cell.taskCompleteBtn.setTitle("Mark as Task Complete", for: .normal)
+                   
                     setupCellDataForUndone(indexPath, cell, model!)
+
                     
                 }else{
                     cell.mileStoneStatusBtn.setTitleColor(color
@@ -310,7 +313,12 @@ extension TaskViewController : UITableViewDataSource{
                     let image = UIImage.init(named: (dataDict.object(forKey: "complete") as! String?)!)
                     cell.mileStoneStatusBtn.setImage(image, for: .normal)
                     cell.taskCompleteBtn.setTitle("Undo Task Complete", for: .normal)
+                    if(!once){
+                        numberFormatter.numberStyle = NumberFormatter.Style.currency
+                        once = true
+                    }
                     setupCellDataForDone(indexPath, cell, model!)
+
                 }
                 
                 cell.taskCompleteBtn.tag = indexPath.row
@@ -427,15 +435,31 @@ extension TaskViewController : UITableViewDataSource{
             valueFourth = fourth
             if let firstvalue = first , let secondvalue = second , let thirdValue = third , let fourthValue = fourth{
                 let result = firstvalue + secondvalue + thirdValue - fourthValue
-                let twoDecimalPlaces = String(format: "%.2f", result)
+//                let twoDecimalPlaces = String(format: "%.2f", result)
+//
+//                if let myInteger = Double(twoDecimalPlaces.replacingOccurrences(of: ",", with: "")) {
+//                    let myNumber = NSNumber(value:myInteger)
+//
+//                    let price = numberFormatter.string(from: myNumber)
+//                    let newPrice = price!
+//                    cell.resultLbl.text = "My maximum purchase price\nTotal\n$ \(newPrice)"
+//
+//                }
+             //   let twoDecimalPlaces = String(format: "%.2f", result)
+                let floatValue = String(result)
                 
-                if let myInteger = Double(twoDecimalPlaces.replacingOccurrences(of: ",", with: "")) {
+                if let myInteger = Float(floatValue) {
                     let myNumber = NSNumber(value:myInteger)
-                
+                    //  numberFormatter.numberStyle = .currency
                     let price = numberFormatter.string(from: myNumber)
-                    let newPrice = price!
-                    cell.resultLbl.text = "My maximum purchase price\nTotal\n$ \(newPrice)"
                     
+                    if let price = price {
+                        var priceValue = price
+                        if price.count > 1 {
+                            priceValue = String(priceValue.dropFirst())
+                        }
+                        cell.resultLbl.text = "My maximum purchase price\nTotal\n$ \(priceValue)"
+                    }
                 }
                 
             // cell.resultLbl.text = "My maximum purchase price\nTotal\n$ \(twoDecimalPlaces)"
@@ -454,11 +478,25 @@ extension TaskViewController : UITableViewDataSource{
                     
                     if let myInteger = Double((valueList?[index])!) {
                         let myNumber = NSNumber(value:myInteger)
-                       
-                        let price = numberFormatter.string(from: myNumber)
-                        let newPrice = price!
-                        currentField.text = newPrice
+                        
+                        
+                        
 
+                        let price = numberFormatter.string(from: myNumber)
+                        if let price = price {
+                            var priceValue = price
+                            if price.count > 1 {
+                                priceValue = String(priceValue.dropFirst())
+                            }
+                            currentField.text = priceValue
+                        }
+                        
+                        
+                        
+                        
+//                        let newPrice = price!
+//                        currentField.text = newPrice
+                      
                     }
                     
                 }else{
@@ -544,28 +582,57 @@ extension TaskViewController : UITableViewDataSource{
             }
 
             }
-        let twoDecimalPlaces = String(format: "%.2f", getTotal())
-
-       // cell.resultLbl.text = "My maximum purchase price\nTotal\n$ \(twoDecimalPlaces)"
+//        let twoDecimalPlaces = String(format: "%.2f", getTotal())
+//
+//        if let myInteger = Double(twoDecimalPlaces.replacingOccurrences(of: ",", with: "")) {
+//            let myNumber = NSNumber(value:myInteger)
+//
+//            let price = numberFormatter.string(from: myNumber)
+//            let newPrice = price!
+//            cell.resultLbl.text = "My maximum purchase price\nTotal\n$ \(newPrice))"
+//
+//        }
         
-        if let myInteger = Double(twoDecimalPlaces.replacingOccurrences(of: ",", with: "")) {
-            let myNumber = NSNumber(value:myInteger)
-           
-            let price = numberFormatter.string(from: myNumber)
-            let newPrice = price!
-            cell.resultLbl.text = "My maximum purchase price\nTotal\n$ \(newPrice))"
+       // let value = getTotal()
+        let floatValue = String(getTotal())
 
+        if let myInteger = Float(floatValue) {
+            let myNumber = NSNumber(value:myInteger)
+            //  numberFormatter.numberStyle = .currency
+            let price = numberFormatter.string(from: myNumber)
+            
+            if let price = price {
+                var priceValue = price
+                if price.count > 1 {
+                    priceValue = String(priceValue.dropFirst())
+                }
+                cell.resultLbl.text = "My maximum purchase price\nTotal\n$ \(priceValue)"
+            }
         }
+        
+        
 
         }
     func setFormattedText(number : Double , textField : UITextField){
-        let myNumber = NSNumber(value:number)
+        let myNewNumber = NSNumber(value:number)
         
-        let str = numberFormatter.string(from: myNumber)
-        textField.text = str
+        
+        let text  = numberFormatter.string(from: myNewNumber)
+        if let validValue = text{
+            if(validValue.contains("$")){
+                textField.text = String(validValue.dropFirst())
+            }else{
+                textField.text = validValue
+                
+            }
+        }
         
     }
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        // if(!more){
+        numberFormatter.numberStyle = NumberFormatter.Style.decimal
+         //more = true
+         //}
         let nsString = NSString(string: textField.text!)
         let newText = nsString.replacingCharacters(in: range, with: string)
         if(!newText.isEmpty){
@@ -584,7 +651,7 @@ extension TaskViewController : UITableViewDataSource{
     }
     func textFieldDidChange(_ textField: UITextField) {
         let filledText = textField.text?.replacingOccurrences(of: ",", with: "")
-        if(textField.text?.last == "."){
+        if(textField.text?.contains("."))!{
             return
         }
         
@@ -656,7 +723,23 @@ extension TaskViewController : UITableViewDataSource{
                 calculationCell.resultLbl.text = "My maximum purchase price\nTotal\n$ \(price!)"
                 if let myNewInteger = Double(filledText!) {
                     let myNewNumber = NSNumber(value:myNewInteger)
-                textField.text = numberFormatter.string(from: myNewNumber)
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                let text  = numberFormatter.string(from: myNewNumber)
+                    if let validValue = text{
+                        if(validValue.contains("$")){
+                            textField.text = String(validValue.dropFirst())
+                        }else{
+                            textField.text = validValue
+
+                        }
+                    }
                 }
 
             }
@@ -887,7 +970,7 @@ extension TaskViewController : UITableViewDataSource{
 
 extension TaskViewController : UITextFieldDelegate{
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        
+       
         
     }
     
@@ -1009,6 +1092,10 @@ extension TaskViewController{
                     model?.value = "0,0,0,0"
                 }
                 self.view.makeToast("Task is marked as incomplete")
+                more = true
+
+                //numberFormatter.numberStyle = NumberFormatter.Style.currency
+                
 
             }else{
                 model?.status = "1"
@@ -1017,6 +1104,7 @@ extension TaskViewController{
                     model?.value = getStringValue()
                 }
                 self.view.makeToast("Task is marked as completed")
+                numberFormatter.numberStyle = NumberFormatter.Style.currency
 
             }
             let indexPath = IndexPath.init(row: currentIndex, section: 0)

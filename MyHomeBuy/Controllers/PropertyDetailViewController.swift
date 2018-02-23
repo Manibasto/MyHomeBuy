@@ -152,21 +152,37 @@ class PropertyDetailViewController: UIViewController {
         agentNameBtn.setTitle(model?.agent_name, for: .normal)
         agentNoBtn.setTitle(model?.agent_contact, for: .normal)
         let price = model?.price
+        
         if let myInteger = Float(price!) {
             let myNumber = NSNumber(value:myInteger)
             let numberFormatter = NumberFormatter()
-           // numberFormatter.numberStyle = .currency
-
-            numberFormatter.numberStyle = NumberFormatter.Style.decimal
+            //  numberFormatter.numberStyle = .currency
+            numberFormatter.numberStyle = NumberFormatter.Style.currency
             let price = numberFormatter.string(from: myNumber)
             
-            let myPrice = (price! as NSString).doubleValue
-            let strValue = String(format: "%.2f", myPrice)
-            priceLbl.text = "$ \(strValue)"
-            
-           // priceLbl.text = "$ \(price!).00"
+            if let price = price {
+                var priceValue = price
+                if price.count > 1 {
+                    priceValue = String(priceValue.dropFirst())
+                }
+              priceLbl.text = "$ \(priceValue)"
+            }
         }
+        
+//        if let myInteger = Float(price!) {
+//            let myNumber = NSNumber(value:myInteger)
+//            let numberFormatter = NumberFormatter()
+//           // numberFormatter.numberStyle = .currency
+//            numberFormatter.numberStyle = NumberFormatter.Style.decimal
+//            let price = numberFormatter.string(from: myNumber)
+//            let myPrice = (price! as NSString).doubleValue
+//            let strValue = String(format: "%.2f", myPrice)
+//            priceLbl.text = "$ \(strValue)"
+//           // priceLbl.text = "$ \(price!).00"
+//        }
        // priceLbl.text = "$ \(price!)"
+        
+        
         addressLbl.text = model?.address
     }
     override func didReceiveMemoryWarning() {
