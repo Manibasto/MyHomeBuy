@@ -156,6 +156,12 @@ extension ResourceContactViewController : UITableViewDataSource{
         model?.name = model?.name?.trimmingCharacters(in: .whitespacesAndNewlines)
         cell.initialLbl.text = model?.name?.getInitials("").uppercased()
         cell.nameLbl.text = model?.name
+        
+        
+//        let no = model?.phone_number
+//        let b = no?.components(separatedBy: CharacterSet.decimalDigits.inverted).joined(separator: " ")
+//        cell.phoneLbl.text = b
+        
         cell.phoneLbl.text = model?.phone_number
         cell.profileImageView.image = nil
         if(model?.status == "1"){

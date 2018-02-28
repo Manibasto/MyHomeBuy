@@ -74,8 +74,8 @@ class AddEditTaskContactViewController: UIViewController {
         addressTextView.delegate  = self
         phoneTextField.keyboardType = .numberPad
         emailTextField.keyboardType = .emailAddress
-        leftBtn.setRadius(5)
-        rightBtn.setRadius(5)
+        leftBtn.setRadius(10)
+        rightBtn.setRadius(10)
         profileContainerView.setRadius(5)
         profileView.setRadius(profileView.frame.size.width/2)
         initialLbl.text = model?.name?.getInitials("")
@@ -94,7 +94,7 @@ class AddEditTaskContactViewController: UIViewController {
             currentTitle.text = "Edit Contact"
             profileViewHeightConstraint.constant = 100
             leftBtn.setTitle("CANCEL", for: .normal)
-            rightBtn.setTitle("DONE", for: .normal)
+            rightBtn.setTitle("SAVE", for: .normal)
             leftBtn.addTarget(self, action: #selector(removeBtnPressed(_:)), for: .touchUpInside)
             rightBtn.addTarget(self, action: #selector(doneBtnPressed(_:)), for: .touchUpInside)
         }

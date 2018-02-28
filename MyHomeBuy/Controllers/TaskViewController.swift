@@ -89,7 +89,7 @@ class TaskViewController: UIViewController {
         let parmDict = ["user_id" : userId ,"method_name" : ApiUrl.METHOD_GET_TASK , "milestone_cat_id" : currentCategoryId] as [String : Any]
         
         MBProgressHUD.showAdded(to: self.view, animated: true)
-        ApiManager.sharedInstance.requestApiServer(parmDict, [UIImage](), {(data) ->() in
+        ApiManager.sharedInstance.apiCall(parmDict, [UIImage](), {(data) ->() in
             MBProgressHUD.hide(for: self.view, animated: true)
             self.responseWithSuccess(data)
         }, {(error)-> () in
@@ -1064,7 +1064,7 @@ extension TaskViewController{
         print("parmDict \(parmDict)")
         
         MBProgressHUD.showAdded(to: self.view, animated: true)
-        ApiManager.sharedInstance.requestApiServer(parmDict, [UIImage](), {(data) ->() in
+        ApiManager.sharedInstance.apiCall(parmDict, [UIImage](), {(data) ->() in
             MBProgressHUD.hide(for: self.view, animated: true)
             self.responseWithTaskStatus(data)
         }, {(error)-> () in
@@ -1141,7 +1141,7 @@ extension TaskViewController{
         let parmDict = ["user_id" : userId ,"method_name" : ApiUrl.METHOD_ADD_TASK , "milestone_cat_id" : currentCategoryId , "name" : addTaskTextView.text] as [String : Any]
         
         MBProgressHUD.showAdded(to: self.view, animated: true)
-        ApiManager.sharedInstance.requestApiServer(parmDict, [UIImage](), {(data) ->() in
+        ApiManager.sharedInstance.apiCall(parmDict, [UIImage](), {(data) ->() in
             MBProgressHUD.hide(for: self.view, animated: true)
             self.responseWithAddTask(data)
         }, {(error)-> () in
@@ -1185,7 +1185,7 @@ extension TaskViewController{
         let parmDict = ["user_id" : userId ,"method_name" : ApiUrl.METHOD_TASK_DELETE_MILESTONE , "id" : id ] as [String : Any]
         
         MBProgressHUD.showAdded(to: self.view, animated: true)
-        ApiManager.sharedInstance.requestApiServer(parmDict, [UIImage](), {(data) ->() in
+        ApiManager.sharedInstance.apiCall(parmDict, [UIImage](), {(data) ->() in
             MBProgressHUD.hide(for: self.view, animated: true)
             //self.responseWithDeleteTask(data, id: Int(id)!)
             self.responseWithDeleteTask(data, id: buttonId)

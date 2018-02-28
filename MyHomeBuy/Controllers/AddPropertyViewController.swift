@@ -286,7 +286,7 @@ extension AddPropertyViewController : UITableViewDataSource{
     func textFieldDidChange(_ textField: UITextField) {
         if textField.tag == 0 {
             let value = textField.text?.replacingOccurrences(of: ",", with: "")
-            if(textField.text?.last == "."){
+            if(textField.text?.contains("."))!{
                 return
             }
             if let myInteger = Double(value!) {

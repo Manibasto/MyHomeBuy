@@ -18,7 +18,13 @@ extension String
         let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
         return emailTest.evaluate(with: self)
     }
-    
+    func isValidName() -> Bool {
+        let nameRegEx = "[a-zA-Z'-. ]+"
+        //"^[a-zA-Z\\s]*$]"
+        
+        let nameTest = NSPredicate(format:"SELF MATCHES %@", nameRegEx)
+        return nameTest.evaluate(with: self)
+    }
     func isContactNumberValid() -> Bool {
         if(self.characters.count >= 8 && self.characters.count <= 16){
             return true

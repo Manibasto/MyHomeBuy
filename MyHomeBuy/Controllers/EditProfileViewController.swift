@@ -162,6 +162,9 @@ class EditProfileViewController: UIViewController {
         if(nameTextField.text?.isEmpty)!{
             view.makeToast("Please enter name")
         }
+        else if(!(nameTextField.text?.isValidName())!){
+            view.makeToast("Characters Expected!")
+        }
 //        else if(addressTextField.text?.isEmpty)!{
 //            view.makeToast("Please enter your address")
 //        }
