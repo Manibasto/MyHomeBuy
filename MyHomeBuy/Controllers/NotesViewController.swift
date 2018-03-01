@@ -28,6 +28,7 @@ class NotesViewController: UIViewController {
     
     @IBOutlet weak var saveBtn: UIButton!
     
+    
     @IBOutlet weak var descriptionTextView: UITextView!
     @IBOutlet weak var subjectTextField: UITextField!
     
@@ -39,6 +40,8 @@ class NotesViewController: UIViewController {
         frostedViewController.panGestureEnabled = false
 //        navigationBarView.setBottomShadow()
 //        headingView.setBottomShadow()
+        notesTableView.rowHeight = UITableViewAutomaticDimension
+        notesTableView.estimatedRowHeight = 44
         setupData()
         if(fromTask){
             setupHeaderData()
@@ -87,6 +90,31 @@ class NotesViewController: UIViewController {
         
         frostedViewController.contentViewController = navController
     }
+        
+    func showAlert(_ title : String , _ msg : String , _ btn : Int ){
+
+        let alertController = UIAlertController(title: title, message: msg, preferredStyle: UIAlertControllerStyle.alert)
+
+        let DestructiveAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: "nil"), style: .default) {
+            (result : UIAlertAction) -> Void in
+            print("Destructive")
+        }
+
+        let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "nil"), style: UIAlertActionStyle.default) {
+            (result : UIAlertAction) -> Void in
+           // self.requestDeletePropertAPI()
+            self.requestRemoveNotesAPI(btn)
+
+            print("OK")
+
+        }
+
+        alertController.addAction(DestructiveAction)
+        alertController.addAction(okAction)
+        self.present(alertController, animated: true, completion: nil)
+        alertController.view.tintColor = UIColor.black
+
+    }
     /*
      // MARK: - Navigation
      
@@ -107,6 +135,10 @@ extension NotesViewController : UITableViewDataSource{
         let cell = tableView.dequeueReusableCell(withIdentifier: "NotesTableCell", for: indexPath) as! NotesTableCell;
         let model = dataModel?.data?[indexPath.row]
         cell.editBtn.addTarget(self, action: #selector(editBtnTapped(_:)), for: .touchUpInside)
+        
+        cell.deleteBtn.addTarget(self, action: #selector(deleteBtnTapped(_:)), for: .touchUpInside)
+        cell.deleteBtn.tag = indexPath.row
+        
         cell.headingLbl.text = model?.subject
         cell.descriptionLbl.text = model?.description
         
@@ -123,7 +155,6 @@ extension NotesViewController : UITableViewDataSource{
             cell.dataLbl.text = model?.created_date
 
         }
-       
         
         
         if(indexPath.row % 2 == 0){
@@ -144,10 +175,17 @@ extension NotesViewController : UITableViewDataSource{
         self.navigationController?.pushViewController(vc, animated: true)
         
     }
+    func deleteBtnTapped(_ btn : UIButton){
+      //  showAlert("MyHomeBuy", "Do you really want to delete this image?")
+        showAlert("MyHomeBuy", "Do you really want to delete this Note?", btn.tag)
+        
+       // requestRemoveNotesAPI(btn.tag)
+
+    }
 }
 extension NotesViewController : UITableViewDelegate{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+
         
     }
     
@@ -218,6 +256,8 @@ extension NotesViewController{
     }
     func cancelBtnTapped(){
         addNotePopupView.removeFromSuperview()
+        subjectTextField.text = ""
+        descriptionTextView.text = ""
         
     }
     func addNotesBtnTapped(){
@@ -305,4 +345,48 @@ extension NotesViewController : NotesUpdatedDelegate{
         requestGetAllNotesAPI()
     }
     
+}
+extension NotesViewController{
+    func requestRemoveNotesAPI(_ id : Int)
+    {
+        //{
+        // "method_name":"delete_user_TaskNote",
+        //"notes_id":"4"}
+        
+        let model = dataModel?.data?[id]
+        let modelId = (model?.id)!
+        
+        let userId = UserDefaults.standard.object(forKey: USER_ID) as! String
+        let parmDict = ["user_id" : userId ,"method_name" : ApiUrl.METHOD_DELETE_NOTES , "notes_id" : modelId  ] as [String : Any]
+        
+//        let userId = UserDefaults.standard.object(forKey: USER_ID) as! String
+//        let parmDict = ["user_id" : userId ,"method_name" : ApiUrl.METHOD_DELETE_NOTES , "notes_id" : "\(id)"  ] as [String : Any]
+        
+        MBProgressHUD.showAdded(to: self.view, animated: true)
+        ApiManager.sharedInstance.requestApiServer(parmDict, [UIImage]() , {(data) ->() in
+            MBProgressHUD.hide(for: self.view, animated: true)
+            let dictionary = data as! NSDictionary
+            
+            let status = dictionary["status"] as? Int
+            let msg = dictionary["msg"] as? String
+            if(status == 1){
+                // self.dataModel?.data.remove(at: currenttag)
+                self.dataModel?.data?.remove(at: id)
+                self.notesTableView.reloadData()
+                self.view.makeToast("Image deleted succesfully")
+            }else{
+                self.view.makeToast(msg!)
+            }
+        }, {(error)-> () in
+            print("failure \(error)")
+            MBProgressHUD.hide(for: self.view, animated: true)
+            self.view.makeToast(NETWORK_ERROR)
+            
+            
+        },{(progress)-> () in
+            print("progress \(progress)")
+            
+        })
+        
+    }
 }

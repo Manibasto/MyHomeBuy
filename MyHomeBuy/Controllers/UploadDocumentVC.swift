@@ -27,14 +27,26 @@ class UploadDocumentVC: UIViewController {
     var canUpload = false
 
 
+    @IBOutlet weak var cancelBtn: UIButton!
+    @IBOutlet weak var uploadBtn: UIButton!
     @IBOutlet weak var userImageView: UIImageView!
     @IBOutlet weak var fileNameLabel: UILabel!
     override func viewDidLoad()
     {
         super.viewDidLoad()
        fileNameLabel.text = ""
-        userImageView.image  = nil
+       // userImageView.image  = nil
         // Do any additional setup after loading the view.
+        
+        if(currentDocumentType == .Image){
+            self.userImageView.image = UIImage(named: "uploadDocuments")
+        }
+        else{
+            self.userImageView.image = UIImage(named: "pdf")
+        }
+        cancelBtn.setRadius(5)
+        uploadBtn.setRadius(5)
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -75,8 +87,6 @@ class UploadDocumentVC: UIViewController {
 
         }else{
             mySpecialFunction()
-
-            
         }
     }
     
@@ -252,7 +262,15 @@ extension UploadDocumentVC
             if(status == 1){
                 self.view.makeToast("Add Image Successfully")
                 self.canUpload = false
-                self.userImageView.image  = nil
+                //self.userImageView.image  = nil
+                self.userImageView.image = UIImage(named: "uploadDocuments")
+                if let navCon = self.navigationController
+                {
+                    navCon.popViewController(animated: true)
+                }
+
+                
+
             }else{
                 self.view.makeToast(msg!)
             }
@@ -278,7 +296,6 @@ extension UploadDocumentVC
         //{"method_name":"add_user_Document","description","user_id":"5","task_id":"1","file_type:"image","file_name":"" }
         
         let userId = UserDefaults.standard.object(forKey: USER_ID) as! String
-        
         let parmDict = ["user_id" : userId,"task_id" : currentTaskID,"file_type" : "pdf","method_name" : ApiUrl.METHOD_ADD_DOCUMENT] as [String : Any]
         
         MBProgressHUD.showAdded(to: self.view, animated: true)
@@ -291,19 +308,23 @@ extension UploadDocumentVC
                 self.fileNameLabel.text = ""
                 self.view.makeToast("Add Document Successfully")
                 self.canUpload = false
-                self.userImageView.image  = nil
+              //  self.userImageView.image  = nil
+                self.userImageView.image = UIImage(named: "pdf")
+                if let navCon = self.navigationController
+                {
+                    navCon.popViewController(animated: true)
+                }
+
 
             }else{
                 self.view.makeToast(msg!)
             }
-
 
             MBProgressHUD.hide(for: self.view, animated: true)
         }, {(error)-> () in
             print("failure \(error)")
             MBProgressHUD.hide(for: self.view, animated: true)
             self.view.makeToast(NETWORK_ERROR)
-            
             
         },{(progress)-> () in
             print("progress \(progress)")

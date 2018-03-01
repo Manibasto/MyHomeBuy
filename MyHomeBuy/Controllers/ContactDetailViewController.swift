@@ -8,6 +8,10 @@
 
 import UIKit
 import MessageUI
+import MBProgressHUD
+protocol ContactDeleteDelegate {
+    func contactDelete()
+}
 class ContactDetailViewController: UIViewController {
     
     
@@ -34,6 +38,8 @@ class ContactDetailViewController: UIViewController {
     var dataDict = NSDictionary()
     var model = AddContactModel(dictionary: ["" : ""])
     var fromTask = false
+    var delegate : ContactDeleteDelegate?
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -54,10 +60,8 @@ class ContactDetailViewController: UIViewController {
                 setContactBtnVisibility(false)
 
             }
-
         }
-     
-    }
+         }
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         navigationBarView.setBottomShadow()
@@ -77,8 +81,7 @@ class ContactDetailViewController: UIViewController {
        
     }
     func setupData(){
-       
-       contactNoLbl.text = model?.phone_number
+        contactNoLbl.text = model?.phone_number
         nameLbl.text = model?.name
         emailLbl.text = model?.email
         addressLbl.text = model?.address
@@ -88,7 +91,6 @@ class ContactDetailViewController: UIViewController {
         
         }else{
             profileImageView.sd_setImage(with: URL(string: (model?.image)!))
-
         }
         profileContainerView.setRadius(5)
         profileView.setRadius(profileView.frame.size.width/2)
@@ -105,6 +107,32 @@ class ContactDetailViewController: UIViewController {
         }
     }
     
+    @IBAction func deleteButtonPressed(_ sender: Any) {
+        showAlert("MyHomeBuy", "Do you really want to delete this contact?")
+    }
+    func showAlert(_ title : String , _ msg : String ){
+        
+        let alertController = UIAlertController(title: title, message: msg, preferredStyle: UIAlertControllerStyle.alert)
+        
+        let DestructiveAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: "nil"), style: .default) {
+            (result : UIAlertAction) -> Void in
+            print("Destructive")
+        }
+        
+        
+        let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "nil"), style: UIAlertActionStyle.default) {
+            (result : UIAlertAction) -> Void in
+            self.requestDeleteContactAPI()
+            print("OK")
+            
+        }
+        
+        alertController.addAction(DestructiveAction)
+        alertController.addAction(okAction)
+        self.present(alertController, animated: true, completion: nil)
+        alertController.view.tintColor = UIColor.black
+        
+    }
     @IBAction func homeBtnPressed(_ sender: Any) {
         let navController : UINavigationController  = storyboard?.instantiateViewController(withIdentifier: "SlidingNavigationController") as! UINavigationController
         var controller: UIViewController!
@@ -171,6 +199,27 @@ class ContactDetailViewController: UIViewController {
         }
         
     }
+    func sendEmail() {
+        if MFMailComposeViewController.canSendMail() {
+            let mail = MFMailComposeViewController()
+            mail.mailComposeDelegate = self
+            mail.setToRecipients([emailLbl.text!])
+            mail.setMessageBody("<p></p>", isHTML: true)
+            
+            present(mail, animated: true)
+        } else {
+            // show failure alert
+            view.makeToast("Unable to send Email")
+
+        }
+    }
+    @IBAction func emailBtnAction(_ sender: Any)
+    {
+        if(!(emailLbl.text?.isEmpty)!){
+        print("emailBtn")
+        sendEmail()
+    }
+    }
     @IBAction func editProfileBtnPressed(_ sender: Any) {
         let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AddEditTaskContactViewController") as! AddEditTaskContactViewController
         vc.fromTask = fromTask
@@ -202,5 +251,54 @@ extension ContactDetailViewController : MFMessageComposeViewControllerDelegate{
         
         // Dismiss the message compose view controller.
         controller.dismiss(animated: true, completion: nil)
+    }
+}
+extension ContactDetailViewController : MFMailComposeViewControllerDelegate{
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true, completion: nil)
+
+    }
+    
+}
+extension ContactDetailViewController{
+    func requestDeleteContactAPI(){
+        let contactID = (model?.id)! as String
+        
+        // {"method_name":"delete_user_TaskContact","contact_id":"2"}
+        
+        let userId = UserDefaults.standard.object(forKey: USER_ID) as! String
+        let parmDict = ["user_id" : userId ,"method_name" : ApiUrl.METHOD_DELETE_TASK_CONTACT , "contact_id" :contactID] as [String : Any]
+        
+        MBProgressHUD.showAdded(to: self.view, animated: true)
+        ApiManager.sharedInstance.requestApiServer(parmDict, [UIImage](), {(data) ->() in
+            MBProgressHUD.hide(for: self.view, animated: true)
+            self.responseWithSuccess(data)
+        }, {(error)-> () in
+            print("failure \(error)")
+            MBProgressHUD.hide(for: self.view, animated: true)
+            self.view.makeToast(NETWORK_ERROR)
+            
+            
+        },{(progress)-> () in
+            print("progress \(progress)")
+        })
+        
+    }
+    func responseWithSuccess(_ userData : Any){
+        let dictionary = userData as! NSDictionary
+        
+        let status = dictionary["status"] as? Int
+        let msg = dictionary["msg"] as? String
+        if(status == 1){
+         //   self.switchViewController()
+            if let navCon = navigationController{
+                navCon.popViewController(animated: true)
+            }
+            delegate?.contactDelete()
+        }else{
+            
+        }
+       // SharedAppDelegate.window?.makeToast(msg!)
+        
     }
 }

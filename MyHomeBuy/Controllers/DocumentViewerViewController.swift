@@ -11,29 +11,40 @@ import MBProgressHUD
 import SDWebImage
 class DocumentViewerViewController: UIViewController {
 
+    @IBOutlet weak var headerLabel: UILabel!
     @IBOutlet weak var documentImageView: UIImageView!
     var model : DocumentModel?
+    var isFromGallery = false
+    var galleryImageStr = ""
+    
     @IBOutlet weak var documentWebView: UIWebView!
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        if(model?.file_type == "image"){
+        
+        if isFromGallery {
             documentWebView.isHidden = true
-            let fileName = model?.file_name
-
-            documentImageView.sd_setImage(with: URL(string:fileName!))
-
-        }else{
-            
-            documentImageView.isHidden = true
-            documentWebView.delegate = self
-            let fileName = model?.file_name
-            let url = URL (string: "\(fileName!)")
-            let requestObj = URLRequest(url: url!)
-            documentWebView.loadRequest(requestObj)
+            documentImageView.sd_setImage(with: URL(string:galleryImageStr))
+            headerLabel.text = "Gallery"
         }
-       
+        else{
+            if(model?.file_type == "image"){
+                documentWebView.isHidden = true
+                let fileName = model?.file_name
+                documentImageView.sd_setImage(with: URL(string:fileName!))
+                
+            }else{
+                documentImageView.isHidden = true
+                documentWebView.delegate = self
+                let fileName = model?.file_name
+                let url = URL (string: "\(fileName!)")
+                let requestObj = URLRequest(url: url!)
+                documentWebView.loadRequest(requestObj)
+            }
+             headerLabel.text = "Document"
+        }
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -55,9 +66,7 @@ class DocumentViewerViewController: UIViewController {
         var controller: UIViewController!
         
         controller = storyboard?.instantiateViewController(withIdentifier: "MyHomeViewController") as? MyHomeViewController
-        
         navController.viewControllers = [controller]
-        
         frostedViewController.contentViewController = navController
     }
     
@@ -67,7 +76,6 @@ class DocumentViewerViewController: UIViewController {
 extension DocumentViewerViewController : UIWebViewDelegate{
     func webViewDidStartLoad(_ webView: UIWebView) {
         MBProgressHUD.showAdded(to: self.view, animated: true)
-        
     }
     func webViewDidFinishLoad(_ webView: UIWebView) {
         MBProgressHUD.hide(for: self.view, animated: true)

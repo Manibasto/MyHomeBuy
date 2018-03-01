@@ -30,13 +30,18 @@ class TaskContactViewController: UIViewController {
 //        navigationBarView.setBottomShadow()
 //        taskHeadingView.setBottomShadow()
         setupHeaderData()
-        requestGetAllTaskContactAPI()
+       
         
     }
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         navigationBarView.setBottomShadow()
         taskHeadingView.setBottomShadow()
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        requestGetAllTaskContactAPI()
+
     }
     func setupHeaderData(){
         let image = UIImage.init(named: (dataDict.object(forKey: "image_white") as! String?)!)
@@ -182,7 +187,7 @@ extension TaskContactViewController{
         let userId = UserDefaults.standard.object(forKey: USER_ID) as! String
         let parmDict = ["user_id" : userId ,"method_name" : ApiUrl.METHOD_GET_TASK_CONTACT , "task_id" : currentTaskID] as [String : Any]
         
-        MBProgressHUD.showAdded(to: self.view, animated: true)
+     //   MBProgressHUD.showAdded(to: self.view, animated: true)
         ApiManager.sharedInstance.requestApiServer(parmDict, [UIImage](), {(data) ->() in
             MBProgressHUD.hide(for: self.view, animated: true)
             self.responseWithSuccess(data)
@@ -208,10 +213,12 @@ extension TaskContactViewController{
         
             if let count = dataModel?.data?.count{
                 if(count == 0){
-                    self.waterMarkLbl.isHidden = false
+                    //self.waterMarkLbl.isHidden = false
+                    self.view.makeToast("No contacts available")
+
 
                 }else{
-                    self.waterMarkLbl.isHidden = true
+                  //  self.waterMarkLbl.isHidden = true
 
                 }
 
@@ -220,7 +227,7 @@ extension TaskContactViewController{
         }else{
             
             self.view.makeToast("No contacts available")
-            self.waterMarkLbl.isHidden = false
+           // self.waterMarkLbl.isHidden = false
         }
     }
 }

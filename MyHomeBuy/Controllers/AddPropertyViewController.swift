@@ -35,9 +35,12 @@ class AddPropertyViewController: UIViewController {
     
     @IBOutlet weak var addPropertyBtn: UIButton!
     var propertyModel = GetPropertyDetailModel(dictionary: ["" : ""])
+    let numberFormatter = NumberFormatter()
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        numberFormatter.numberStyle = NumberFormatter.Style.decimal
+
         // Do any additional setup after loading the view.
         if(canAdd){
         model.initArray()
@@ -52,7 +55,36 @@ class AddPropertyViewController: UIViewController {
         }else{
             titleLabel.text = "Edit Property"
             //requestPropertyAPI()
-            model.price = (propertyModel?.price)!
+            
+          //  model.price = (propertyModel?.price)!
+//            if let myInteger = Float((propertyModel?.price)!) {
+//                let myNumber = NSNumber(value:myInteger)
+//                let numberFormatter = NumberFormatter()
+//                numberFormatter.numberStyle = NumberFormatter.Style.decimal
+//                let price = numberFormatter.string(from: myNumber)
+//               // priceLbl.text = "$ \(price!)"
+//                model.price = price!
+//            }
+            
+            
+            if let myInteger = Float((propertyModel?.price)!) {
+                let myNumber = NSNumber(value:myInteger)
+                let numberFormatter = NumberFormatter()
+                //  numberFormatter.numberStyle = .currency
+                numberFormatter.numberStyle = NumberFormatter.Style.currency
+                let price = numberFormatter.string(from: myNumber)
+                
+                if let price = price {
+                    var priceValue = price
+                    if price.count > 1 {
+                        priceValue = String(priceValue.dropFirst())
+                    }
+                    model.price = priceValue
+                }
+            }
+            
+            
+            
             model.area_sqft = (propertyModel?.area_sqft)!
             model.bedrooms = (propertyModel?.bedrooms)!
             model.bathrooms = (propertyModel?.bathrooms)!
@@ -61,7 +93,7 @@ class AddPropertyViewController: UIViewController {
             model.description = (propertyModel?.description)!
             model.agent_name = (propertyModel?.agent_name)!
             model.agent_contact = (propertyModel?.agent_contact)!
-
+             model.propertyId = (propertyModel?.id)!
             if let validimage = propertyModel?.image{
                model.imageUrls = validimage
 
@@ -110,11 +142,8 @@ class AddPropertyViewController: UIViewController {
     }
     
     @IBAction func menuBtnPressed(_ sender: Any) {
-        
         frostedViewController.presentMenuViewController()
-        
     }
-    
     
     
     @IBAction func cancelBtnPressed(_ sender: Any) {
@@ -191,7 +220,40 @@ extension AddPropertyViewController : UITableViewDataSource{
         }else{
             let cell = tableView.dequeueReusableCell(withIdentifier: "AddPropertyTextFieldTableCell", for: indexPath) as! AddPropertyTextFieldTableCell;
             cell.nameLbl.text  = headingText[indexPath.row]
+            if indexPath.row == 0{
+               let value = model.dataArray[indexPath.row].replacingOccurrences(of: ",", with: "")
+//                if let myInteger = Double(value) {
+//                    let myNumber = NSNumber(value:myInteger)
+//                    let numberFormatter = NumberFormatter()
+//                    numberFormatter.numberStyle = NumberFormatter.Style.decimal
+//                    let price = numberFormatter.string(from: myNumber)
+//                    // priceLbl.text = "$ \(price!)"
+//
+//                    let myPrice = (price! as NSString).doubleValue
+//                    let strValue = String(format: "%.2f", myPrice)
+//                    cell.descTextField.text = "\(strValue)"
+//
+//                   // cell.descTextField.text = "\(price!).00"
+//                }
+                if let myInteger = Float(value) {
+                    let myNumber = NSNumber(value:myInteger)
+                    let numberFormatter = NumberFormatter()
+                    //  numberFormatter.numberStyle = .currency
+                    numberFormatter.numberStyle = NumberFormatter.Style.currency
+                    let price = numberFormatter.string(from: myNumber)
+                    
+                    if let price = price {
+                        var priceValue = price
+                        if price.count > 1 {
+                            priceValue = String(priceValue.dropFirst())
+                        }
+                        cell.descTextField.text = "\(priceValue)"
+                    }
+                }
+            }
+            else{
             cell.descTextField.text = model.dataArray[indexPath.row]
+            }
             cell.descTextField.placeholder = placeHolderText[indexPath.row]
             if(indexPath.row == 2 || indexPath.row == 3 || indexPath.row == 4){
                 cell.dropDownImageView.isHidden = false
@@ -222,10 +284,40 @@ extension AddPropertyViewController : UITableViewDataSource{
         }
     }
     func textFieldDidChange(_ textField: UITextField) {
-        
+        if textField.tag == 0 {
+            let value = textField.text?.replacingOccurrences(of: ",", with: "")
+            if(textField.text?.contains("."))!{
+                return
+            }
+            if let myInteger = Double(value!) {
+                let myNumber = NSNumber(value:myInteger)
+                let numberFormatter = NumberFormatter()
+                numberFormatter.numberStyle = NumberFormatter.Style.decimal
+                let price = numberFormatter.string(from: myNumber)
+                // priceLbl.text = "$ \(price!)"
+                textField.text = price
+            }
+        }
         model.dataArray[textField.tag] = textField.text!
     }
     
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let nsString = NSString(string: textField.text!)
+        let newText = nsString.replacingCharacters(in: range, with: string)
+        if(!newText.isEmpty){
+            let value = Double(newText.replacingOccurrences(of: ",", with: ""))
+            guard let validValue = value else{return false}
+            print(validValue)
+        }
+        let arr = newText.components(separatedBy: ".")
+        if(arr.count == 2){
+            let num = arr.last
+            if((num?.count)! >= 3 ){
+                return false
+            }
+        }
+        return true
+    }
 }
 extension AddPropertyViewController : UITableViewDelegate{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -298,15 +390,20 @@ extension AddPropertyViewController{
         if(urls.count > 0){
             allUrlString = urls.joined(separator: ",")
         }
+        let price = model.price
+        let currentPrice = price.replacingOccurrences(of: ",", with: "")
+        
+        
     let userId = UserDefaults.standard.object(forKey: USER_ID) as! String
-        let parmDict = ["user_id" : userId ,"method_name" : ApiUrl.METHOD_ADD_PROPERTY , "price" : model.price , "area_sqft" : model.area_sqft , "bedrooms" : model.bedrooms , "bathrooms" : model.bathrooms , "car_parking_garage" : model.car_parking_garage , "address" : model.address , "description" : model.description , "agent_name" : model.agent_name , "agent_contact" : model.agent_contact , "image" : allUrlString] as [String : Any]
-        if(!canAdd){
-            view.makeToast("Under Development")
-            return
-        }
+        let parmDict = ["user_id" : userId ,"method_name" : ApiUrl.METHOD_EDIT_PROPERTY , "price" : currentPrice , "area_sqft" : model.area_sqft , "bedrooms" : model.bedrooms , "bathrooms" : model.bathrooms , "car_parking_garage" : model.car_parking_garage , "address" : model.address , "description" : model.description , "agent_name" : model.agent_name , "agent_contact" : model.agent_contact , "oldimage" : allUrlString ,"property_id" : model.propertyId] as [String : Any]
+        //if(!canAdd){
+//            view.makeToast("Under Development")
+//            return
+//        }
         MBProgressHUD.showAdded(to: self.view, animated: true)
         ApiManager.sharedInstance.uploadMultipleImagesWithData(parmDict, images, {(data) ->() in
             MBProgressHUD.hide(for: self.view, animated: true)
+            self.responseOfEditProperty(data)
 
 
         }, {(error)-> () in
@@ -322,7 +419,23 @@ extension AddPropertyViewController{
         })
         
     }
+    func responseOfEditProperty(_ userData : Any){
+        
+        let dictionary = userData as! NSDictionary
+        
+        let status = dictionary["status"] as? Int
+        let msg = dictionary["msg"] as? String
+        if(status == 1){
+            SharedAppDelegate.window?.makeToast(msg!)
+          //  self.view.makeToast(msg!)
+            switchController()
+        }else{
+            self.view.makeToast(msg!)
+
+        }
+    }
 }
+
 extension AddPropertyViewController{
     func requestAddPropertyAPI(){
         //        method_name":"add_user_Property",

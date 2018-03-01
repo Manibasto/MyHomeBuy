@@ -1,7 +1,6 @@
 //
 //  MileStoneViewController.swift
 //  MyHomeBuy
-//
 //  Created by Vikas on 26/10/17.
 //  Copyright © 2017 MobileCoderz. All rights reserved.
 //
@@ -14,6 +13,7 @@ class MileStoneViewController: UIViewController {
     @IBOutlet weak var headingView: UIView!
     var dataModel = MileStoneBase(dictionary: ["" : ""] )
     
+    @IBOutlet weak var crossBtn: UIButton!
     @IBOutlet weak var popupCenterView: UIView!
     @IBOutlet var popupView: UIView!
     @IBOutlet weak var editBtn: UIButton!
@@ -34,7 +34,7 @@ class MileStoneViewController: UIViewController {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-      
+        crossBtn.setRadius(5)
         mileStoneTabelView.delegate = self
         mileStoneTabelView.dataSource  = self
         mileStoneTabelView.estimatedSectionHeaderHeight = 60
@@ -56,7 +56,6 @@ class MileStoneViewController: UIViewController {
             }else{
                 createMileStoneDataFor2()
             }
-            
         }
 
         else{
@@ -87,10 +86,8 @@ class MileStoneViewController: UIViewController {
         
     }
     func initData(){
-        
         dataArray =  MileStoneData.sharedInstance.setupTableData(fakeMileStoneNo)
         mileStoneTabelView.reloadData()
-        
     }
     
     func createMileStoneDataFor2(){
@@ -107,6 +104,11 @@ class MileStoneViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func crossBtnAction(_ sender: Any) {
+        if let navCon = navigationController{
+            navCon.popViewController(animated: true)
+        }
+    }
     @IBAction func editBtnPressed(_ sender: Any) {
         popupView.frame = view.frame
         view.addSubview(popupView)
@@ -143,9 +145,7 @@ class MileStoneViewController: UIViewController {
         currentIndex  = -1
         fakeMileStoneNo = 9
         additionalInfo = "2"
-        
         requestMileStoneAPI()
-        
     }
     
     
@@ -186,10 +186,7 @@ class MileStoneViewController: UIViewController {
             editBtn.isHidden = !show
             }
             self.initData()
-
-        
         }else{
-    
             self.view.makeToast("Unable to fetch data")
         }
     }
@@ -208,12 +205,9 @@ class MileStoneViewController: UIViewController {
 extension MileStoneViewController : UITableViewDataSource{
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        
         return dataArray.count
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        
         if(currentIndex == section){
             return 1
         }else{
@@ -238,8 +232,6 @@ extension MileStoneViewController : UITableViewDataSource{
         cell.mileStoneBtn.tag  = indexPath.section
         cell.mileStoneBtn.addTarget(self, action: #selector(mileStoneBtnTapped(_:)), for: .touchUpInside)
         return cell
-        
-        
     }
     
     func mileStoneBtnTapped(_ btn : UIButton){
@@ -330,7 +322,6 @@ extension MileStoneViewController : UITableViewDataSource{
 }
 extension MileStoneViewController : UITableViewDelegate{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         print("selected")
     }
     
@@ -356,7 +347,6 @@ extension MileStoneViewController{
             
         },{(progress)-> () in
             print("progress \(progress)")
-            
         })
         
     }
@@ -377,7 +367,6 @@ extension MileStoneViewController{
             mileStoneTabelView.reloadData()
         }else{
         view.makeToast(msg!)
-        
         }
         //        dataModel = MileStoneBase(dictionary: userData as! NSDictionary)
         //        if(dataModel?.status == 1){

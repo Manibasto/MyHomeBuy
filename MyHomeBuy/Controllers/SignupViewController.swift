@@ -39,13 +39,13 @@ class SignupViewController: UIViewController {
     }
     
     @IBAction func agreementBtnPressed(_ sender: Any) {
-        view.makeToast("Under Development")
+       // view.makeToast("Under Development")
         //openWebView(1)
 
     }
     
     @IBAction func policyBtnPressed(_ sender: Any) {
-        view.makeToast("Under Development")
+        //view.makeToast("Under Development")
         //openWebView(0)
 
     }

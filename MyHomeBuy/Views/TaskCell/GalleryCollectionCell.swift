@@ -11,4 +11,5 @@ import UIKit
 class GalleryCollectionCell: UICollectionViewCell {
     @IBOutlet weak var galleryImageView: UIImageView!
     
+    @IBOutlet weak var crossButton: UIButton!
 }

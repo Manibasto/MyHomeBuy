@@ -12,7 +12,9 @@ import Toast_Swift
 
 protocol NotesUpdatedDelegate {
     func notesUpdated()
+    
 }
+
 class EditNotesViewController: UIViewController {
 
     @IBOutlet weak var headingHeightConstraint: NSLayoutConstraint!
@@ -108,8 +110,10 @@ class EditNotesViewController: UIViewController {
     
     @IBAction func removeBtnPressed(_ sender: Any) {
         view.endEditing(true)
-
-        requestRemoveNotesAPI()
+        if let navCon = navigationController{
+            navCon.popViewController(animated: true)
+        }
+       // requestRemoveNotesAPI()
     }
     /*
     // MARK: - Navigation
@@ -191,33 +195,33 @@ extension EditNotesViewController{
     }
 }
 
-extension EditNotesViewController{
-    func requestRemoveNotesAPI(){
-        //{
-           // "method_name":"delete_user_TaskNote",
-            //"notes_id":"4"}
-        
-        
-        
-        let userId = UserDefaults.standard.object(forKey: USER_ID) as! String
-        let parmDict = ["user_id" : userId ,"method_name" : ApiUrl.METHOD_DELETE_NOTES , "notes_id" : currentNotesID  ] as [String : Any]
-        
-        MBProgressHUD.showAdded(to: self.view, animated: true)
-        ApiManager.sharedInstance.requestApiServer(parmDict, [UIImage]() , {(data) ->() in
-            MBProgressHUD.hide(for: self.view, animated: true)
-            self.responseWithEditAndDelete(data , "remove")
-        }, {(error)-> () in
-            print("failure \(error)")
-            MBProgressHUD.hide(for: self.view, animated: true)
-            self.view.makeToast(NETWORK_ERROR)
-            
-            
-        },{(progress)-> () in
-            print("progress \(progress)")
-            
-        })
-        
-    }
-}
+//extension EditNotesViewController{
+//    func requestRemoveNotesAPI(){
+//        //{
+//           // "method_name":"delete_user_TaskNote",
+//            //"notes_id":"4"}
+//
+//
+//
+//        let userId = UserDefaults.standard.object(forKey: USER_ID) as! String
+//        let parmDict = ["user_id" : userId ,"method_name" : ApiUrl.METHOD_DELETE_NOTES , "notes_id" : currentNotesID  ] as [String : Any]
+//
+//        MBProgressHUD.showAdded(to: self.view, animated: true)
+//        ApiManager.sharedInstance.requestApiServer(parmDict, [UIImage]() , {(data) ->() in
+//            MBProgressHUD.hide(for: self.view, animated: true)
+//            self.responseWithEditAndDelete(data , "remove")
+//        }, {(error)-> () in
+//            print("failure \(error)")
+//            MBProgressHUD.hide(for: self.view, animated: true)
+//            self.view.makeToast(NETWORK_ERROR)
+//
+//
+//        },{(progress)-> () in
+//            print("progress \(progress)")
+//
+//        })
+//
+//    }
+//}
 
 

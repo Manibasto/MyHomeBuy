@@ -17,6 +17,8 @@ class TaskTableCell: UITableViewCell {
     @IBOutlet weak var customView: UIView!
     @IBOutlet var btnArray: [UIButton]!
     
+    @IBOutlet weak var deleteBtn: UIButton!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

@@ -21,7 +21,6 @@ class TipsViewController: UIViewController {
     var dataModel = TipsBase(dictionary: ["" : ""] )
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
         frostedViewController.panGestureEnabled = false
         //navigationBarView.setBottomShadow()

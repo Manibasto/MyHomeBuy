@@ -32,6 +32,7 @@ class ApiUrl {
     static let METHOD_DELETE_NOTES = "delete_user_TaskNote"
     static let METHOD_GET_EVENTS = "get_user_TaskCalendar"
     static let METHOD_ADD_EVENTS = "add_user_TaskCalendar"
+    
     static let METHOD_ADD_PROPERTY = "add_user_Property"
     static let METHOD_GET_PROPERTY_DETAILS = "get_user_Property"
     static let METHOD_GET_PROPERTY_IMAGES = "get_allProperty_Image"
@@ -42,6 +43,16 @@ class ApiUrl {
     static let METHOD_GET_DOCUMENT = "get_user_document"
     static let METHOD_ADD_DOCUMENT = "add_user_Document"
     static let METHOD_DELETE_DOCUMENT = "delete_user_document"
+    static let METHOD_EDIT_PROPERTY = "update_user_Property"
+    static let METHOD_EDIT_EVENTS = "edit_user_TaskCalendar"
+    static let METHOD_DELETE_EVENTS = "delete_user_TaskCalendar"
+    static let METHOD_DELETE_PROPERTY = "delete_data"
+    static let METHOD_TASK_DELETE_MILESTONE = "tasks_delete"
+
+
+
+
+
    // {"id":"3","method_name":"delete_user_document"}
 
 

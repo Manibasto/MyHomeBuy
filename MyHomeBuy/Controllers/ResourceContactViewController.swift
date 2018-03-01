@@ -156,6 +156,12 @@ extension ResourceContactViewController : UITableViewDataSource{
         model?.name = model?.name?.trimmingCharacters(in: .whitespacesAndNewlines)
         cell.initialLbl.text = model?.name?.getInitials("").uppercased()
         cell.nameLbl.text = model?.name
+        
+        
+//        let no = model?.phone_number
+//        let b = no?.components(separatedBy: CharacterSet.decimalDigits.inverted).joined(separator: " ")
+//        cell.phoneLbl.text = b
+        
         cell.phoneLbl.text = model?.phone_number
         cell.profileImageView.image = nil
         if(model?.status == "1"){
@@ -190,6 +196,7 @@ extension ResourceContactViewController : UITableViewDelegate{
         let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ContactDetailViewController") as! ContactDetailViewController
         vc.model = dataModel?.data?[indexPath.row]
         vc.fromTask = false
+        vc.delegate = self
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -201,7 +208,13 @@ extension ResourceContactViewController : ContactUpdatedDelegate{
     }
     
 }
+extension ResourceContactViewController : ContactDeleteDelegate{
+    func contactDelete() {
+        requestServer()
 
+    }
+    
+}
 extension ResourceContactViewController : GetPhoneNumbers{
     func getAllContact(contactArray: [String]) {
         print(contactArray)

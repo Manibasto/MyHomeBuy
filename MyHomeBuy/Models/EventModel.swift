@@ -20,8 +20,12 @@ public class EventModel {
 	public var user_id : String?
 	public var date : String?
     public var time : String?
-
 	public var description : String?
+    public var reminder : String?
+    public var event_id : String?
+
+
+   // reminder
 
 /**
     Returns an array of models based on given dictionary.
@@ -63,6 +67,10 @@ public class EventModel {
 		date = dictionary["date"] as? String
 		description = dictionary["description"] as? String
         time = dictionary["time"] as? String
+        reminder = dictionary["reminder"] as? String
+        event_id = dictionary["event_id"] as? String
+
+
 
 	}
 
@@ -84,7 +92,6 @@ public class EventModel {
 		dictionary.setValue(self.date, forKey: "date")
 		dictionary.setValue(self.description, forKey: "description")
         dictionary.setValue(self.time, forKey: "time")
-
 
 		return dictionary
 	}

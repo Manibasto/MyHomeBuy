@@ -16,6 +16,8 @@ class TaskSuggestionListTableCell: UITableViewCell {
     @IBOutlet weak var suggestionCheckListButton: UIButton!
     @IBOutlet weak var customView: UIView!
     @IBOutlet var btnArray: [UIButton]!
+    
+    @IBOutlet weak var deleteBtn: UIButton!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
