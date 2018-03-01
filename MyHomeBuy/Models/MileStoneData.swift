@@ -109,13 +109,13 @@ class MileStoneData{
         dataArray.append(data1)
     }
     func createMileStoneDataForExistingHome(){
-        let data1 = ["headerText" : "Choosing the Location for buying an existing home"  , "image" : "existing_home", "image_white" : "existing_home_white", "colorCode" : UIColor.mileStoneColor2 , "colorCodeDark" : UIColor.mileStoneColor12, "complete" : "lets_milestone_complete"] as [String : Any]
+        let data1 = ["headerText" : "Choosing the location for buying an existing home"  , "image" : "existing_home", "image_white" : "existing_home_white", "colorCode" : UIColor.mileStoneColor2 , "colorCodeDark" : UIColor.mileStoneColor12, "complete" : "lets_milestone_complete"] as [String : Any]
         
         dataArray.append(data1)
     }
     func createMileStoneDataForNewHome(){
-        let data1 = ["headerText" : "Choosing the Location for buying a new home"  , "image" : "building_new", "image_white" : "building_new_white", "colorCode" : UIColor.mileStoneColor2 , "colorCodeDark" : UIColor.mileStoneColor12, "complete" : "lets_milestone_complete"] as [String : Any]
-        let data2 = ["headerText" : "Buying Vacant Land" , "image" : "vacant_land" , "image_white" : "vacant_land_white", "colorCode" : UIColor.mileStoneColor2 , "colorCodeDark" : UIColor.mileStoneColor12, "complete" : "lets_milestone_complete"] as [String : Any]
+        let data1 = ["headerText" : "Choosing the location for building a new home"  , "image" : "building_new", "image_white" : "building_new_white", "colorCode" : UIColor.mileStoneColor2 , "colorCodeDark" : UIColor.mileStoneColor12, "complete" : "lets_milestone_complete"] as [String : Any]
+        let data2 = ["headerText" : "Buying vacant land" , "image" : "vacant_land" , "image_white" : "vacant_land_white", "colorCode" : UIColor.mileStoneColor2 , "colorCodeDark" : UIColor.mileStoneColor12, "complete" : "lets_milestone_complete"] as [String : Any]
         let data3 = ["headerText" : "Building a new home" , "image" : "new_home", "image_white" : "new_home_white" , "colorCode" : UIColor.mileStoneColor2 , "colorCodeDark" : UIColor.mileStoneColor12, "complete" : "lets_milestone_complete"] as [String : Any]
         dataArray.append(data1)
         dataArray.append(data2)

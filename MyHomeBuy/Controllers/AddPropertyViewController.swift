@@ -37,12 +37,16 @@ class AddPropertyViewController: UIViewController {
     var propertyModel = GetPropertyDetailModel(dictionary: ["" : ""])
     let numberFormatter = NumberFormatter()
 
+    @IBOutlet weak var buttonCancel: UIButton!
+    @IBOutlet weak var viewButton: UIView!
+    @IBOutlet weak var buttonSave: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
         numberFormatter.numberStyle = NumberFormatter.Style.decimal
 
         // Do any additional setup after loading the view.
         if(canAdd){
+        viewButton.isHidden = true
         model.initArray()
         navigationBarView.setBottomShadow()
         propertyTableView.delegate  = self
@@ -53,7 +57,12 @@ class AddPropertyViewController: UIViewController {
             dropDownArray.append("\(i+1)")
         }
         }else{
+            viewButton.isHidden = false
+            buttonSave.addTarget(self, action: #selector(buttonSaveTapped(_ :)), for: .touchUpInside)
+             buttonCancel.addTarget(self, action: #selector(buttonCancelTapped(_ :)), for: .touchUpInside)
             titleLabel.text = "Edit Property"
+            buttonCancel.setRadius(10)
+            buttonSave.setRadius(10)
             //requestPropertyAPI()
             
           //  model.price = (propertyModel?.price)!
@@ -116,6 +125,7 @@ class AddPropertyViewController: UIViewController {
         }
         
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         frostedViewController.panGestureEnabled = true
@@ -130,8 +140,11 @@ class AddPropertyViewController: UIViewController {
         imageCollectioView.dataSource = self
         addPropertyBtn.setRadius(10)
         if(canAdd){
+            addPropertyBtn.isHidden = false
         addPropertyBtn.setTitle("ADD PROPERTY DETAILS", for: .normal)
         }else{
+            addPropertyBtn.isHidden = true
+
         addPropertyBtn.setTitle("EDIT PROPERTY DETAILS", for: .normal)
 
         }
@@ -170,26 +183,29 @@ class AddPropertyViewController: UIViewController {
         
         
     }
-    
+    func buttonSaveTapped(_ sender : UIButton){
+        checkForRequest()
+    }
+    func buttonCancelTapped(_ sender : UIButton){
+    switchController()
+    }
     @IBAction func addPropertyBtnPressed(_ sender: Any) {
+    checkForRequest()
+    }
+    func checkForRequest(){
         view.endEditing(true)
         if(model.isValidForSubmission() == "OK"){
-//            if(imageArray.count <= 0){
-//                view.makeToast("Please select atleast one image")
-//
-//            }else{
+            
             if(canAdd){
                 requestAddPropertyAPI()
             }else{
                 requestEditPropertyAPI()
             }
-                
-           // }
+            
         }else{
             view.makeToast(model.isValidForSubmission())
         }
     }
-    
     
     /*
      // MARK: - Navigation
@@ -302,6 +318,8 @@ extension AddPropertyViewController : UITableViewDataSource{
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if textField.tag == 0 {
+
         let nsString = NSString(string: textField.text!)
         let newText = nsString.replacingCharacters(in: range, with: string)
         if(!newText.isEmpty){
@@ -317,6 +335,9 @@ extension AddPropertyViewController : UITableViewDataSource{
             }
         }
         return true
+        }else{
+            return true
+        }
     }
 }
 extension AddPropertyViewController : UITableViewDelegate{

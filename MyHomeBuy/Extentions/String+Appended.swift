@@ -77,8 +77,21 @@ extension String
     }
     public func getInitials(_ separator: String = "") -> String
     {
-        let initials = self.components(separatedBy: " ").map({ String($0.characters.first!) }).joined(separator: separator);
-        return initials;
+        let trimmedString = self.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        let initials = trimmedString.components(separatedBy: " ").map({ String($0.characters.first!) }).joined(separator: separator)
+        
+        return initials
+    }
+    
+    public static func phoneNumberFormate(num : String) -> String{
+        if(num.characters.count <= 7){
+            return num
+        }
+       var number = num
+        number.insert(" ", at: number.index(number.startIndex, offsetBy: 4))
+        number.insert(" ", at: number.index(number.startIndex, offsetBy: 8))
+        return number
     }
     
 }

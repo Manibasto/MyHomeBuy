@@ -81,7 +81,7 @@ class ContactDetailViewController: UIViewController {
        
     }
     func setupData(){
-        contactNoLbl.text = model?.phone_number
+        contactNoLbl.text = String.phoneNumberFormate(num: (model?.phone_number)!)
         nameLbl.text = model?.name
         emailLbl.text = model?.email
         addressLbl.text = model?.address

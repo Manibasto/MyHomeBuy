@@ -354,7 +354,7 @@ extension CalenderViewController{
         //    }
         
         let userId = UserDefaults.standard.object(forKey: USER_ID) as! String
-        let parmDict = ["user_id" : userId ,"method_name" : ApiUrl.METHOD_GET_EVENTS , "task_id" : currentTaskID] as [String : Any]
+        let parmDict = ["user_id" : userId ,"method_name" : ApiUrl.METHOD_GET_EVENTS ] as [String : Any]
         
         MBProgressHUD.showAdded(to: self.view, animated: true)
         ApiManager.sharedInstance.requestApiServer(parmDict, [UIImage](), {(data) ->() in

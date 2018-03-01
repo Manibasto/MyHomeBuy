@@ -1051,7 +1051,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.MyHomeBuy.com;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "10910b55-fa0f-4358-a2bd-67f3d1f50fa0";
+				PROVISIONING_PROFILE = "32b87ea1-f25b-4c9b-921a-59b56ffe7454";
 				PROVISIONING_PROFILE_SPECIFIER = MyHomeBuy;
 				SWIFT_OBJC_BRIDGING_HEADER = "MyHomeBuy/MyHomeBuy-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
@@ -1073,7 +1073,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.MyHomeBuy.com;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "10910b55-fa0f-4358-a2bd-67f3d1f50fa0";
+				PROVISIONING_PROFILE = "32b87ea1-f25b-4c9b-921a-59b56ffe7454";
 				PROVISIONING_PROFILE_SPECIFIER = MyHomeBuy;
 				SWIFT_OBJC_BRIDGING_HEADER = "MyHomeBuy/MyHomeBuy-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
