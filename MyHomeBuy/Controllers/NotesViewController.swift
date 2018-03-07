@@ -196,10 +196,10 @@ extension NotesViewController{
         //{"method_name":"get_user_TaskNote","user_id":"11", "task_id":"4"}
         
         let userId = UserDefaults.standard.object(forKey: USER_ID) as! String
-        let parmDict = ["user_id" : userId ,"method_name" : ApiUrl.METHOD_GET_NOTES , "task_id" : currentTaskID] as [String : Any]
+        let parmDict = ["user_id" : userId ,"method_name" : ApiUrl.METHOD_GET_NOTES ] as [String : Any]
         
         MBProgressHUD.showAdded(to: self.view, animated: true)
-        ApiManager.sharedInstance.requestApiServer(parmDict, [UIImage](), {(data) ->() in
+        ApiManager.sharedInstance.apiCall(parmDict, [UIImage](), {(data) ->() in
             MBProgressHUD.hide(for: self.view, animated: true)
             self.responseOfGetAllNotes(data)
         }, {(error)-> () in

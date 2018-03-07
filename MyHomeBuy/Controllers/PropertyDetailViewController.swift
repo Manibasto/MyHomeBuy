@@ -150,7 +150,7 @@ class PropertyDetailViewController: UIViewController {
         areaLbl.text = ". \(area!) Area"
         detailLbl.text = model?.description
         agentNameBtn.setTitle(model?.agent_name, for: .normal)
-        agentNoBtn.setTitle(model?.agent_contact, for: .normal)
+        agentNoBtn.setTitle(String.phoneNumberFormate(num: (model?.agent_contact)!), for: .normal)
         let price = model?.price
         
         if let myInteger = Float(price!) {

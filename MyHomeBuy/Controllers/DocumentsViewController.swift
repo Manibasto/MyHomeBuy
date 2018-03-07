@@ -242,7 +242,7 @@ extension DocumentsViewController
    // {"user_id":"5","method_name":"get_user_document","task_id":"1"}
         let userId = UserDefaults.standard.object(forKey: USER_ID) as! String
 
-        let parmDict = ["user_id" : userId,"task_id" : currentTaskID,"method_name" : ApiUrl.METHOD_GET_DOCUMENT] as [String : Any]
+        let parmDict = ["user_id" : userId,"method_name" : ApiUrl.METHOD_GET_DOCUMENT] as [String : Any]
         
         MBProgressHUD.showAdded(to: self.view, animated: true)
         ApiManager.sharedInstance.apiCall(parmDict, [UIImage](), {(data) ->() in

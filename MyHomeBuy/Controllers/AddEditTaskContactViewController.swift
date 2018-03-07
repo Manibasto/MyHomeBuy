@@ -128,7 +128,7 @@ class AddEditTaskContactViewController: UIViewController {
        // }
         
         nameLbl.text = model?.name
-        phoneNoLbl.text = model?.phone_number
+        phoneNoLbl.text = String.phoneNumberFormate(num: (model?.phone_number)!)
         
     }
     override func didReceiveMemoryWarning() {

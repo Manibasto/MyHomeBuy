@@ -309,7 +309,8 @@ class ApiManager
         let body: NSMutableData = NSMutableData()
         
         
-        
+        print("requestWithUrl  \(url) and requestWithData : \(parmDict)")
+
         // parameters to send i.e. text
         let paramsArray = parmDict.keys
         for item in paramsArray {

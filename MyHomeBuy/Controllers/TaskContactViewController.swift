@@ -122,7 +122,7 @@ extension TaskContactViewController : UICollectionViewDataSource{
         //cell.contactImageView.setRadius(cell.profileView.frame.size.width/2)
         cell.initialLbl.text = model?.name?.getInitials("").uppercased()
         cell.nameLbl.text = model?.name
-        cell.contactLbl.text = model?.phone_number
+        cell.contactLbl.text = String.phoneNumberFormate(num: (model?.phone_number)!)
         cell.contactImageView.image = nil
 
         if(model?.image == ""){
@@ -185,7 +185,7 @@ extension TaskContactViewController{
         
         
         let userId = UserDefaults.standard.object(forKey: USER_ID) as! String
-        let parmDict = ["user_id" : userId ,"method_name" : ApiUrl.METHOD_GET_TASK_CONTACT , "task_id" : currentTaskID] as [String : Any]
+        let parmDict = ["user_id" : userId ,"method_name" : ApiUrl.METHOD_GET_TASK_CONTACT ] as [String : Any]
         
      //   MBProgressHUD.showAdded(to: self.view, animated: true)
         ApiManager.sharedInstance.requestApiServer(parmDict, [UIImage](), {(data) ->() in

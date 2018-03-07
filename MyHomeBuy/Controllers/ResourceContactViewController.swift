@@ -162,7 +162,7 @@ extension ResourceContactViewController : UITableViewDataSource{
 //        let b = no?.components(separatedBy: CharacterSet.decimalDigits.inverted).joined(separator: " ")
 //        cell.phoneLbl.text = b
         
-        cell.phoneLbl.text = model?.phone_number
+        cell.phoneLbl.text = String.phoneNumberFormate(num: (model?.phone_number)!)
         cell.profileImageView.image = nil
         if(model?.status == "1"){
         cell.contactAvailableImageView.isHidden = false
