@@ -93,7 +93,7 @@ class MileStoneData{
         dataArray.append(data1)
     }
     func createMileStoneDataFor5(){
-        let data1 = ["headerText" : "Contract Details"  , "image" : "contract_details", "image_white" : "contract_details_white", "colorCode" : UIColor.mileStoneColor5 , "colorCodeDark" : UIColor.mileStoneColor15, "complete" : "contract_milestone_complete"] as [String : Any]
+        let data1 = ["headerText" : "Contract details"  , "image" : "contract_details", "image_white" : "contract_details_white", "colorCode" : UIColor.mileStoneColor5 , "colorCodeDark" : UIColor.mileStoneColor15, "complete" : "contract_milestone_complete"] as [String : Any]
         let data2 = ["headerText" : "Start preparing your move" , "image" : "preparing_move" , "image_white" : "preparing_move_white", "colorCode" : UIColor.mileStoneColor5 , "colorCodeDark" : UIColor.mileStoneColor15, "complete" : "contract_milestone_complete"] as [String : Any]
         dataArray.append(data1)
         dataArray.append(data2)

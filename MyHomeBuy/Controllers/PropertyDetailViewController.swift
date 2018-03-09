@@ -195,7 +195,10 @@ class PropertyDetailViewController: UIViewController {
             let navController : UINavigationController  = storyboard?.instantiateViewController(withIdentifier: "SlidingNavigationController") as! UINavigationController
             let controller = storyboard?.instantiateViewController(withIdentifier: "AddPropertyViewController") as? AddPropertyViewController
             controller?.canAdd = false
-            controller?.propertyModel = model
+if(model?.image == "qwerty"){
+    model?.image?.removeAll()
+}
+        controller?.propertyModel = model
             navController.viewControllers = [controller!]
             frostedViewController.contentViewController = navController
     }

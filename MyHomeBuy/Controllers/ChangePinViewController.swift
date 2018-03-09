@@ -89,7 +89,6 @@ class ChangePinViewController: UIViewController {
             view.makeToast("Please enter 4 digit new pin number")
         }else if(confirmPinTextField.text?.isEmpty)!{
             view.makeToast("Please Enter Confirm Pin")
-
         }else if(!(confirmPinTextField.text?.isLengthValid(4))!){
             view.makeToast("Please enter 4 digit confirm pin number")
         }else if(!(newPinTextField.text?.isPasswordSame(confirmPinTextField.text!))!){

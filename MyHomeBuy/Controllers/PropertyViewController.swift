@@ -190,6 +190,7 @@ extension PropertyViewController{
                
             }else{
                 self.view.makeToast("No property available")
+                propertyTableView.reloadData()
 
             }
         }else{

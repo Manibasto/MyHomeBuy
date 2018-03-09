@@ -110,7 +110,9 @@ class AddPropertyViewController: UIViewController {
             if(!model.imageUrls.isEmpty){
                let urlArray =  model.imageUrls.components(separatedBy: ",")
                 for url in urlArray {
+                    //if(canAdd){
                 imageArray.append(url)
+                   // }
                 }
             }
             model.initArray()

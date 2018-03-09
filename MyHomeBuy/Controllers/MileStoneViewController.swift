@@ -42,24 +42,26 @@ class MileStoneViewController: UIViewController {
         fakeMileStoneNo = currentMileStoneNo
         setupHeaderData()
         if(currentMileStoneNo == 2){
+            
             dataArray.removeAll()
             popupView.removeFromSuperview()
             currentIndex  = -1
-            if(additionalInfo == "1"){
-                fakeMileStoneNo = 8
-                requestMileStoneAPI()
-                
-            }else if(additionalInfo == "2"){
-                fakeMileStoneNo = 9
-                requestMileStoneAPI()
-                
-            }else{
+//            if(additionalInfo == "1"){
+//                fakeMileStoneNo = 8
+//                requestMileStoneAPI()
+//
+//            }else if(additionalInfo == "2"){
+//                fakeMileStoneNo = 9
+//                requestMileStoneAPI()
+//
+//            }else{
                 createMileStoneDataFor2()
-            }
+            //}
         }
 
         else{
             requestMileStoneAPI()
+            editBtn.isHidden = true
         }
         
     }
@@ -82,7 +84,7 @@ class MileStoneViewController: UIViewController {
         navigationBarView.backgroundColor = color
         headingView.backgroundColor = color
         titleLbl.text = "Milestone - \(currentMileStoneNo)"
-        editBtn.isHidden = true
+       // editBtn.isHidden = true
         
     }
     func initData(){
@@ -91,7 +93,7 @@ class MileStoneViewController: UIViewController {
     }
     
     func createMileStoneDataFor2(){
-        editBtn.isHidden = false
+       // editBtn.isHidden = false
         popupCenterView.setRadius(5)
         existingHomeBtn.setRadius(5)
         newHomeBtn.setRadius(5)
@@ -155,7 +157,7 @@ class MileStoneViewController: UIViewController {
         let parmDict = ["user_id" : userId ,"method_name" : ApiUrl.METHOD_GET_MILESTONE_CATEGORY , "additional_info" : additionalInfo , "milestone_id" : "\(currentMileStoneNo)"] as [String : Any]
         
         MBProgressHUD.showAdded(to: self.view, animated: true)
-        ApiManager.sharedInstance.requestApiServer(parmDict, [UIImage](), {(data) ->() in
+        ApiManager.sharedInstance.apiCall(parmDict, [UIImage](), {(data) ->() in
             MBProgressHUD.hide(for: self.view, animated: true)
             self.responseWithSuccess(data)
         }, {(error)-> () in
@@ -183,7 +185,7 @@ class MileStoneViewController: UIViewController {
                     break
                 }
             }
-            editBtn.isHidden = !show
+           // editBtn.isHidden = !show
             }
             self.initData()
         }else{
@@ -238,6 +240,8 @@ extension MileStoneViewController : UITableViewDataSource{
 //        if(!isEditable){
 //            view.makeToast("Cant Edit")
 //        }else{
+        
+        
         requestMileStoneCategoryUndoneAPI(btn)
        // }
     }
@@ -250,9 +254,7 @@ extension MileStoneViewController : UITableViewDataSource{
         
     }
     func taskTapped(_ button : UIButton){
-        
         switchToTaskVC(button)
-        
     }
     func switchToTaskVC(_ button : UIButton){
         var showTaskList = false
@@ -329,14 +331,28 @@ extension MileStoneViewController : UITableViewDelegate{
 
 extension MileStoneViewController{
     func requestMileStoneCategoryUndoneAPI(_ btn : UIButton){
+        
+        if(currentMileStoneNo == 2){
+            if(fakeMileStoneNo == 8){
+             additionalInfo = "1"
+            }
+            if(fakeMileStoneNo == 9){
+                additionalInfo = "2"
+            }
+
+        }
+        else{
+            additionalInfo = "0"
+
+        }
         //{"method_name":"update_milestones_cat","user_id":"11","milestone_id":"1","milestone_cat_id":"1"}
         let model = dataModel?.data?[btn.tag]
         let cat_id = model?.id
         let userId = UserDefaults.standard.object(forKey: USER_ID) as! String
-        let parmDict = ["user_id" : userId ,"method_name" : ApiUrl.METHOD_UPDATE_MILESTONE_STATUS ,  "milestone_id" : "\(currentMileStoneNo)" , "milestone_cat_id" : cat_id!] as [String : Any]
+        let parmDict = ["user_id" : userId ,"additional_info" : additionalInfo,"method_name" : ApiUrl.METHOD_UPDATE_MILESTONE_STATUS ,  "milestone_id" : "\(currentMileStoneNo)" , "milestone_cat_id" : cat_id!] as [String : Any]
         
         MBProgressHUD.showAdded(to: self.view, animated: true)
-        ApiManager.sharedInstance.requestApiServer(parmDict, [UIImage](), {(data) ->() in
+        ApiManager.sharedInstance.apiCall(parmDict, [UIImage](), {(data) ->() in
             MBProgressHUD.hide(for: self.view, animated: true)
             self.responseWithUndoneSuccess(data,  btn)
         }, {(error)-> () in
