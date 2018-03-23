@@ -82,7 +82,7 @@ class AddPropertyViewController: UIViewController {
                 //  numberFormatter.numberStyle = .currency
                 numberFormatter.numberStyle = NumberFormatter.Style.currency
                 let price = numberFormatter.string(from: myNumber)
-                
+
                 if let price = price {
                     var priceValue = price
                     if price.count > 1 {
@@ -91,6 +91,7 @@ class AddPropertyViewController: UIViewController {
                     model.price = priceValue
                 }
             }
+            
             
             
             
@@ -491,8 +492,12 @@ extension AddPropertyViewController{
 //        if(urls.count > 0){
 //            allUrlString = urls.joined(separator: ",")
 //        }
+        
+        let price = model.price
+        let currentPrice = price.replacingOccurrences(of: ",", with: "")
+        
         let userId = UserDefaults.standard.object(forKey: USER_ID) as! String
-        let parmDict = ["user_id" : userId ,"method_name" : ApiUrl.METHOD_ADD_PROPERTY , "price" : model.price , "area_sqft" : model.area_sqft , "bedrooms" : model.bedrooms , "bathrooms" : model.bathrooms , "car_parking_garage" : model.car_parking_garage , "address" : model.address , "description" : model.description , "agent_name" : model.agent_name , "agent_contact" : model.agent_contact] as [String : Any]
+        let parmDict = ["user_id" : userId ,"method_name" : ApiUrl.METHOD_ADD_PROPERTY , "price" : currentPrice , "area_sqft" : model.area_sqft , "bedrooms" : model.bedrooms , "bathrooms" : model.bathrooms , "car_parking_garage" : model.car_parking_garage , "address" : model.address , "description" : model.description , "agent_name" : model.agent_name , "agent_contact" : model.agent_contact] as [String : Any]
 
         MBProgressHUD.showAdded(to: self.view, animated: true)
         ApiManager.sharedInstance.uploadMultipleImagesWithData(parmDict, images, {(data) ->() in

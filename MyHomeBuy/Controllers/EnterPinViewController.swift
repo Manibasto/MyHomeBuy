@@ -132,6 +132,8 @@ class EnterPinViewController: UIViewController {
         }
     }
     @IBAction func forgotPinBtnPressed(_ sender: Any) {
+      //  resignFirstResponder()
+        self.view.endEditing(true)
         emailTextField.text = ""
         addView(forgotPinView)
     }

@@ -334,7 +334,6 @@ extension AddEditTaskContactViewController{
             switchToResourceVC()
             }
         }
-
        
         delegate?.contactUpdated()
         

@@ -89,22 +89,44 @@ extension PropertyViewController : UITableViewDataSource{
         cell.propertyImageView.setRadius(10)
         cell.addressLbl.text = model?.address
         let price = model?.price
-        
-        if let myInteger = Float(price!) {
-            let myNumber = NSNumber(value:myInteger)
-            let numberFormatter = NumberFormatter()
-          //  numberFormatter.numberStyle = .currency
-            numberFormatter.numberStyle = NumberFormatter.Style.currency
-            let price = numberFormatter.string(from: myNumber)
+  
+        let typedNum = price!
+        //if(!typedNum.contains(".")){
+        let doubleNum = Double(typedNum)
+        if let validDoubleNum = doubleNum{
+            let formatter = NumberFormatter()
+            formatter.numberStyle = .currency
             
-            if let price = price {
-                var priceValue = price
-                if price.count > 1 {
-                    priceValue = String(priceValue.dropFirst())
-                }
-                cell.priceLbl.text = "$ \(priceValue)"
+            let num = NSNumber(value: validDoubleNum)
+            let finalValue = formatter.string(from: num)
+            let all = finalValue?.components(separatedBy: ".")
+            if(all?.count == 2){
+                print("validValue \(all![0].dropFirst())")
+                let value = all![0]
+                let validValue = String(value.dropFirst())
+               cell.priceLbl.text = "$\(validValue)"
             }
+            
+        }else{
+            cell.priceLbl.text = model?.price
+
         }
+        
+//        if let myInteger = Float(price!) {
+//            let myNumber = NSNumber(value:myInteger)
+//            let numberFormatter = NumberFormatter()
+//            numberFormatter.numberStyle = NumberFormatter.Style.currency
+//
+//            let price = numberFormatter.string(from: myNumber)
+//
+//            if let price = price {
+//                var priceValue = price
+//                if price.count > 1 {
+//                    priceValue = String(priceValue.dropFirst())
+//                }
+//                cell.priceLbl.text = "$ \(priceValue)"
+//            }
+//        }
        
         
       //  cell.priceLbl.text = "$ \(price!)"

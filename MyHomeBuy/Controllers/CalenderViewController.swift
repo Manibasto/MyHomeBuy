@@ -555,22 +555,25 @@ extension CalenderViewController{
         let existingEvent = eventStore.event(withIdentifier: eventId)
                         if let event1 = existingEvent {
                             let dateTimeStr = "\(selectedDate) \(strTime)"  //append date and Time
+                          //  let trimmedString = dateTimeStr.trimmingCharacters(in: .whitespaces)
+
+                           
                             let dateFormatter = DateFormatter()
                             dateFormatter.locale = Locale.current
                             dateFormatter.timeZone = TimeZone.current
                             dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
-                            let finalDate = dateFormatter.date(from: dateTimeStr)!
+                            let finalDate = dateFormatter.date(from: dateTimeStr)
                             
                             // let yourDate = dateFormatter.date(from: finalDate)
                             //then again set the date format whhich type of output you need
                             dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
                             // again convert your date to string
-                            let finalDateStr = dateFormatter.string(from: finalDate)
+                            let finalDateStr = dateFormatter.string(from: finalDate!)
                             print(finalDateStr)
                             
                             event1.title = subjectTextField.text!
-                            event1.startDate = finalDate
-                            event1.endDate = finalDate
+                            event1.startDate = finalDate!
+                            event1.endDate = finalDate!
                             event1.notes = description
                             event1.calendar = eventStore.defaultCalendarForNewEvents
                             // remove all alarm
@@ -751,6 +754,7 @@ extension CalenderViewController : UITableViewDataSource{
             dateFormatter.dateFormat = "h:mm"
             let stringDate =  dateFormatter.string(from: date)
             timeTextField.text = stringDate
+            strTime = stringDate
            // cell.dateLbl.text = stringDate
         
         }

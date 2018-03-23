@@ -233,7 +233,6 @@ extension TaskContactViewController{
 }
 extension TaskContactViewController : ContactUpdatedDelegate{
     func contactUpdated() {
-
         requestServer()
     }
 
