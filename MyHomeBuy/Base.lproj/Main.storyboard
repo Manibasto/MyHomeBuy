@@ -755,6 +755,7 @@
                         <viewLayoutGuide key="safeArea" id="rpl-6V-eKe"/>
                     </view>
                     <navigationItem key="navigationItem" id="chm-ZO-uE9"/>
+                    <size key="freeformSize" width="320" height="568"/>
                     <connections>
                         <outlet property="emailTextField" destination="Ag5-4X-34h" id="8MC-Wz-8DN"/>
                         <outlet property="forgotPasswordBtn" destination="XVw-Vp-Yw2" id="HKq-dt-pkW"/>
@@ -5384,7 +5385,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="348"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xBk-O7-GXe">
-                                            <rect key="frame" x="20" y="48.5" width="280" height="252"/>
+                                            <rect key="frame" x="20" y="48" width="280" height="252"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name of the New Task" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zg5-e6-uAS">
                                                     <rect key="frame" x="20" y="57" width="245" height="15"/>
@@ -5938,7 +5939,7 @@
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q76-OD-Xqc">
-                                                                <rect key="frame" x="155.5" y="58.5" width="169.5" height="14"/>
+                                                                <rect key="frame" x="155.5" y="58" width="169.5" height="14"/>
                                                                 <fontDescription key="fontDescription" name="AvenirNextLTPro-Regular" family="Avenir Next LT Pro" pointSize="14"/>
                                                                 <color key="textColor" red="0.50980392159999999" green="0.50980392159999999" blue="0.50980392159999999" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <nil key="highlightedColor"/>
@@ -6624,7 +6625,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="68"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Edit Note" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="atQ-Iu-qoU">
-                                        <rect key="frame" x="124" y="36" width="73.5" height="17"/>
+                                        <rect key="frame" x="123.5" y="36" width="73.5" height="17"/>
                                         <fontDescription key="fontDescription" name="AvenirNextLTPro-Regular" family="Avenir Next LT Pro" pointSize="17"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -7540,7 +7541,7 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </textView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add an Event" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ezp-Ga-RNU">
-                                                    <rect key="frame" x="112" y="20" width="106" height="17"/>
+                                                    <rect key="frame" x="111.5" y="20" width="106" height="17"/>
                                                     <fontDescription key="fontDescription" name="AvenirNextLTPro-Demi" family="Avenir Next LT Pro" pointSize="17"/>
                                                     <color key="textColor" red="0.26274509800000001" green="0.35686274509999999" blue="0.74117647060000003" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>

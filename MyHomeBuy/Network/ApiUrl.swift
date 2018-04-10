@@ -8,7 +8,10 @@
 
 import Foundation
 class ApiUrl {
-    static let BASE_URL = "http://hireswiftdeveloper.com/MyHomeBuy/api/index"
+   // http://myhomebuyapp.com/MyHomeBuy/api/index
+   // static let BASE_URL = "http://hireswiftdeveloper.com/MyHomeBuy/api/index"
+    static let BASE_URL = "http://myhomebuyapp.com/MyHomeBuy/api/index"
+
     static let METHOD_LOGIN_URL = "userLogin"
     static let METHOD_SIGNUP_URL = "signUp"
     static let METHOD_FORGOT_PASSWORD_URL = "forgetPassword"
