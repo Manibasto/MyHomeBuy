@@ -26,9 +26,9 @@ let USER_ID = "userId"
 
 
 
-let TERMS_CONDITION = "http://hireswiftdeveloper.com/MyHomeBuy/uploads/terms_of_use.html"
+let TERMS_CONDITION = "http://myhomebuyapp.com/MyHomeBuy/uploads/terms_of_use.html"
 
-let PRIVACY_POLICY = "http://hireswiftdeveloper.com/MyHomeBuy/uploads/privacy_policy.html"
+let PRIVACY_POLICY = "http://myhomebuyapp.com/MyHomeBuy/uploads/privacy_policy.html"
 
 
 

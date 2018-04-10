@@ -102,8 +102,8 @@ class SideMenuViewController: UIViewController {
                 
             case 5:
                 push = false
-                view.makeToast("Under Development")
-
+                //view.makeToast("Under Development")
+                openAppstoreLink()
                 break
                 
             default:
@@ -156,7 +156,16 @@ class SideMenuViewController: UIViewController {
         alertController.view.tintColor = UIColor.black
 
     }
-    
+    func openAppstoreLink(){
+        let urlStr = "https://itunes.apple.com/us/app/my-home-buy/id1370295674"
+        if #available(iOS 10.0, *) {
+            UIApplication.shared.open(URL(string: urlStr)!, options: [:], completionHandler: nil)
+            
+        } else {
+            UIApplication.shared.openURL(URL(string: urlStr)!)
+        }
+        
+    }
     func clearData(){
         UserDefaults.standard.removeObject(forKey: USER_PIN)
         UserDefaults.standard.removeObject(forKey: USER_IMAGE)

@@ -81,7 +81,7 @@ class SignupViewController: UIViewController {
         let parmDict = ["password" : passwordTextField.text!,"email" : emailTextField.text!,"userName" : userNameTextField.text!,"method_name" : ApiUrl.METHOD_SIGNUP_URL] as [String : Any]
         
         MBProgressHUD.showAdded(to: self.view, animated: true)
-        ApiManager.sharedInstance.requestApiServer(parmDict, [UIImage](), {(userJson) ->() in
+        ApiManager.sharedInstance.apiCall(parmDict, [UIImage](), {(userJson) ->() in
 
          self.signWithSuccess(userJson)
             

@@ -11,7 +11,7 @@ import MBProgressHUD
 import SwiftyJSON
 import SDWebImage
 class EnterPinViewController: UIViewController {
-
+    
     @IBOutlet weak var welcomeLbl: UILabel!
     @IBOutlet weak var forgotPasswordBtn: UIButton!
     @IBOutlet weak var profileImageView: UIImageView!
@@ -22,11 +22,11 @@ class EnterPinViewController: UIViewController {
     
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var submitBtn: UIButton!
-   
+    
     @IBOutlet weak var getInBtn: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
         setupUI()
         addgesture()
@@ -47,7 +47,7 @@ class EnterPinViewController: UIViewController {
     }
     func setupUI(){
         profileImageView.setRadius(5, .lightWhite, 3)
-
+        
         forgotPinMidView.setRadius(5)
         getInBtn.setRadius(10)
         submitBtn.setRadius(10, .lightBlue)
@@ -58,7 +58,7 @@ class EnterPinViewController: UIViewController {
         if let userImage = UserDefaults.standard.object(forKey: USER_IMAGE){
             let url = userImage as? String
             profileImageView.sd_setImage(with: URL(string: url!), placeholderImage: UIImage(named: "user_icon"))
-           
+            
         }
         if let userName = UserDefaults.standard.object(forKey: USER_NAME){
             let name = userName as? String
@@ -82,17 +82,17 @@ class EnterPinViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
+    
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destinationViewController.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
     @IBAction func submitBtnPressed(_ sender: Any) {
         emailTextField.resignFirstResponder()
         
@@ -105,34 +105,38 @@ class EnterPinViewController: UIViewController {
         }    }
     @IBAction func getInBtnPressed(_ sender: Any) {
         view.endEditing(true)
-
-       let userPin =  UserDefaults.standard.object(forKey: USER_PIN) as! String
+        
+        //let userPin =  UserDefaults.standard.object(forKey: USER_PIN) as! String
         var pinStr = ""
-       
-            for (index , field) in pinTextFieldArray .enumerated(){
-               let currentField =  UIView.getViewWithTag(pinTextFieldArray, index) as! UITextField
-               pinStr =  "\(pinStr)\(currentField.text!)"
-            }
+        
+        for (index , field) in pinTextFieldArray .enumerated(){
+            let currentField =  UIView.getViewWithTag(pinTextFieldArray, index) as! UITextField
+            pinStr =  "\(pinStr)\(currentField.text!)"
+        }
         
         print("pin  \(pinStr) andSize \(pinStr.characters.count)")
-        if(userPin == pinStr){
-            let slidingRootController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SlidingRootViewController") as! SlidingRootViewController
-            self.navigationController?.pushViewController(slidingRootController, animated: true)
+        // if(userPin == pinStr){
+        
+        // }else{
+        if(!pinStr.isLengthValid(4)){
+            self.view.makeToast("Please enter 4 digit Pin no.")
+            
+            
+        }else if pinStr == ""{
+            self.view.makeToast("Please enter Pin no.")
+            
         }else{
-            if(pinStr.isLengthValid(4)){
-                self.view.makeToast("Please Enter Correct Pin")
-               
-            }else{
-                self.view.makeToast("Please enter 4 digit Pin no.")
-
-            }
-            for textField in self.pinTextFieldArray {
-                textField.text = ""
-            }
+            requestForPinVerificationAPI(pin: pinStr)
         }
+        //
+        //}
+    }
+    func switchToHomeScreen(){
+        let slidingRootController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SlidingRootViewController") as! SlidingRootViewController
+        self.navigationController?.pushViewController(slidingRootController, animated: true)
     }
     @IBAction func forgotPinBtnPressed(_ sender: Any) {
-      //  resignFirstResponder()
+        //  resignFirstResponder()
         self.view.endEditing(true)
         emailTextField.text = ""
         addView(forgotPinView)
@@ -154,14 +158,14 @@ class EnterPinViewController: UIViewController {
         MBProgressHUD.showAdded(to: self.view, animated: true)
         ApiManager.sharedInstance.requestApiServer(parmDict, imageArray, {(userJson) ->() in
             let jsondata = JSON(userJson)
-
+            
             print("success  \(userJson)")
             if(jsondata["status"].intValue == 1){
                 self.forgotPinView.removeFromSuperview()
                 self.view.makeToast("Pin sent to your Email")
                 
             }else{
-               
+                
                 self.view.makeToast("Email not registered")
             }
             
@@ -171,7 +175,7 @@ class EnterPinViewController: UIViewController {
             print("failure \(error)")
             MBProgressHUD.hide(for: self.view, animated: true)
             self.view.makeToast(NETWORK_ERROR)
-
+            
             
         },{(progress)-> () in
             print("progress \(progress)")
@@ -179,7 +183,44 @@ class EnterPinViewController: UIViewController {
         })
         
     }
+    //{"user_id":"7","pin_number":"12345","method_name":"checkPin"}
+    
+    func requestForPinVerificationAPI(pin : String){
+        let userId = UserDefaults.standard.object(forKey: USER_ID) as! String
 
+        let parmDict = ["user_id" : userId,"pin_number":pin, "method_name" : ApiUrl.METHOD_CHECK_PIN_URL] as [String : Any]
+        let imageArray = [UIImage]()
+        
+        MBProgressHUD.showAdded(to: self.view, animated: true)
+        ApiManager.sharedInstance.requestApiServer(parmDict, imageArray, {(userJson) ->() in
+            let jsondata = JSON(userJson)
+            
+            print("success  \(userJson)")
+            if(jsondata["status"].intValue == 1){
+                //self.view.makeToast("Pin sent to your Email")
+                self.switchToHomeScreen()
+            }else{
+                for textField in self.pinTextFieldArray {
+                textField.text = ""
+                }
+                self.view.makeToast("Please Enter Correct Pin")
+
+            }
+            
+            
+            MBProgressHUD.hide(for: self.view, animated: true)
+        }, {(error)-> () in
+            print("failure \(error)")
+            MBProgressHUD.hide(for: self.view, animated: true)
+            self.view.makeToast(NETWORK_ERROR)
+            
+            
+        },{(progress)-> () in
+            print("progress \(progress)")
+            
+        })
+        
+    }
 }
 extension EnterPinViewController : UIGestureRecognizerDelegate{
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
@@ -191,7 +232,7 @@ extension EnterPinViewController : UIGestureRecognizerDelegate{
 }
 
 extension EnterPinViewController : UITextFieldDelegate{
-
+    
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         // type
@@ -227,7 +268,7 @@ extension EnterPinViewController : UITextFieldDelegate{
         }
         return true
     }
-
     
-
+    
+    
 }

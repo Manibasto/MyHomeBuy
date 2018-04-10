@@ -40,7 +40,7 @@ class LoginViewController: UIViewController {
         let secondFont = UIFont(name: "AvenirNextLTPro-Demi", size: 15)
        
         attrStr.addAttribute(NSForegroundColorAttributeName, value: UIColor.color1, range: (str as NSString).range(of: firstStr))
-         attrStr.addAttribute(NSFontAttributeName, value: firstFont!, range: (str as NSString).range(of: firstStr))
+        attrStr.addAttribute(NSFontAttributeName, value: firstFont!, range: (str as NSString).range(of: firstStr))
         
         attrStr.addAttribute(NSForegroundColorAttributeName, value: UIColor.color2, range: (str as NSString).range(of: secondStr))
         attrStr.addAttribute(NSFontAttributeName, value: secondFont!, range: (str as NSString).range(of: secondStr))

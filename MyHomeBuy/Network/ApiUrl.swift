@@ -15,6 +15,7 @@ class ApiUrl {
     static let METHOD_LOGIN_URL = "userLogin"
     static let METHOD_SIGNUP_URL = "signUp"
     static let METHOD_FORGOT_PASSWORD_URL = "forgetPassword"
+    static let METHOD_CHECK_PIN_URL = "checkPin"
     static let METHOD_FORGOT_PIN_URL = "forgetPin"
     static let METHOD_CREATE_UPDATE_PIN_URL = "changePin"
     static let METHOD_EDIT_PROFILE_URL = "updateProfile"
