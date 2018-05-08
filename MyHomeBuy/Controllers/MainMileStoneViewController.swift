@@ -112,6 +112,7 @@ extension MainMileStoneViewController : UITableViewDataSource{
 extension MainMileStoneViewController : UITableViewDelegate{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
     {
+         SharedAppDelegate.logEvents(itemID: "02", itemName: "Visit", contentType: "Milestone \(indexPath.row+1)")
             let mileStoneVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MileStoneViewController") as! MileStoneViewController
             mileStoneVC.currentMileStoneNo = indexPath.row+1
         if(indexPath.row == 1)

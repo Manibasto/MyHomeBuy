@@ -525,6 +525,7 @@ extension AddPropertyViewController{
         let status = dictionary["status"] as? Int
         let msg = dictionary["msg"] as? String
         if(status == 1){
+             SharedAppDelegate.logEvents(itemID: "03", itemName: "Action", contentType: "Property Added")
             switchController()
         }else{
             

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1ACC703F209AEEFE005BD339 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1ACC703E209AEEFD005BD339 /* GoogleService-Info.plist */; };
 		1D02DDA61FC54AD8005E2990 /* WebViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D02DDA51FC54AD8005E2990 /* WebViewVC.swift */; };
 		1D02DDA81FC56A29005E2990 /* ChartDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D02DDA71FC56A29005E2990 /* ChartDataModel.swift */; };
 		1D0418AA1FA3291400A65C81 /* TaskCheckListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0418A91FA3291400A65C81 /* TaskCheckListViewController.swift */; };
@@ -148,6 +149,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1ACC703E209AEEFD005BD339 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		1D02DDA51FC54AD8005E2990 /* WebViewVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewVC.swift; sourceTree = "<group>"; };
 		1D02DDA71FC56A29005E2990 /* ChartDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartDataModel.swift; sourceTree = "<group>"; };
 		1D0418A91FA3291400A65C81 /* TaskCheckListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskCheckListViewController.swift; sourceTree = "<group>"; };
@@ -589,6 +591,7 @@
 				1D331CB11F6A51CE0002374F /* Info.plist */,
 				1D331CA91F6A51CE0002374F /* MyHomeBuy.xcdatamodeld */,
 				1DE91DEE1F86278800E24F3A /* MyHomeBuy-Bridging-Header.h */,
+				1ACC703E209AEEFD005BD339 /* GoogleService-Info.plist */,
 			);
 			path = MyHomeBuy;
 			sourceTree = "<group>";
@@ -708,6 +711,7 @@
 				1DE5D03D1F90892B00ED4BF4 /* timeburnerbold.ttf in Resources */,
 				1D331CAD1F6A51CE0002374F /* Assets.xcassets in Resources */,
 				1DE5D03A1F90892B00ED4BF4 /* AvenirNextLTPro-Bold.otf in Resources */,
+				1ACC703F209AEEFE005BD339 /* GoogleService-Info.plist in Resources */,
 				1D331CA81F6A51CE0002374F /* Main.storyboard in Resources */,
 				1DE5D03C1F90892B00ED4BF4 /* AvenirNextLTPro-Regular.otf in Resources */,
 				1DE5D03E1F90892B00ED4BF4 /* timeburnernormal.ttf in Resources */,
@@ -727,23 +731,27 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-MyHomeBuy/Pods-MyHomeBuy-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/FSCalendar/FSCalendar.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/KMPlaceholderTextView/KMPlaceholderTextView.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/PieCharts/PieCharts.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 				"${BUILT_PRODUCTS_DIR}/Toast-Swift/Toast_Swift.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FSCalendar.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KMPlaceholderTextView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PieCharts.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Toast_Swift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -780,7 +788,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1065,16 +1073,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = MyHomeBuy/MyHomeBuy.entitlements;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = X7JM4NHRU7;
 				INFOPLIST_FILE = MyHomeBuy/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.MyHomeBuy.com;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "ebfeef8f-a0ae-42ac-90c7-af5d2079887d";
+				PROVISIONING_PROFILE_SPECIFIER = MyHomeBuyDistributionAppstoreProvisioning;
 				SWIFT_OBJC_BRIDGING_HEADER = "MyHomeBuy/MyHomeBuy-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;

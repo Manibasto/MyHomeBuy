@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
+	<string>ca-app-pub-3940256099942544/2934735716</string>
+	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
+	<string>ca-app-pub-3940256099942544/4411468910</string>
+	<key>CLIENT_ID</key>
+	<string>822304230541-4vfvb3l7pes1vcl5emthc11b08ga548v.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.822304230541-4vfvb3l7pes1vcl5emthc11b08ga548v</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBRbYy_qpWIVqYYzuKWHDwKg_8R7XBPJrs</string>
+	<key>GCM_SENDER_ID</key>
+	<string>822304230541</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.MyHomeBuy.com</string>
+	<key>PROJECT_ID</key>
+	<string>my-home-buy</string>
+	<key>STORAGE_BUCKET</key>
+	<string>my-home-buy.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<true></true>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<false></false>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:822304230541:ios:80c5c1a460975e58</string>
+	<key>DATABASE_URL</key>
+	<string>https://my-home-buy.firebaseio.com</string>
+</dict>
+</plist>

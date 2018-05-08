@@ -15,4 +15,5 @@ pod 'MBProgressHUD', '~> 1.0.0'
 pod 'FSCalendar'
 pod 'KMPlaceholderTextView', '~> 1.3.0'
 pod 'PieCharts'
+pod 'Firebase/Core'
 end

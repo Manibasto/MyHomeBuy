@@ -30,30 +30,30 @@ class MyHomeViewController: UIViewController {
         let chartModelData = ChartDataModel()
         //chartModelData.getChartdata(currentMileStone)
         chartModelData.getProperData(statusArray)
-
+        
         chart.setChartValues(chartModelData.chartArray, animation:true , options: VBPieChartAnimationOptions.fanAll)
         chart.isUserInteractionEnabled = false
     }
     func initChart(_ statusArray : [String]){
-    
+        
         //chartView.backgroundColor = UIColor.gray
         chartView.addSubview(chart)
         var minLength = chartView.frame.size.width
         if(chartView.frame.size.width > chartView.frame.size.height){
-         minLength = chartView.frame.size.height
+            minLength = chartView.frame.size.height
         }
         let chartLength = minLength * 0.56
         chart.frame = CGRect(x: 0, y: 0, width: chartLength, height: chartLength)
         chart.center = CGPoint(x: chartView.frame.size.width/2, y: chartView.frame.size.height/2)
         chart.holeRadiusPrecent = 0.55;
         chart.startAngle = 30;
-         setupChartData(statusArray)
+        setupChartData(statusArray)
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         frostedViewController.panGestureEnabled = true
         requestMileStoneAPI()
-
+        SharedAppDelegate.logEvents(itemID: "01", itemName: "Visit", contentType: "Home Screen")
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -84,7 +84,7 @@ class MyHomeViewController: UIViewController {
         for vc in vcArray! {
             if(vc.isKind(of: MainMileStoneViewController.self)){
                 let currentVC =  vc as! MainMileStoneViewController
-                 //currentVC.currentMileStoneNo = currentMileStone
+                //currentVC.currentMileStoneNo = currentMileStone
                 break
             }
         }
