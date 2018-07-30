@@ -132,8 +132,6 @@ extension TipsViewController : UITableViewDataSource{
                 let customFont = UIFont.init(name: "AvenirNextLTPro-Regular", size: 17)
                 cell.detailLbl.font = customFont
             }
-            
-            
         }
       cell.detailLbl.text = strArray?[indexPath.row]
         if(indexPath.row % 2 == 0){
