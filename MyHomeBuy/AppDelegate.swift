@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  MyHomeBuy
+//  MyHomeBuyAWQ
 //
 //  Created by Vikas on 14/09/17.
 //  Copyright © 2017 MobileCoderz. All rights reserved.
